@@ -1,0 +1,15 @@
+{
+  "require": {
+    "nikic/fast-route": "v1.3.0",
+    "php-di/php-di": "^6.0",
+    "jenssegers/blade": "v1.4.0",
+    "ext-pdo": "*",
+    "cycle/orm": "^2.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "src/",
+      "resource\\": "public/"
+    }
+  }
+}
