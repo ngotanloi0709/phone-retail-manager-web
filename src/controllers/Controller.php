@@ -2,15 +2,14 @@
 
 namespace app\controllers;
 
-use DI\Container;
-use Jenssegers\Blade\Blade;
+use League\Plates\Engine;
 
 class Controller
 {
-    protected Blade $blade;
+    protected Engine $engine;
 
-    public function __construct(Container $container)
+    public function __construct(Engine $engine)
     {
-
+        $this->engine = $engine;
     }
 }

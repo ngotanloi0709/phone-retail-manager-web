@@ -2,9 +2,10 @@
   "require": {
     "nikic/fast-route": "v1.3.0",
     "php-di/php-di": "^6.0",
-    "jenssegers/blade": "v1.4.0",
-    "ext-pdo": "*",
-    "cycle/orm": "^2.7"
+    "doctrine/orm": "^3.1",
+    "doctrine/dbal": "^4",
+    "symfony/cache": "v6.4.4",
+    "league/plates": "^3.5"
   },
   "autoload": {
     "psr-4": {
