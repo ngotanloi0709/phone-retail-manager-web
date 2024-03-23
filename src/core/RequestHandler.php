@@ -75,6 +75,7 @@ class RequestHandler
 
         list($class, $method) = explode("@", $handler, 2);
         $class = "\\app\\controllers\\" . $class;
+
         try {
             call_user_func_array([$this->container->get($class), $method], $vars);
         } catch (DependencyException|NotFoundException $e) {
