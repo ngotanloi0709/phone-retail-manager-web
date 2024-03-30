@@ -1,10 +1,17 @@
-<div class="list-group text-center" id="list-tab" role="tablist">
-    <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-home"
-       role="tab" aria-controls="list-home">Home</a>
-    <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile"
-       role="tab" aria-controls="list-profile">Profile</a>
-    <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
-       href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
-    <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-       href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+<?php
+/** @var bool $isAuthenticated */
+/** @var User $currentUser */
+
+use app\models\User;
+
+?>
+<div class="list-group text-center">
+    <?php if (!$isAuthenticated): ?>
+        <a class="list-group-item list-group-item-action" href="/login"
+           role="tab" aria-controls="list-home">Đăng nhập</a>
+    <?php else: ?>
+        <p>Welcome, <?= $currentUser->getEmail() ?></p>
+    <?php endif; ?>
+    <a class="list-group-item list-group-item-action" href="/home"
+       role="tab" aria-controls="list-home">Trang chủ</a>
 </div>

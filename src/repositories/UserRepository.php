@@ -3,11 +3,17 @@
 namespace app\repositories;
 
 use app\models\User;
+use Doctrine\ORM\EntityRepository;
 
 class UserRepository extends BaseRepository
 {
-    protected function getEntityClass(): string
+    public function findByEmail(string $email)
     {
-        return User::class;
+        return $this->getEntityClass()->findOneBy(['email' => $email]);
+    }
+
+    protected function getEntityClass(): EntityRepository
+    {
+        return $this->entityManager->getRepository(User::class);
     }
 }

@@ -1,20 +1,17 @@
 <?php
-/** @var string $name */
 /** @var bool $isAuthenticated */
 /** @var User $currentUser */
-
-use app\models\User;
 
 ?>
 <?php $this->layout('base',
     [
-        'title' => 'Trang chủ',
-        'header' => 'Đây là trang chủ, ...',
+        'title' => 'Admin',
+        'header' => 'Đây là trang admin',
         'isAuthenticated' => $isAuthenticated,
         'currentUser' => $currentUser
     ]) ?>
 
 <?php $this->start('main') ?>
-<h1>Hello, <?= $this->e($name) ?></h1>
+<h1>Đây là trang admin</h1>
 <?php $this->end('main') ?>
 

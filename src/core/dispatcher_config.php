@@ -4,14 +4,15 @@ use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
 return simpleDispatcher(function (RouteCollector $r) {
-    // user routes
-    // $r->addRoute('GET', '/login', 'UserController@getLogin');
-    // $r->addRoute('POST', '/login', 'UserController@postLogin');
+    $r->addGroup('', function (RouteCollector $r) {
+        $r->addRoute('GET', '/','HomeController@index');
+        $r->addRoute('GET', '/home', 'HomeController@index');
+        $r->addRoute('GET', '/login', 'HomeController@getLogin');
+        $r->addRoute('GET', '/error', 'HomeController@error');
+    });
 
-    // home routes
-     $r->addRoute('GET', '/', 'HomeController@index');
-     $r->addRoute('GET', '/home', 'HomeController@index');
-
-    // admin routes
-    // $r->addRoute('GET', '/admin/', 'AdminController@index');
+    $r->addGroup('/admin', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'AdminController@index');
+        $r->addRoute('GET', '/', 'AdminController@index');
+    });
 });

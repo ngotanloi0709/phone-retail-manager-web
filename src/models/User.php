@@ -1,7 +1,6 @@
 <?php
+
 namespace app\models;
-
-
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -20,9 +19,10 @@ class User
     private string $email;
     #[Column]
     private string $password;
+    #[Column(type: 'string', length: 20)]
+    private UserRole $role;
     /** @var Collection */
     #[OneToMany(targetEntity: Order::class, mappedBy: 'user')]
-
     private Collection $orders;
 
     public function getId(): int|null
@@ -53,6 +53,16 @@ class User
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    public function getRole(): UserRole
+    {
+        return $this->role;
+    }
+
+    public function setRole(UserRole $role): void
+    {
+        $this->role = $role;
     }
 
     public function __toString(): string

@@ -2,12 +2,10 @@
 
 namespace app\controllers;
 
-use DI\Container;
-
-class AdminController extends Controller
+class AdminController
 {
     public function index(): void
     {
-
+        echo $this->engine->render('admin');
     }
 }

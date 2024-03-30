@@ -1,6 +1,11 @@
 <?php
 /** @var string $title */
 /** @var string $header */
+/** @var bool $isAuthenticated */
+/** @var User $currentUser */
+
+use app\models\User;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,7 +28,10 @@
     </div>
     <div class="row">
         <aside class="col-12 col-lg-3">
-            <?= $this->insert('partials/aside') ?>
+            <?= $this->insert('partials/aside', [
+                'isAuthenticated' => $isAuthenticated,
+                'currentUser' => $currentUser
+            ]) ?>
         </aside>
         <main class="col-12 col-lg-9">
             <?= $this->section('main') ?>
