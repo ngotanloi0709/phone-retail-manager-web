@@ -15,17 +15,23 @@ class User
 {
     #[Id, Column, GeneratedValue]
     private int|null $id = null;
-    #[Column]
+    #[Column(unique: true)]
     private string $email;
     #[Column]
     private string $password;
-    #[Column]
+    #[Column(unique: true)]
     private string $username;
+    #[Column]
+    private string $name;
+    #[Column(type: 'blob')]
+    private $avatar;
+    #[Column]
+    private bool $isLocked = false;
     #[Column(type: 'string', enumType: UserRole::class)]
     private UserRole $role = UserRole::ADMIN;
     /** @var Collection */
-    #[OneToMany(targetEntity: Order::class, mappedBy: 'user')]
-    private Collection $orders;
+    #[OneToMany(targetEntity: Transaction::class, mappedBy: 'user')]
+    private Collection $transactions;
 
     public function getId(): int|null
     {
