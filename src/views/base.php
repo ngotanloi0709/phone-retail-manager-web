@@ -1,11 +1,8 @@
 <?php
 /** @var string $title */
 /** @var string $header */
-/** @var bool $isAuthenticated */
-/** @var User $currentUser */
-
-use app\models\User;
-
+require_once __DIR__ . '/../utils/Logger.php';
+use app\utils\Logger;
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,10 +25,7 @@ use app\models\User;
     </div>
     <div class="row">
         <aside class="col-12 col-lg-3">
-            <?= $this->insert('partials/aside', [
-                'isAuthenticated' => $isAuthenticated,
-                'currentUser' => $currentUser
-            ]) ?>
+            <?= $this->insert('partials/aside') ?>
         </aside>
         <main class="col-12 col-lg-9">
             <?= $this->section('main') ?>
@@ -39,5 +33,13 @@ use app\models\User;
     </div>
 </div>
 <?= $this->insert('partials/footer') ?>
+<?= $this->insert('partials/toast') ?>
+<?php
+if (isset($_SESSION['logger'])) {
+    Logger::debug_to_console($_SESSION['logger']);
+    unset($_SESSION['logger']);
+}
+//Logger::debug_to_console('hello');
+?>
 </body>
 </html>

@@ -1,16 +1,7 @@
-<?php
-/** @var string $name */
-/** @var string $header */
-/** @var bool $isAuthenticated */
-/** @var User $currentUser */
-
-?>
 <?php $this->layout('base',
     [
         'title' => 'Không tìm thấy trang',
-        'header' => '',
-        'isAuthenticated' => $isAuthenticated,
-        'currentUser' => $currentUser
+        'header' => 'Không tìm thấy trang',
     ]) ?>
 
 <?php $this->start('main') ?>

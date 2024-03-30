@@ -11,7 +11,8 @@ class authorizationMiddleware
         '/',
         '/home',
         '/login',
-        '/error'
+        '/error-not-found',
+        '/register'
     ];
 
     private array $adminRoutes = [

@@ -19,8 +19,10 @@ class User
     private string $email;
     #[Column]
     private string $password;
-    #[Column(type: 'string', length: 20)]
-    private UserRole $role;
+    #[Column]
+    private string $username;
+    #[Column(type: 'string', enumType: UserRole::class)]
+    private UserRole $role = UserRole::ADMIN;
     /** @var Collection */
     #[OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $orders;
@@ -28,11 +30,6 @@ class User
     public function getId(): int|null
     {
         return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getEmail(): string
@@ -53,6 +50,16 @@ class User
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
     }
 
     public function getRole(): UserRole

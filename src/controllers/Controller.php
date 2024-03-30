@@ -18,9 +18,8 @@ class Controller
 
     protected function render(string $template, array $data = []): void
     {
-        $data['isAuthenticated'] = $this->authenticationService->isAuthenticated();
-        $data['isAdmin'] = $this->authenticationService->isAdmin();
-        $data['currentUser'] = $this->authenticationService->getCurrentUser();
+        $_SESSION['isAuthenticated'] = $this->authenticationService->isAuthenticated();
+        $_SESSION['currentUser'] = $this->authenticationService->getCurrentUser();
         echo $this->engine->render($template, $data);
     }
 }

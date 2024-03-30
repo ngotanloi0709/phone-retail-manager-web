@@ -8,7 +8,10 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/','HomeController@index');
         $r->addRoute('GET', '/home', 'HomeController@index');
         $r->addRoute('GET', '/login', 'HomeController@getLogin');
-        $r->addRoute('GET', '/error', 'HomeController@error');
+        $r->addRoute('POST', '/login', 'HomeController@postLogin');
+        $r->addRoute('GET', '/register', 'HomeController@getRegister');
+        $r->addRoute('POST', '/register', 'HomeController@postRegister');
+        $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
     });
 
     $r->addGroup('/admin', function (RouteCollector $r) {

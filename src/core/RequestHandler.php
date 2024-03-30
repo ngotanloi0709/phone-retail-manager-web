@@ -43,7 +43,7 @@ class RequestHandler
     {
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                header('Location: /error');
+                header('Location: /error-not-found');
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
@@ -56,8 +56,7 @@ class RequestHandler
                     break;
                 }
 
-                header('Location: /login');
-                exit();
+                break;
         }
     }
 
@@ -71,9 +70,6 @@ class RequestHandler
         list($class, $method) = explode("@", $handler, 2);
         $class = "\\app\\controllers\\" . $class;
 
-        // print to console
-        error_log($class);
-
         try {
             $handler = [$this->container->get($class), $method];
 
@@ -82,13 +78,4 @@ class RequestHandler
             error_log($e->getMessage());
         }
     }
-
-//    private function attachValuesToResponse(mixed $vars): void
-//    {
-//        $isAuthenticated = $this->authorizationMiddleware->isAuthenticated();
-//        $user = $isAuthenticated ? $this->authenticationService->getCurrentUser() : null;
-//
-//        $vars['isAuthenticated'] = $isAuthenticated;
-//        $vars['currentAuthenticatedUser'] = $user;
-//    }
 }

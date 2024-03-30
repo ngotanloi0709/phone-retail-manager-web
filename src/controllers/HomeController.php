@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\services\AuthenticationService;
 use app\services\UserService;
+use app\utils\Logger;
 use League\Plates\Engine;
 
 class HomeController extends Controller
@@ -21,9 +22,9 @@ class HomeController extends Controller
         $this->render('home', ['name' => 'Jonathan']);
     }
 
-    public function error(): void
+    public function errorNotFound(): void
     {
-        echo $this->engine->render('error');
+        $this->render('errorNotFound');
     }
 
     public function getLogin(): void
@@ -33,14 +34,37 @@ class HomeController extends Controller
             exit();
         }
 
-        echo $this->engine->render('login');
+        $this->render('login');
     }
 
     public function postLogin(): void
     {
         $username = $_POST['username'];
         $password = $_POST['password'];
+    }
 
+    public function getRegister(): void
+    {
+        if ($this->authenticationService->isAuthenticated()) {
+            header('Location: /');
+            exit();
+        }
 
+        $this->render('register');
+    }
+
+    public function postRegister(): void
+    {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        if ($this->userService->register($username, $email, $password)) {
+            $_SESSION['alerts'][] = 'Đăng ký thành công';
+            header('Location: /login');
+        } else {
+            $_SESSION['alerts'][] = 'Đăng ký thất bại';
+            header('Location: /register');
+        }
     }
 }
