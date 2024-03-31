@@ -14,6 +14,11 @@ class AdminController extends Controller
 
     public function index(): void
     {
-        $this->render('admin');
+        $this->render('admin/admin');
+    }
+
+    public function getUserManagement(): void
+    {
+        $this->render('admin/user_management');
     }
 }

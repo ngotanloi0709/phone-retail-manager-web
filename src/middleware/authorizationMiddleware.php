@@ -18,7 +18,8 @@ class authorizationMiddleware
 
     private array $adminRoutes = [
         '/admin',
-        '/admin/'
+        '/admin/',
+        '/admin/user-management'
     ];
 
     public function __construct(AuthenticationService $authenticationService)

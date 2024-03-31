@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,15 +15,19 @@ class Product
 {
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
-    #[Column]
+    #[Column(nullable: true)]
     private string $name;
-    #[Column]
+    #[Column(nullable: true)]
     private string $description;
-    #[Column]
+    #[Column(nullable: true)]
     private int $price;
-    #[Column(unique: true)]
+    #[Column(nullable: true)]
+    private int $import_price;
+    #[Column(nullable: true)]
+    private int $stock;
+    #[Column(unique: true, nullable: true)]
     private int $barcode;
-    #[Column]
+    #[Column(nullable: true)]
     private DateTime $created;
     #[ManyToOne(targetEntity: Category::class)]
     private Category $category;

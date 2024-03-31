@@ -18,5 +18,6 @@ return simpleDispatcher(function (RouteCollector $r) {
     $r->addGroup('/admin', function (RouteCollector $r) {
         $r->addRoute('GET', '', 'AdminController@index');
         $r->addRoute('GET', '/', 'AdminController@index');
+        $r->addRoute('GET', '/user-management', 'AdminController@getUserManagement');
     });
 });

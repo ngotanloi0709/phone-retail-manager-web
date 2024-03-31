@@ -17,6 +17,6 @@ class TransactionDetail
     #[Id, ManyToOne(targetEntity: Product::class)]
     private ?Product $product = null;
 
-    #[Column]
+    #[Column(nullable: true)]
     private int $quantity = 1;
 }

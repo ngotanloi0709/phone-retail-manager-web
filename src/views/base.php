@@ -1,9 +1,14 @@
 <?php
 /** @var string $title */
 /** @var string $header */
+/** @var bool $isShowAside */
 require_once __DIR__ . '/../utils/Logger.php';
 use app\utils\Logger;
+
+$isAuthenticated = isset($_SESSION['user']);
+$currentUser = $_SESSION['user'] ?? null;
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,22 +19,34 @@ use app\utils\Logger;
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="../style/base.css">
 </head>
 <body>
-<?= $this->insert('partials/nav') ?>
+<?= $this->insert('partials/nav', [
+        'isAuthenticated' => $isAuthenticated,
+        'currentUser' => $currentUser,
+    ]) ?>
 
 <div class="container body">
     <div class="row">
         <?= $this->insert('partials/header', ['header' => $header]) ?>
     </div>
     <div class="row">
-        <aside class="col-12 col-lg-3">
-            <?= $this->insert('partials/aside') ?>
-        </aside>
-        <main class="col-12 col-lg-9">
-            <?= $this->section('main') ?>
-        </main>
+        <?php if ($isShowAside): ?>
+            <aside class="col-12 col-lg-3">
+                <?= $this->insert('partials/aside', [
+                    'isAuthenticated' => $isAuthenticated,
+                    'currentUser' => $currentUser,
+                ]) ?>
+            </aside>
+            <main class="col-12 col-lg-9">
+                <?= $this->section('main') ?>
+            </main>
+        <?php else: ?>
+            <main class="col-12">
+                <?= $this->section('main') ?>
+            </main>
+        <?php endif; ?>
     </div>
 </div>
 <?= $this->insert('partials/footer') ?>
