@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 class Category
 {
     #[Id, Column, GeneratedValue]
-    private int $id;
+    private ?int $id = null;
     #[Column]
     private string $name;
     #[OneToMany(targetEntity: Product::class, mappedBy: 'category')]

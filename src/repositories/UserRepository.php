@@ -7,13 +7,18 @@ use Doctrine\ORM\EntityRepository;
 
 class UserRepository extends BaseRepository
 {
-    public function findByEmail(string $email)
+    protected function getEntityClass(): string
     {
-        return $this->getEntityClass()->findOneBy(['email' => $email]);
+        return User::class;
     }
 
-    protected function getEntityClass(): EntityRepository
+    public function findByEmail(string $email)
     {
-        return $this->entityManager->getRepository(User::class);
+        return $this->getEntityRepository()->findOneBy(['email' => $email]);
+    }
+
+    public function findByUsername(string $username)
+    {
+        return $this->getEntityRepository()->findOneBy(['username' => $username]);
     }
 }

@@ -17,9 +17,9 @@ use Doctrine\ORM\Mapping\Table;
 class Transaction
 {
     #[Id, Column, GeneratedValue]
-    private int|null $id = null;
+    private ?int $id = null;
     #[Column]
-    private int|null $givenMoney;
+    private int $givenMoney;
     #[Column]
     private DateTime $created;
 

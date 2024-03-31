@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\Table;
 class Product
 {
     #[Id, Column, GeneratedValue]
-    private int|null $id = null;
+    private ?int $id = null;
     #[Column]
     private string $name;
     #[Column]

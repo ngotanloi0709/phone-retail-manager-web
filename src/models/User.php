@@ -14,28 +14,47 @@ use Doctrine\ORM\Mapping\Table;
 class User
 {
     #[Id, Column, GeneratedValue]
-    private int|null $id = null;
+    private ?int $id = null;
     #[Column(unique: true)]
     private string $email;
     #[Column]
     private string $password;
     #[Column(unique: true)]
     private string $username;
-    #[Column]
+    #[Column(nullable: true)]
     private string $name;
-    #[Column(type: 'blob')]
-    private $avatar;
+    #[Column(type: 'blob', nullable: true)]
+    private string $avatar;
     #[Column]
     private bool $isLocked = false;
     #[Column(type: 'string', enumType: UserRole::class)]
-    private UserRole $role = UserRole::ADMIN;
+    private UserRole $role = UserRole::USER;
     /** @var Collection */
     #[OneToMany(targetEntity: Transaction::class, mappedBy: 'user')]
     private Collection $transactions;
 
-    public function getId(): int|null
+    /**
+     * @param string $email
+     * @param string $password
+     * @param string $username
+     */
+    public function __construct(string $email, string $password, string $username)
+    {
+        $this->email = $email;
+        $this->password = $password;
+        $this->username = $username;
+    }
+
+
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): User
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getEmail(): string
@@ -43,9 +62,10 @@ class User
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): User
     {
         $this->email = $email;
+        return $this;
     }
 
     public function getPassword(): string
@@ -53,9 +73,10 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(string $password): User
     {
         $this->password = $password;
+        return $this;
     }
 
     public function getUsername(): string
@@ -63,9 +84,43 @@ class User
         return $this->username;
     }
 
-    public function setUsername(string $username): void
+    public function setUsername(string $username): User
     {
         $this->username = $username;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): User
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getAvatar(): string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(string $avatar): User
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->isLocked;
+    }
+
+    public function setIsLocked(bool $isLocked): User
+    {
+        $this->isLocked = $isLocked;
+        return $this;
     }
 
     public function getRole(): UserRole
@@ -73,9 +128,26 @@ class User
         return $this->role;
     }
 
-    public function setRole(UserRole $role): void
+    public function getRoleString(): string
+    {
+        return $this->role->toString();
+    }
+
+    public function setRole(UserRole $role): User
     {
         $this->role = $role;
+        return $this;
+    }
+
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function setTransactions(Collection $transactions): User
+    {
+        $this->transactions = $transactions;
+        return $this;
     }
 
     public function __toString(): string

@@ -4,7 +4,8 @@ namespace app\controllers;
 
 use app\services\AuthenticationService;
 use app\services\UserService;
-use app\utils\Logger;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
 
 class HomeController extends Controller
@@ -41,6 +42,14 @@ class HomeController extends Controller
     {
         $username = $_POST['username'];
         $password = $_POST['password'];
+
+        if ($this->authenticationService->login($username, $password)) {
+            $_SESSION['alerts'][] = 'Đăng nhập thành công';
+            header('Location: /');
+        } else {
+            $_SESSION['alerts'][] = 'Đăng nhập thất bại';
+            header('Location: /login');
+        }
     }
 
     public function getRegister(): void
@@ -53,18 +62,29 @@ class HomeController extends Controller
         $this->render('register');
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function postRegister(): void
     {
-        $username = $_POST['username'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $repeatPassword = $_POST['repeatPassword'];
 
-        if ($this->userService->register($username, $email, $password)) {
+        if ($this->userService->register($email, $password, $repeatPassword)) {
             $_SESSION['alerts'][] = 'Đăng ký thành công';
             header('Location: /login');
         } else {
             $_SESSION['alerts'][] = 'Đăng ký thất bại';
             header('Location: /register');
         }
+    }
+
+    public function postLogout(): void
+    {
+        unset($_SESSION['user']);
+        $this->authenticationService->logout();
+        header('Location: /');
     }
 }

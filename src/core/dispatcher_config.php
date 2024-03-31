@@ -11,6 +11,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/login', 'HomeController@postLogin');
         $r->addRoute('GET', '/register', 'HomeController@getRegister');
         $r->addRoute('POST', '/register', 'HomeController@postRegister');
+        $r->addRoute('GET', '/logout', 'HomeController@postLogout');
         $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
     });
 

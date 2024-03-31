@@ -8,8 +8,8 @@
     <div class="col-12 col-lg-6 mx-auto">
         <form action="/login" method="post">
             <div class="form-group mb-3">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Nhập Email của bạn" required >
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Nhập Username của bạn" required >
             </div>
             <div class="form-group mb-3">
                 <label for="password">Mật khẩu</label>

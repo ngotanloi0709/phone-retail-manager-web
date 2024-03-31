@@ -56,6 +56,7 @@ class RequestHandler
                     break;
                 }
 
+                header('Location: /login');
                 break;
         }
     }

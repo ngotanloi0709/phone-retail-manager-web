@@ -12,10 +12,10 @@ use Doctrine\ORM\Mapping\Table;
 class TransactionDetail
 {
     #[Id, ManyToOne(targetEntity: Transaction::class)]
-    private Transaction|null $order = null;
+    private ?Transaction $order = null;
 
     #[Id, ManyToOne(targetEntity: Product::class)]
-    private Product|null $product = null;
+    private ?Product $product = null;
 
     #[Column]
     private int $quantity = 1;

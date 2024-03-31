@@ -36,10 +36,13 @@ use app\utils\Logger;
 <?= $this->insert('partials/toast') ?>
 <?php
 if (isset($_SESSION['logger'])) {
-    Logger::debug_to_console($_SESSION['logger']);
-    unset($_SESSION['logger']);
+    try {
+        Logger::debug_to_console($_SESSION['logger']);
+        unset($_SESSION['logger']);
+    } finally {
+        unset($_SESSION['logger']);
+    }
 }
-//Logger::debug_to_console('hello');
 ?>
 </body>
 </html>

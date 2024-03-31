@@ -1,14 +1,8 @@
-<?php
-/** @var bool $isAuthenticated */
-/** @var User $currentUser */
-
 ?>
 <?php $this->layout('base',
     [
         'title' => 'Admin',
         'header' => 'Đây là trang admin',
-        'isAuthenticated' => $isAuthenticated,
-        'currentUser' => $currentUser
     ]) ?>
 
 <?php $this->start('main') ?>

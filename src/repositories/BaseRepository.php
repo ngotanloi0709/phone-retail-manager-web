@@ -55,5 +55,9 @@ abstract class BaseRepository extends EntityRepository
         $this->entityManager->flush();
     }
 
-    abstract protected function getEntityClass();
+    abstract protected function getEntityClass(): string;
+    protected function getEntityRepository(): EntityRepository
+    {
+        return $this->entityManager->getRepository($this->getEntityClass());
+    }
 }

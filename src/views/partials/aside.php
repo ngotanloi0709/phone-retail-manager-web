@@ -1,6 +1,9 @@
 <?php
-    $isAuthenticated = $_SESSION['isAuthenticated'] ?? false;
-    $currentUser = $_SESSION['currentUser'] ?? null;
+
+use app\models\UserRole;
+
+$isAuthenticated = isset($_SESSION['user']);
+$currentUser = $_SESSION['user'] ?? null;
 ?>
 <div class="list-group text-center">
     <?php if (!$isAuthenticated): ?>
@@ -12,9 +15,16 @@
     <?php if (!$isAuthenticated): ?>
         <a class="list-group-item list-group-item-action" href="/register"
            role="tab" aria-controls="list-home">Đăng ký</a>
-    <?php else: ?>
-        <p>Welcome, <?= $currentUser->getEmail() ?></p>
     <?php endif; ?>
+
     <a class="list-group-item list-group-item-action" href="/home"
        role="tab" aria-controls="list-home">Trang chủ</a>
+    <?php if ($isAuthenticated && $currentUser->getRole() == UserRole::USER): ?>
+        <a class="list-group-item list-group-item-action" href="/admin"
+           role="tab" aria-controls="list-home">Admin</a>
+    <?php endif; ?>
+    <?php if ($isAuthenticated): ?>
+        <a class="list-group-item list-group-item-action" href="/logout"
+           role="tab" aria-controls="list-home">Đăng xuất</a>
+    <?php endif; ?>
 </div>

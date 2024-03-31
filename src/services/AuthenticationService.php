@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\models\User;
+use app\models\UserRole;
 use app\repositories\UserRepository;
 
 class AuthenticationService
@@ -14,36 +15,42 @@ class AuthenticationService
         $this->userRepository = $userRepository;
     }
 
-    public function login(string $email, string $password): bool
+    public function login(string $username, string $password): bool
     {
-        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByUsername($username);
 
-        if ($user && password_verify($password, $user->getPassword())) {
-            $_SESSION['user_id'] = $user->getId();
-            $_SESSION['user_role'] = $user->getRole();
-            return true;
+        if (!$user) {
+            $_SESSION['alerts'][] = 'Tài khoản không tồn tại';
+            return false;
         }
 
-        return false;
+        if (!password_verify($password, $user->getPassword())) {
+            $_SESSION['alerts'][] = 'Sai mật khẩu';
+            return false;
+        }
+
+        $_SESSION['user'] = $user;
+
+        return true;
     }
 
     public function logout(): void
     {
-        unset($_SESSION['user_id']);
+        unset($_SESSION['user']);
     }
 
     public function isAuthenticated(): bool
     {
-        return isset($_SESSION['user_id']);
+        return isset($_SESSION['user']);
     }
 
     public function isAdmin(): bool
     {
-        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+        return isset($_SESSION['user']) && $_SESSION['user']->getRole() == UserRole::ADMIN;
     }
 
     public function getCurrentUser(): ?User
     {
-        return isset($_SESSION['user_id']) ? $this->userRepository->find($_SESSION['user_id']) : null;
+        return isset($_SESSION['user']) ? $this->userRepository->find($_SESSION['user']->getId()) : null;
     }
 }
