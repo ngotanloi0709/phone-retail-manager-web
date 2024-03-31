@@ -1,5 +1,5 @@
 <?php
-// src/models/Order.php
+// src/models/Transaction.php
 
 namespace app\models;
 
@@ -13,27 +13,21 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
-#[Entity, Table(name: 'orders')]
-class Order
+#[Entity, Table(name: 'transactions')]
+class Transaction
 {
     #[Id, Column, GeneratedValue]
-    private int|null $id = null;
-
-    /** @var Collection */
-    #[OneToMany(targetEntity: OrderItem::class, mappedBy: 'order')]
-    private Collection $items;
-
+    private ?int $id = null;
     #[Column]
-    private bool $paid = false;
-    #[Column]
-    private bool $shipped = false;
+    private int $givenMoney;
     #[Column]
     private DateTime $created;
+
+    /** @var Collection */
+    #[OneToMany(targetEntity: TransactionDetail::class, mappedBy: 'order')]
+    private Collection $items;
     #[ManyToOne(targetEntity: User::class)]
     private User $user;
-
-    public function __construct() {
-        $this->items = new ArrayCollection();
-        $this->created = new DateTime("now");
-    }
+    #[ManyToOne(targetEntity: Customer::class)]
+    private Customer $customer;
 }

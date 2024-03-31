@@ -2,82 +2,79 @@
 
 namespace app\core;
 
+use app\middleware\authorizationMiddleware;
+use app\services\AuthenticationService;
+use app\utils\RequestHelper;
 use DI\Container;
 use DI\DependencyException;
 use DI\NotFoundException;
 use FastRoute\Dispatcher;
+use http\Header;
 
 class RequestHandler
 {
     private Container $container;
+    private authorizationMiddleware $authorizationMiddleware;
+    private AuthenticationService $authenticationService;
 
-    public function __construct(Container $container)
+    public function __construct(Container $container, authorizationMiddleware $authorizationMiddleware, AuthenticationService $authenticationService)
     {
         $this->container = $container;
+        $this->authorizationMiddleware = $authorizationMiddleware;
+        $this->authenticationService = $authenticationService;
     }
 
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
     public function handle(): void
     {
-        $dispatcher = $this->getDispatcher();
-
-        if (!$dispatcher) {
-            return;
-        }
-
-        $httpMethod = $_SERVER['REQUEST_METHOD'];
-        $uri = $this->getUri();
+        $dispatcher = $this->container->get('dispatcher');
+        $httpMethod = RequestHelper::getRequestMethod();
+        $uri = RequestHelper::getUri();
 
         $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+
         $this->handleRoute($routeInfo);
-    }
-
-    private function getDispatcher()
-    {
-        try {
-            return $this->container->get('dispatcher');
-        } catch (DependencyException|NotFoundException $e) {
-            error_log($e->getMessage());
-            return null;
-        }
-    }
-
-    private function getUri(): string
-    {
-        $uri = $_SERVER['REQUEST_URI'];
-
-        if (false !== $pos = strpos($uri, '?')) {
-            $uri = substr($uri, 0, $pos);
-        }
-
-        return rawurldecode($uri);
     }
 
     private function handleRoute(array $routeInfo): void
     {
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                // Handle 404
+                header('Location: /error-not-found');
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
-                // Handle 405
+                header("HTTP/1.0 405 Method Not Allowed");
+                echo "Method not allowed. Allowed methods for this route are: " . implode(', ', $allowedMethods);
                 break;
             case Dispatcher::FOUND:
-                $this->handleFoundRoute($routeInfo);
+                if ($this->authorizationMiddleware->isRequestAuthorized(RequestHelper::getUri())) {
+                    $this->handleFoundRoute($routeInfo);
+                    break;
+                }
+
+                header('Location: /login');
                 break;
         }
     }
 
     private function handleFoundRoute(array $routeInfo): void
     {
+        // Controller@Function
         $handler = $routeInfo[1];
+        // Variable parameters
         $vars = $routeInfo[2];
 
         list($class, $method) = explode("@", $handler, 2);
         $class = "\\app\\controllers\\" . $class;
 
         try {
-            call_user_func_array([$this->container->get($class), $method], $vars);
+            $handler = [$this->container->get($class), $method];
+
+            call_user_func_array($handler, $vars);
         } catch (DependencyException|NotFoundException $e) {
             error_log($e->getMessage());
         }

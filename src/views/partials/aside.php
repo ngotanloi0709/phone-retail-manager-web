@@ -1,10 +1,30 @@
-<div class="list-group text-center" id="list-tab" role="tablist">
-    <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-home"
-       role="tab" aria-controls="list-home">Home</a>
-    <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile"
-       role="tab" aria-controls="list-profile">Profile</a>
-    <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
-       href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
-    <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-       href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+<?php
+
+use app\models\UserRole;
+
+$isAuthenticated = isset($_SESSION['user']);
+$currentUser = $_SESSION['user'] ?? null;
+?>
+<div class="list-group text-center">
+    <?php if (!$isAuthenticated): ?>
+        <a class="list-group-item list-group-item-action" href="/login"
+           role="tab" aria-controls="list-home">Đăng nhập</a>
+    <?php else: ?>
+        <p>Welcome, <?= $currentUser->getEmail() ?></p>
+    <?php endif; ?>
+    <?php if (!$isAuthenticated): ?>
+        <a class="list-group-item list-group-item-action" href="/register"
+           role="tab" aria-controls="list-home">Đăng ký</a>
+    <?php endif; ?>
+
+    <a class="list-group-item list-group-item-action" href="/home"
+       role="tab" aria-controls="list-home">Trang chủ</a>
+    <?php if ($isAuthenticated && $currentUser->getRole() == UserRole::USER): ?>
+        <a class="list-group-item list-group-item-action" href="/admin"
+           role="tab" aria-controls="list-home">Admin</a>
+    <?php endif; ?>
+    <?php if ($isAuthenticated): ?>
+        <a class="list-group-item list-group-item-action" href="/logout"
+           role="tab" aria-controls="list-home">Đăng xuất</a>
+    <?php endif; ?>
 </div>

@@ -1,6 +1,8 @@
 <?php
 /** @var string $title */
 /** @var string $header */
+require_once __DIR__ . '/../utils/Logger.php';
+use app\utils\Logger;
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,5 +33,16 @@
     </div>
 </div>
 <?= $this->insert('partials/footer') ?>
+<?= $this->insert('partials/toast') ?>
+<?php
+if (isset($_SESSION['logger'])) {
+    try {
+        Logger::debug_to_console($_SESSION['logger']);
+        unset($_SESSION['logger']);
+    } finally {
+        unset($_SESSION['logger']);
+    }
+}
+?>
 </body>
 </html>

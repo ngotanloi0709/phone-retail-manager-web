@@ -5,6 +5,7 @@ namespace app\repositories;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -54,5 +55,9 @@ abstract class BaseRepository extends EntityRepository
         $this->entityManager->flush();
     }
 
-    abstract protected function getEntityClass();
+    abstract protected function getEntityClass(): string;
+    protected function getEntityRepository(): EntityRepository
+    {
+        return $this->entityManager->getRepository($this->getEntityClass());
+    }
 }
