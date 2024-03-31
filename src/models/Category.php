@@ -15,7 +15,7 @@ class Category
 {
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
-    #[Column]
+    #[Column(nullable: true)]
     private string $name;
     #[OneToMany(targetEntity: Product::class, mappedBy: 'category')]
     private Collection $products;

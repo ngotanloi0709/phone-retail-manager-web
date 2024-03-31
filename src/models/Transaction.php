@@ -1,5 +1,4 @@
 <?php
-// src/models/Transaction.php
 
 namespace app\models;
 
@@ -18,9 +17,9 @@ class Transaction
 {
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
-    #[Column]
+    #[Column(nullable: true)]
     private int $givenMoney;
-    #[Column]
+    #[Column(nullable: true)]
     private DateTime $created;
 
     /** @var Collection */

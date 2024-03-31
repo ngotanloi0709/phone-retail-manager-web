@@ -15,11 +15,11 @@ class Customer
 {
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
-    #[Column]
+    #[Column(nullable: true)]
     private string $name;
-    #[Column]
+    #[Column(nullable: true)]
     private string $email;
-    #[Column]
+    #[Column(nullable: true)]
     private string $phone;
     #[OneToMany(targetEntity: Transaction::class, mappedBy: 'customer')]
     private Collection $transactions;
