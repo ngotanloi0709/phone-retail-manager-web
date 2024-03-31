@@ -1,9 +1,11 @@
 <?php
+/** @var bool $isAuthenticated */
 
+/** @var User $currentUser */
+
+use app\models\User;
 use app\models\UserRole;
 
-$isAuthenticated = isset($_SESSION['user']);
-$currentUser = $_SESSION['user'] ?? null;
 ?>
 <div class="list-group text-center">
     <?php if (!$isAuthenticated): ?>
@@ -19,7 +21,7 @@ $currentUser = $_SESSION['user'] ?? null;
 
     <a class="list-group-item list-group-item-action" href="/home"
        role="tab" aria-controls="list-home">Trang chủ</a>
-    <?php if ($isAuthenticated && $currentUser->getRole() == UserRole::USER): ?>
+    <?php if ($isAuthenticated && $currentUser->getRole() == UserRole::ADMIN): ?>
         <a class="list-group-item list-group-item-action" href="/admin"
            role="tab" aria-controls="list-home">Admin</a>
     <?php endif; ?>

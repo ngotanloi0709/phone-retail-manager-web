@@ -2,6 +2,7 @@
     [
         'title' => 'Không tìm thấy trang',
         'header' => 'Không tìm thấy trang',
+        'isShowAside' => false
     ]) ?>
 
 <?php $this->start('main') ?>

@@ -2,6 +2,7 @@
     [
         'title' => 'Đăng nhập',
         'header' => 'Đăng nhập',
+        'isShowAside' => false
     ]) ?>
 
 <?php $this->start('main') ?>
