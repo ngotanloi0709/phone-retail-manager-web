@@ -31,6 +31,9 @@ use app\models\UserRole;
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/login">Đăng nhập</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/register">Đăng ký</a>
+                    </li>
                 <?php else: ?>
                     <li class="d-flex align-items-center">
                         <p class="m-0 p-0">Welcome, <?= $currentUser->getEmail() ?></p>
