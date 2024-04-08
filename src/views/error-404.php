@@ -11,8 +11,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
                 <span class="display-1 d-block">404</span>
-                <div class="mb-4 lead">The page you are looking for was not found.</div>
-                <a href="/" class="btn btn-link">Back to Home</a>
+                <div class="mb-4 lead">Trang bạn tìm kiếm không tồn tại hoặc đã xảy ra lỗi!</div>
+                <a href="/" class="btn btn-link">Quay về trang chủ</a>
             </div>
         </div>
     </div>

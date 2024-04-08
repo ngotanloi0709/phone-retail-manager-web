@@ -6,15 +6,12 @@ use DI\NotFoundException;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 $container = require_once __DIR__ . '/../src/bootstrap.php';
-require_once __DIR__ . "/../src/create_schema.php"; // for dev purposes only
-session_set_cookie_params(3600);
-session_start();
 
 try {
     $container->get(RequestHandler::class)->handle();
 } catch (DependencyException|NotFoundException $e) {
-    error_log($e->getMessage());
-    header('Location: /error');
+    $_SESSION['logger'][] = "Lỗi: " . $e->getMessage();
+    header('Location: /error-500');
     exit();
 }
 

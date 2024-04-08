@@ -18,4 +18,4 @@ $connection = DriverManager::getConnection([
     'port' => 3306,
 ], $config);
 
-return new EntityManager($connection, $config);
+return [$connection, $config];
