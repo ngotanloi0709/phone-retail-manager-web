@@ -1,6 +1,9 @@
 <?php
 /** @var bool $isAuthenticated */
 /** @var User $currentUser */
+
+use app\models\UserRole;
+
 ?>
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
