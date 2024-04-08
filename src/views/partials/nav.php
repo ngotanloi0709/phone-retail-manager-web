@@ -24,6 +24,11 @@ use app\models\UserRole;
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                 <?php endif; ?>
+                <?php if ($isAuthenticated): ?>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/transaction">Đơn Hàng</a>
+                    </li>
+                <?php endif; ?>
             </ul>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

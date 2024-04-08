@@ -19,4 +19,26 @@ class TransactionDetail
 
     #[Column(nullable: true)]
     private int $quantity = 1;
+
+    public function __construct(Transaction $order, Product $product, int $quantity)
+    {
+        $this->order = $order;
+        $this->product = $product;
+        $this->quantity = $quantity;
+    }
+
+    public function getOrder(): ?Transaction
+    {
+        return $this->order;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
 }
