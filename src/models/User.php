@@ -27,6 +27,8 @@ class User
     private string $avatar;
     #[Column]
     private bool $isLocked = false;
+    #[Column]
+    private bool $isFirstTimeLogin = true;
     #[Column(type: 'string', enumType: UserRole::class)]
     private UserRole $role = UserRole::USER;
     /** @var Collection */
@@ -37,12 +39,16 @@ class User
      * @param string $email
      * @param string $password
      * @param string $username
+     * @param UserRole $role
      */
-    public function __construct(string $email, string $password, string $username)
+    public function __construct(string $email, string $password, string $username, UserRole $role)
     {
         $this->email = $email;
         $this->password = $password;
         $this->username = $username;
+        $this->role = $role;
+
+        if ($role == UserRole::ADMIN) $this->isFirstTimeLogin = false;
     }
 
 

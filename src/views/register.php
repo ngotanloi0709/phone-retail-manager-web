@@ -20,6 +20,13 @@
                 <label for="repeatPassword">Nhập lại mật khẩu</label>
                 <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" placeholder="Nhập lại mật khẩu" required>
             </div>
+            <div class="form-group mb-3">
+                <label for="role">Vai trò</label>
+                <select class="form-select" name="role" id="role">
+                    <option selected value="user">Nhân viên bán hàng</option>
+                    <option value="admin">Quản trị viên</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-primary">Đăng ký</button>
         </form>

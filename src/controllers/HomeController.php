@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\UserRole;
 use app\services\AuthenticationService;
 use app\services\UserService;
-use DI\Container;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
@@ -72,8 +72,9 @@ class HomeController extends Controller
         $email = $_POST['email'];
         $password = $_POST['password'];
         $repeatPassword = $_POST['repeatPassword'];
+        $role = $_POST['role'] == 'admin' ? UserRole::ADMIN : UserRole::USER;
 
-        if ($this->userService->register($email, $password, $repeatPassword)) {
+        if ($this->userService->register($email, $password, $repeatPassword, $role)) {
             $_SESSION['alerts'][] = 'Đăng ký thành công';
             header('Location: /login');
         } else {

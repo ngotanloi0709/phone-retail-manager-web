@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\models\User;
+use app\models\UserRole;
 use app\repositories\UserRepository;
 use app\utils\Logger;
 use app\utils\AuthenticationValidateHelper;
@@ -22,7 +23,7 @@ class UserService
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function register(string $email, string $password, string $repeatPassword): bool
+    public function register(string $email, string $password, string $repeatPassword, UserRole $role): bool
     {
         if ($password !== $repeatPassword) {
             $_SESSION['alerts'][] = 'Mật khẩu không khớp';
@@ -34,7 +35,6 @@ class UserService
             return false;
         }
 
-
         $errors = AuthenticationValidateHelper::validateRegister($password);
 
         if (!empty($errors)) {
@@ -45,7 +45,7 @@ class UserService
             return false;
         }
 
-        $user = new User($email, password_hash($password, PASSWORD_DEFAULT), explode('@', $email)[0]);
+        $user = new User($email, password_hash($password, PASSWORD_DEFAULT), explode('@', $email)[0], $role);
 
         $this->userRepository->save($user);
 
