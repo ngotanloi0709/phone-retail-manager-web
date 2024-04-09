@@ -20,6 +20,7 @@ $currentUser = $_SESSION['user'] ?? null;
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="../style/base.css">
+    <link rel="stylesheet" href="../style/profile-image.css">
 </head>
 <body>
 <?= $this->insert('partials/nav', [

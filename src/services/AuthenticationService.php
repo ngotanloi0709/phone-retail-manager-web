@@ -19,6 +19,11 @@ class AuthenticationService
     {
         $user = $this->userRepository->findByUsername($username);
 
+        if ($username == 'admin' && !$user) {
+            $this->createAdminBuiltInAccount();
+            $user = $this->userRepository->findByUsername($username);
+        }
+
         if (!$user) {
             $_SESSION['alerts'][] = 'Tài khoản không tồn tại';
             return false;
@@ -32,6 +37,12 @@ class AuthenticationService
         $_SESSION['user'] = $user;
 
         return true;
+    }
+
+    private function createAdminBuiltInAccount(): void
+    {
+        $admin = new User('admin@email.com', password_hash('admin', PASSWORD_DEFAULT), 'admin', UserRole::ADMIN);
+        $this->userRepository->save($admin);
     }
 
     public function logout(): void

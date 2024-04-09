@@ -5,7 +5,6 @@ namespace app\services;
 use app\models\User;
 use app\models\UserRole;
 use app\repositories\UserRepository;
-use app\utils\Logger;
 use app\utils\AuthenticationValidateHelper;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -48,6 +47,41 @@ class UserService
         $user = new User($email, password_hash($password, PASSWORD_DEFAULT), explode('@', $email)[0], $role);
 
         $this->userRepository->save($user);
+
+        return true;
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function changePassword(string $oldPassword, string $newPassword, string $repeatPassword): bool
+    {
+        $currentUser = $_SESSION['user'];
+
+        if (!password_verify($oldPassword, $currentUser->getPassword())) {
+            $_SESSION['alerts'][] = 'Mật khẩu cũ không đúng';
+            return false;
+        }
+
+        if ($newPassword !== $repeatPassword) {
+            $_SESSION['alerts'][] = 'Mật khẩu mới không khớp';
+            return false;
+        }
+
+        $errors = AuthenticationValidateHelper::validateRegister($newPassword);
+
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                $_SESSION['alerts'][] = $error;
+            }
+
+            return false;
+        }
+
+        $currentUser->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+
+        $this->userRepository->save($currentUser);
 
         return true;
     }

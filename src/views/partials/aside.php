@@ -12,7 +12,7 @@ use app\models\UserRole;
         <a class="list-group-item list-group-item-action" href="/login"
            role="tab" aria-controls="list-home">Đăng nhập</a>
     <?php else: ?>
-        <p>Welcome, <?= $currentUser->getEmail() ?></p>
+        <p>Welcome, <b><?= $currentUser->getEmail() ?></b></p>
     <?php endif; ?>
     <?php if (!$isAuthenticated): ?>
         <a class="list-group-item list-group-item-action" href="/register"

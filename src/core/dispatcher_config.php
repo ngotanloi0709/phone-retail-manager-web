@@ -13,6 +13,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/register', 'HomeController@postRegister');
         $r->addRoute('GET', '/logout', 'HomeController@postLogout');
         $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
+        $r->addRoute('POST', '/change-password', 'HomeController@changePassword');
     });
 
     $r->addGroup('/admin', function (RouteCollector $r) {

@@ -89,4 +89,24 @@ class HomeController extends Controller
         $this->authenticationService->logout();
         header('Location: /');
     }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function changePassword(): void
+    {
+        $oldPassword = $_POST['oldPassword'];
+        $newPassword = $_POST['newPassword'];
+        $repeatPassword = $_POST['repeatPassword'];
+        $currentLocation = $_POST['currentLocation'];
+
+        if ($this->userService->changePassword($oldPassword, $newPassword, $repeatPassword)) {
+            $_SESSION['alerts'][] = 'Đổi mật khẩu thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Đổi mật khẩu thất bại';
+        }
+
+        header("Location: $currentLocation");
+    }
 }
