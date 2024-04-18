@@ -10,6 +10,7 @@ use app\services\ProductService;
 class TransactionController extends Controller
 {
     private TransactionService $transactionService;
+    private ProductService $productService;
 
     public function __construct(Engine $engine, AuthenticationService $authenticationService, TransactionService $transactionService, ProductService $productService)
     {
