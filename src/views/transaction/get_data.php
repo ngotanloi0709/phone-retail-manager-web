@@ -15,4 +15,12 @@ if (isset($_GET["nameToGetStock"])) {
         }
     }
 }
+
+if (isset($_GET["customerId"])) {
+    foreach ($customers as $customer) {
+        if ($customer->getId() == $_GET["customerId"]) {
+            echo $customer->getName();
+        }
+    }
+}
 ?>
