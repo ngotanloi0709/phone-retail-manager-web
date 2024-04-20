@@ -45,7 +45,8 @@ class TransactionController extends Controller
 
     public function postTransaction(): void
     {
-        $givenMoney = $_POST['total'];
+        $givenMoney = str_replace(",", "", $_POST['total']);
+        $givenMoney = (int)$givenMoney;
         // $items = $_POST['items'];
         // khuc na`y Chi chua hieu lam, co can dung collection chua item khong a?
         $items = new \Doctrine\Common\Collections\ArrayCollection();
