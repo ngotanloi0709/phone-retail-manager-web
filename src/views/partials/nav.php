@@ -1,9 +1,7 @@
 <?php
 /** @var bool $isAuthenticated */
-
 /** @var User $currentUser */
 
-use app\models\User;
 use app\models\UserRole;
 
 ?>
@@ -35,6 +33,9 @@ use app\models\UserRole;
                 <?php if (!$isAuthenticated): ?>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/login">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/register">Đăng ký</a>
                     </li>
                 <?php else: ?>
                     <li class="d-flex align-items-center">

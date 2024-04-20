@@ -1,11 +1,10 @@
 <?php
 
-use Doctrine\ORM\EntityManager;
+session_set_cookie_params(3600);
+session_start();
 
 $container = require_once __DIR__ . "/../src/core/service_config.php";
+require_once __DIR__ . "/../src/create_schema.php"; // for dev purposes only
 
-$container->set(EntityManager::class, function () {
-    return require __DIR__ . '/../src/core/database_config.php';
-});
 
 return $container;

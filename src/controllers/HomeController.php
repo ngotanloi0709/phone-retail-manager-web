@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\services\AuthenticationService;
 use app\services\UserService;
+use DI\Container;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
@@ -25,7 +26,7 @@ class HomeController extends Controller
 
     public function errorNotFound(): void
     {
-        $this->render('errorNotFound');
+        $this->render('error-404');
     }
 
     public function getLogin(): void

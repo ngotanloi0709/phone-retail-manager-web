@@ -19,4 +19,4 @@ $connection = DriverManager::getConnection([
     'unix_socket' => '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock'
 ], $config);
 
-return new EntityManager($connection, $config);
+return [$connection, $config];
