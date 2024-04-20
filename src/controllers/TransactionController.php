@@ -47,8 +47,8 @@ class TransactionController extends Controller
     {
         $givenMoney = $_POST['total'];
         // $items = $_POST['items'];
-        // khuc na`y em chua hieu lam, co can dung collection khong a?
-        $items = new Collection();
+        // khuc na`y Chi chua hieu lam, co can dung collection chua item khong a?
+        $items = new \Doctrine\Common\Collections\ArrayCollection();
         $user = $_SESSION['user'];
         $customer = $this->customerService->getCustomernById($_POST["customerId"]);
 

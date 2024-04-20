@@ -34,6 +34,7 @@
                 <input type="text" class="form-control" id="customerId" name="customerId" required>
                 <label for="customerName">Tên khách hàng:</label>
                 <input type="text" class="form-control" id="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
+                <a href="/customer/customer_create">Tạo tài khoản khách hàng</a>
             </div>
             
             <div class="form-group">
@@ -59,7 +60,7 @@
                 <input type="text" class="form-control" id="change" readonly/>
             </div>
 
-            <button id="submitTrans" class="btn btn-primary">Submit</button>
+            <button id="submitTransButton" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
@@ -125,7 +126,7 @@
                 }
                 total += parseInt(productList.rows[i].cells[3].innerHTML);
             }
-            document.getElementById("total").value = total;
+            document.getElementById("total").value = total.toLocaleString();
         }
 
         $("#productSuggestList").on("click", "li", function() {
@@ -208,10 +209,14 @@
 
         $("#givenMoney").on("keyup", function() {
             if (event.key === "Enter" || event.keyCode === 13) {
-                var total = parseInt($("#total").val());
+                var total = parseInt($("#total").val().replace(/,/g, ''));
+
                 var givenMoney = parseInt($(this).val());
+                $("#givenMoney").val(givenMoney.toLocaleString());
+                givenMoney = parseInt($(this).val().replace(/,/g, ''));
+
                 var change = givenMoney - total;
-                $("#change").val(change);
+                $("#change").val(change.toLocaleString());
             }
         });
 
@@ -225,9 +230,13 @@
             }
         });
 
-        // $("#submitTrans").on("click", function() {
-
-        // });
+        $("#submitTransButton").on("click", function(event) {
+            if ($("#paymentMethod").val() == "cash" && $("#change").val() < 0) {
+                alert("Số tiền nhận không đủ!");
+                event.preventDefault();
+                return;
+            }
+        });
     });
 </script>
 <?php $this->end('main') ?>

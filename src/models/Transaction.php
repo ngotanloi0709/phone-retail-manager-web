@@ -28,6 +28,7 @@ class Transaction
     #[ManyToOne(targetEntity: User::class)]
     private User $user;
     #[ManyToOne(targetEntity: Customer::class)]
+    // #[ManyToOne(targetEntity: Customer::class, cascade: ['persist'])]    // van loi :' ))
     private Customer $customer;
 
     public function __construct(int $givenMoney, Collection $items, User $user, Customer $customer)
