@@ -6,6 +6,7 @@ use app\models\User;
 use app\models\UserRole;
 use app\repositories\UserRepository;
 use app\utils\AuthenticationValidateHelper;
+use app\utils\SessionUser;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 
@@ -57,7 +58,7 @@ class UserService
      */
     public function changePassword(string $oldPassword, string $newPassword, string $repeatPassword): bool
     {
-        $currentUser = $_SESSION['user'];
+        $currentUser = $this->findUserById($_SESSION['user']->getId());
 
         if (!password_verify($oldPassword, $currentUser->getPassword())) {
             $_SESSION['alerts'][] = 'Mật khẩu cũ không đúng';
@@ -83,6 +84,19 @@ class UserService
 
         $this->userRepository->save($currentUser);
 
+        $sessionUser = SessionUser::fromUserEntity($currentUser);
+
+        $_SESSION['user'] = $sessionUser;
+
         return true;
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function findUserById(int $id): User
+    {
+        return $this->userRepository->find($id);
     }
 }

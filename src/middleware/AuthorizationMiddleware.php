@@ -4,7 +4,7 @@ namespace app\middleware;
 
 use app\services\AuthenticationService;
 
-class authorizationMiddleware
+class AuthorizationMiddleware
 {
     private AuthenticationService $authenticationService;
     private array $publicRoutes = [

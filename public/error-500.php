@@ -105,7 +105,7 @@
                 <span class="inner-status">Opps! Internal Server Error!</span>
                 <span class="inner-detail">
                     Chúng tôi đang khác phục sự cố. Vui lòng thử lại sau.
-                    <a href="/">Tải lại</a>
+                    <a href="javascript:location.reload()">Tải lại</a> hoặc <a href="/">Về trang chủ</a>
                 </span>
             </div>
         </div>

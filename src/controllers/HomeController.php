@@ -11,12 +11,9 @@ use League\Plates\Engine;
 
 class HomeController extends Controller
 {
-    private UserService $userService;
-
-    public function __construct(Engine $engine, UserService $userService, AuthenticationService $authenticationService)
+    public function __construct(Engine $engine, AuthenticationService $authenticationService, private readonly UserService $userService)
     {
         parent::__construct($engine, $authenticationService);
-        $this->userService = $userService;
     }
 
     public function index(): void
@@ -85,7 +82,6 @@ class HomeController extends Controller
 
     public function postLogout(): void
     {
-        unset($_SESSION['user']);
         $this->authenticationService->logout();
         header('Location: /');
     }
@@ -108,5 +104,10 @@ class HomeController extends Controller
         }
 
         header("Location: $currentLocation");
+    }
+
+    public function getPersonalInformation(): void
+    {
+        $this->render('personal-information');
     }
 }

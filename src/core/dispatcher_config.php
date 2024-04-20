@@ -14,6 +14,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/logout', 'HomeController@postLogout');
         $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
         $r->addRoute('POST', '/change-password', 'HomeController@changePassword');
+        $r->addRoute('GET', '/personal-information', 'HomeController@getPersonalInformation');
     });
 
     $r->addGroup('/admin', function (RouteCollector $r) {

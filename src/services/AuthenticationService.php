@@ -5,6 +5,7 @@ namespace app\services;
 use app\models\User;
 use app\models\UserRole;
 use app\repositories\UserRepository;
+use app\utils\SessionUser;
 
 class AuthenticationService
 {
@@ -34,7 +35,9 @@ class AuthenticationService
             return false;
         }
 
-        $_SESSION['user'] = $user;
+        $sessionUser = SessionUser::fromUserEntity($user);
+
+        $_SESSION['user'] = $sessionUser;
 
         return true;
     }

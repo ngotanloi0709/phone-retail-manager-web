@@ -15,7 +15,7 @@ class RequestHandler
     private Container $container;
     private authorizationMiddleware $authorizationMiddleware;
 
-    public function __construct(Container $container, authorizationMiddleware $authorizationMiddleware)
+    public function __construct(Container $container, AuthorizationMiddleware $authorizationMiddleware)
     {
         $this->container = $container;
         $this->authorizationMiddleware = $authorizationMiddleware;

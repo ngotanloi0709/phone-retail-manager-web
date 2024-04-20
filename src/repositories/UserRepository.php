@@ -3,7 +3,6 @@
 namespace app\repositories;
 
 use app\models\User;
-use Doctrine\ORM\EntityRepository;
 
 class UserRepository extends BaseRepository
 {

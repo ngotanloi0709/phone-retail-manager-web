@@ -2,30 +2,26 @@
 
 namespace app\controllers;
 
-use app\models\UserRole;
 use app\services\AuthenticationService;
 use League\Plates\Engine;
 
 class Controller
 {
-    protected Engine $engine;
-    protected AuthenticationService $authenticationService;
-
-    public function __construct(Engine $engine, AuthenticationService $authenticationService)
+    public function __construct(
+        protected Engine $engine,
+        protected AuthenticationService $authenticationService,
+    )
     {
-        $this->engine = $engine;
-        $this->authenticationService = $authenticationService;
+        //
     }
 
     protected function render(string $template, array $data = []): void
     {
-//        $_SESSION['logger'][] = isset($_SESSION['user']) ? $_SESSION['user']->getRoleString() == "user" : [];
-//        $_SESSION['logger'][] = isset($_SESSION['user']) ? $_SESSION['user']->getRole() == UserRole::USER : [];
-
         $this->logSessionRemainTime();
         $this->logUserInformation();
 
-        $_SESSION['user'] = $this->authenticationService->getCurrentUser();
+        $_SESSION['LAST_ACTIVITY'] = time();
+
         echo $this->engine->render($template, $data);
     }
 

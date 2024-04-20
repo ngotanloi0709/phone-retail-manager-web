@@ -9,10 +9,8 @@ use League\Plates\Engine;
 
 class UserController extends Controller
 {
-    private UserService $userService;
-    public function __construct(Engine $engine, UserService $userService, AuthenticationService $authenticationService)
+    public function __construct(Engine $engine, AuthenticationService $authenticationService, private readonly UserService $userService)
     {
         parent::__construct($engine, $authenticationService);
-        $this->userService = $userService;
     }
 }

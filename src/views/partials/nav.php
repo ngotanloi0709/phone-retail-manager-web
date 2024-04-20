@@ -49,7 +49,7 @@ use app\models\UserRole;
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-sliders-h fa-fw"></i> Thông tin tài khoản</a></li>
+                                    <li><a class="dropdown-item" href="/personal-information"><i class="fas fa-sliders-h fa-fw"></i> Thông tin tài khoản</a></li>
                                     <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal" href="#"><i class="fas fa-sliders-h fa-fw"></i> Đổi mật khẩu</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-fw"></i> Đăng xuất</a></li>
