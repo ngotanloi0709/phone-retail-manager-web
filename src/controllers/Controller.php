@@ -8,7 +8,7 @@ use League\Plates\Engine;
 class Controller
 {
     public function __construct(
-        protected Engine $engine,
+        protected Engine                $engine,
         protected AuthenticationService $authenticationService,
     )
     {
@@ -31,7 +31,7 @@ class Controller
         $_SESSION['LAST_ACTIVITY'] = time();
         $session_lifetime = ini_get('session.gc_maxlifetime');
         $remaining_time = $session_lifetime - (time() - $_SESSION['LAST_ACTIVITY']);
-        $_SESSION['logger'][] = "Thời gian còn lại của phiên: " . $remaining_time/10 . " giây.";
+        $_SESSION['logger'][] = "Thời gian còn lại của phiên: " . $remaining_time / 10 . " giây.";
     }
 
     private function logUserInformation(): void

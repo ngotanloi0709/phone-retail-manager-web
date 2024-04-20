@@ -6,7 +6,7 @@ require_once __DIR__ . '/../utils/Logger.php';
 use app\utils\Logger;
 
 $isAuthenticated = isset($_SESSION['user']);
-$currentUser = $_SESSION['user'] ?? null;
+$sessionUser = $_SESSION['user'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +18,7 @@ $currentUser = $_SESSION['user'] ?? null;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bfb86ceec6.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/profile-image.css">
@@ -25,7 +26,7 @@ $currentUser = $_SESSION['user'] ?? null;
 <body>
 <?= $this->insert('partials/nav', [
         'isAuthenticated' => $isAuthenticated,
-        'currentUser' => $currentUser,
+        'sessionUser' => $sessionUser,
     ]) ?>
 
 <div class="container body">
@@ -37,7 +38,7 @@ $currentUser = $_SESSION['user'] ?? null;
             <aside class="col-12 col-lg-3">
                 <?= $this->insert('partials/aside', [
                     'isAuthenticated' => $isAuthenticated,
-                    'currentUser' => $currentUser,
+                    'sessionUser' => $sessionUser,
                 ]) ?>
             </aside>
             <main class="col-12 col-lg-9">

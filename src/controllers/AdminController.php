@@ -7,7 +7,10 @@ use League\Plates\Engine;
 
 class AdminController extends Controller
 {
-    public function __construct(Engine $engine, AuthenticationService $authenticationService)
+    public function __construct(
+        Engine                $engine,
+        AuthenticationService $authenticationService,
+    )
     {
         parent::__construct($engine, $authenticationService);
     }

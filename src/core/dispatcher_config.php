@@ -13,8 +13,14 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/register', 'HomeController@postRegister');
         $r->addRoute('GET', '/logout', 'HomeController@postLogout');
         $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
-        $r->addRoute('POST', '/change-password', 'HomeController@changePassword');
-        $r->addRoute('GET', '/personal-information', 'HomeController@getPersonalInformation');
+    });
+
+    $r->addGroup('/user', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'UserController@getPersonalInformation');
+        $r->addRoute('GET', '/', 'UserController@getPersonalInformation');
+        $r->addRoute('GET', '/personal-information', 'UserController@getPersonalInformation');
+        $r->addRoute('POST', '/change-personal-information', 'UserController@changPersonalInformation');
+        $r->addRoute('POST', '/change-password', 'UserController@changePassword');
     });
 
     $r->addGroup('/admin', function (RouteCollector $r) {

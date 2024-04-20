@@ -11,7 +11,11 @@ use League\Plates\Engine;
 
 class HomeController extends Controller
 {
-    public function __construct(Engine $engine, AuthenticationService $authenticationService, private readonly UserService $userService)
+    public function __construct(
+        Engine                       $engine,
+        AuthenticationService        $authenticationService,
+        private readonly UserService $userService
+    )
     {
         parent::__construct($engine, $authenticationService);
     }
@@ -86,28 +90,5 @@ class HomeController extends Controller
         header('Location: /');
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public function changePassword(): void
-    {
-        $oldPassword = $_POST['oldPassword'];
-        $newPassword = $_POST['newPassword'];
-        $repeatPassword = $_POST['repeatPassword'];
-        $currentLocation = $_POST['currentLocation'];
 
-        if ($this->userService->changePassword($oldPassword, $newPassword, $repeatPassword)) {
-            $_SESSION['alerts'][] = 'Đổi mật khẩu thành công';
-        } else {
-            $_SESSION['alerts'][] = 'Đổi mật khẩu thất bại';
-        }
-
-        header("Location: $currentLocation");
-    }
-
-    public function getPersonalInformation(): void
-    {
-        $this->render('personal-information');
-    }
 }

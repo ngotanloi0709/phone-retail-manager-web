@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -23,6 +24,14 @@ class User
     private string $username;
     #[Column(nullable: true)]
     private string $name;
+    #[Column(nullable: true)]
+    private string $address;
+    #[Column(nullable: true)]
+    private string $identityNumber;
+    #[Column]
+    private bool $isFemale = false;
+    #[Column(nullable: true)]
+    private ?DateTime $dateOfBirth = null;
     #[Column(type: 'blob', nullable: true)]
     private string $avatar;
     #[Column]
