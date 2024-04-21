@@ -1,10 +1,10 @@
 <?php
 /** @var bool $isAuthenticated */
 
-/** @var SessionUser $sessionUser */
+/** @var \app\dto\SessionUserDTO $sessionUser */
 
+use app\dto\SessionUserDTO;
 use app\models\UserRole;
-use app\utils\SessionUser;
 
 ?>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
@@ -47,7 +47,13 @@ use app\utils\SessionUser;
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="profile-pic">
-                                        <img src="/image/user-default-avatar.png" alt="Profile Picture">
+                                        <?php
+                                        if (isset($sessionUser) && $sessionUser->getAvatar() != null) {
+                                            echo '<img src="' . $sessionUser->getAvatar() . '" alt="user-avatar">';
+                                        } else {
+                                            echo '<img src="/image/user-default-avatar.png" alt="user-avatar">';
+                                        }
+                                        ?>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -66,7 +72,8 @@ use app\utils\SessionUser;
                         </ul>
                         <div class="d-lg-none d-flex justify-content-between">
                             <li class="nav-item">
-                                <a class="nav-link" href="/user/personal-information"><i class="fa-solid fa-sliders"></i>
+                                <a class="nav-link" href="/user/personal-information"><i
+                                            class="fa-solid fa-sliders"></i>
                                     Thông tin tài khoản</a>
                             </li>
                             <li class="nav-item">

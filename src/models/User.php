@@ -17,23 +17,23 @@ class User
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
     #[Column(unique: true)]
-    private string $email;
+    private ?string $email;
     #[Column]
-    private string $password;
+    private ?string $password;
     #[Column(unique: true)]
-    private string $username;
+    private ?string $username;
     #[Column(nullable: true)]
-    private string $name;
+    private ?string $name;
     #[Column(nullable: true)]
-    private string $address;
+    private ?string $address;
     #[Column(nullable: true)]
-    private string $identityNumber;
+    private ?string $identityNumber;
     #[Column]
     private bool $isFemale = false;
     #[Column(nullable: true)]
     private ?DateTime $dateOfBirth = null;
-    #[Column(type: 'blob', nullable: true)]
-    private string $avatar;
+    #[Column(type: 'text', nullable: true)] // save as base64 dataURL
+    private ?string $avatar;
     #[Column]
     private bool $isLocked = false;
     #[Column]
@@ -60,7 +60,6 @@ class User
         if ($role == UserRole::ADMIN) $this->isFirstTimeLogin = false;
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
@@ -72,7 +71,7 @@ class User
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -83,7 +82,7 @@ class User
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -94,7 +93,7 @@ class User
         return $this;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -105,7 +104,7 @@ class User
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -116,7 +115,7 @@ class User
         return $this;
     }
 
-    public function getAvatar(): string
+    public function getAvatar(): ?string
     {
         return $this->avatar;
     }
@@ -154,7 +153,7 @@ class User
         return $this;
     }
 
-    public function getTransactions(): Collection
+    public function getTransactions(): ?Collection
     {
         return $this->transactions;
     }
@@ -162,6 +161,66 @@ class User
     public function setTransactions(Collection $transactions): User
     {
         $this->transactions = $transactions;
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): User
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    public function getIdentityNumber(): ?string
+    {
+        return $this->identityNumber;
+    }
+
+    public function setIdentityNumber(string $identityNumber): User
+    {
+        $this->identityNumber = $identityNumber;
+        return $this;
+    }
+
+    public function isFemale(): bool
+    {
+        return $this->isFemale;
+    }
+
+    public function setIsFemale(bool $isFemale): User
+    {
+        $this->isFemale = $isFemale;
+        return $this;
+    }
+
+    public function getDateOfBirth(): ?DateTime
+    {
+        return $this->dateOfBirth;
+    }
+
+    public function getDateOfBirthString(): ?string
+    {
+        return $this->dateOfBirth->format('d-m-Y');
+    }
+
+    public function setDateOfBirth(?DateTime $dateOfBirth): User
+    {
+        $this->dateOfBirth = $dateOfBirth;
+        return $this;
+    }
+
+    public function isFirstTimeLogin(): bool
+    {
+        return $this->isFirstTimeLogin;
+    }
+
+    public function setIsFirstTimeLogin(bool $isFirstTimeLogin): User
+    {
+        $this->isFirstTimeLogin = $isFirstTimeLogin;
         return $this;
     }
 

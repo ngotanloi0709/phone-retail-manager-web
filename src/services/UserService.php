@@ -2,11 +2,13 @@
 
 namespace app\services;
 
+use app\dto\EditablePersonalInformationDTO;
+use app\dto\SessionUserDTO;
 use app\models\User;
 use app\models\UserRole;
 use app\repositories\UserRepository;
 use app\utils\AuthenticationValidateHelper;
-use app\utils\SessionUser;
+use DateTime;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 
@@ -84,7 +86,7 @@ class UserService
 
         $this->userRepository->save($currentUser);
 
-        $sessionUser = SessionUser::fromUserEntity($currentUser);
+        $sessionUser = SessionUserDTO::fromUserEntity($currentUser);
 
         $_SESSION['user'] = $sessionUser;
 
@@ -98,5 +100,52 @@ class UserService
     public function findUserById(int $id): User
     {
         return $this->userRepository->find($id);
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function changeAvatar(string $avatar): bool
+    {
+        try {
+            $currentUser = $this->findUserById($_SESSION['user']->getId());
+
+            $currentUser->setAvatar($avatar);
+
+            $this->userRepository->save($currentUser);
+
+            $_SESSION['user'] = SessionUserDTO::fromUserEntity($currentUser);
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function changPersonalInformation(EditablePersonalInformationDTO $editablePersonalInformation): bool
+    {
+        try {
+            $currentUser = $this->findUserById($_SESSION['user']->getId());
+
+            $currentUser->setIsFemale($editablePersonalInformation->isFemale());
+            $currentUser->setAddress($editablePersonalInformation->getAddress());
+            $currentUser->setDateOfBirth(
+                DateTime::createFromFormat(
+                    'Y-m-d',
+                    $editablePersonalInformation->getDateOfBirth()
+                )
+            );
+
+            $this->userRepository->save($currentUser);
+
+            $_SESSION['user'] = SessionUserDTO::fromUserEntity($currentUser);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -8,30 +8,62 @@
             </div>
             <form method="post" action="/user/change-personal-information">
                 <div class="modal-body">
+                    <b class="mb-3">Bạn chỉ có thể chỉnh sửa các thông tin bên dưới, vui lòng quan hệ quản trị viên để chỉnh sửa các
+                        thông tin khác.</b>
                     <label for="identityNumber" class="form-label">Số chứng minh:</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-address-card"></i></span>
                         <input id="identityNumber" type="text" class="form-control" placeholder="Số chứng minh"
-                               aria-label="identityNumber" aria-describedby="basic-addon1">
+                               aria-label="identityNumber" aria-describedby="basic-addon1"
+                               value="<?php
+                               if (isset($userInformation) && $userInformation->getIdentityNumber() != null) {
+                                   echo $userInformation->getIdentityNumber();
+                               } else {
+                                   echo '';
+                               }
+                               ?>">
                     </div>
                     <label for="address" class="form-label">Địa chỉ:</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-location-dot"></i></span>
                         <input id="address" type="text" class="form-control" placeholder="Địa chỉ" aria-label="address"
-                               aria-describedby="basic-addon1">
+                               aria-describedby="basic-addon1"
+                               name="address"
+                               value="<?php
+                               if (isset($userInformation) && $userInformation->getAddress() != null) {
+                                   echo $userInformation->getAddress();
+                               } else {
+                                   echo '';
+                               }
+                               ?>">
                     </div>
                     <label for="gender" class="form-label">Giới tính:</label>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i
-                                    class="fa-solid fa-venus-mars"></i></i></span>
-                        <input id="gender" type="text" class="form-control" placeholder="Giới tính" aria-label="gender"
-                               aria-describedby="basic-addon1">
+                        <div class="form-check ms-3">
+                            <input class="form-check-input" id="flexRadioDefault1" type="radio" name="gender" value="M" <?= !$userInformation->isFemale() ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Nam
+                            </label>
+                        </div>
+                        <div class="form-check ms-3">
+                            <input class="form-check-input" id="flexRadioDefault2" type="radio" name="gender" value="F" <?= $userInformation->isFemale() ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Nữ
+                            </label>
+                        </div>
                     </div>
                     <label for="dateOfBirth" class="form-label">Ngày sinh:</label>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></i></span>
-                        <input id="dateOfBirth" type="text" class="form-control" placeholder="Ngày sinh"
-                               aria-label="dateOfBirth" aria-describedby="basic-addon1">
+                        <input id="dateOfBirth" type="date" class="form-control"
+                               aria-label="dateOfBirth" aria-describedby="basic-addon1"
+                               name="dateOfBirth"
+                               value="<?php
+                                 if (isset($userInformation) && $userInformation->getDateOfBirth() != null) {
+                                      echo $userInformation->getDateOfBirth()->format('Y-m-d');
+                                 } else {
+                                      echo '';
+                                 }
+                               ?>">
                     </div>
                 </div>
                 <div class="modal-footer">

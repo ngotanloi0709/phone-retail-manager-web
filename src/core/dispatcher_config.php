@@ -21,6 +21,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/personal-information', 'UserController@getPersonalInformation');
         $r->addRoute('POST', '/change-personal-information', 'UserController@changPersonalInformation');
         $r->addRoute('POST', '/change-password', 'UserController@changePassword');
+        $r->addRoute('POST', '/change-avatar', 'UserController@changeAvatar');
     });
 
     $r->addGroup('/admin', function (RouteCollector $r) {

@@ -40,6 +40,10 @@ class HomeController extends Controller
         $this->render('login');
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function postLogin(): void
     {
         $username = $_POST['username'];

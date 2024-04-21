@@ -1,10 +1,10 @@
 <?php
 /** @var bool $isAuthenticated */
 
-/** @var SessionUser $sessionUser */
+/** @var \app\dto\SessionUserDTO $sessionUser */
 
+use app\dto\SessionUserDTO;
 use app\models\UserRole;
-use app\utils\SessionUser;
 
 ?>
 <div class="list-group text-center">

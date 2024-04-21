@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\dto\EditablePersonalInformationDTO;
 use app\services\AuthenticationService;
 use app\services\UserService;
 use DI\Container;
@@ -39,13 +40,47 @@ class UserController extends Controller
         header("Location: $currentLocation");
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function getPersonalInformation(): void
     {
-        $this->render('personal-information');
+        $user = $this->userService->findUserById($_SESSION['user']->getId());
+
+        $this->render('personal-information', ['userInformation' => $user]);
     }
 
+    /**
+     * @throws ORMException
+     */
     public function changPersonalInformation(): void
     {
+        $editablePersonalInformation = new EditablePersonalInformationDTO();
+        $editablePersonalInformation->fromRequest($_POST);
+
+        if ($this->userService->changPersonalInformation($editablePersonalInformation)) {
+            $_SESSION['alerts'][] = 'Thay đổi thông tin thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Thay đổi thông tin thành công';
+        }
+
+        header("Location: /user/personal-information");
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function changeAvatar(): void
+    {
+        $avatar = $_POST['avatar'];
+
+        if ($this->userService->changeAvatar($avatar)) {
+            $_SESSION['alerts'][] = 'Đổi ảnh đại diện thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Đổi ảnh đại diện thất bại';
+        }
 
         header("Location: /user/personal-information");
     }
