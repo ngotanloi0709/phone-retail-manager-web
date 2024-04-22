@@ -4,6 +4,7 @@ namespace app\dto;
 
 use app\models\User;
 use app\models\UserRole;
+use Exception;
 
 class SessionUserDTO
 {
@@ -13,6 +14,9 @@ class SessionUserDTO
     private ?UserRole $role;
     private ?string $avatar;
 
+    /**
+     * @throws Exception
+     */
     public static function fromUserEntity(User $user): self
     {
         $sessionUser =  new self();

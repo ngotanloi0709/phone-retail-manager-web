@@ -94,5 +94,17 @@ class HomeController extends Controller
         header('Location: /');
     }
 
+    public function loginByEmail(): void
+    {
+        $token = $_GET['token'];
+        $email = $_GET['email'];
 
+        if ($this->authenticationService->loginByEmail($token, $email)) {
+            $_SESSION['alerts'][] = 'Đăng nhập thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Đăng nhập thất bại';
+        }
+
+        header('Location: /');
+    }
 }

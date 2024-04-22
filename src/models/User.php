@@ -50,14 +50,18 @@ class User
      * @param string $email
      * @param string $password
      * @param string $username
+     * @param string $name
      * @param UserRole $role
      */
-    public function __construct(string $email, string $password, string $username, UserRole $role)
+    public function __construct(string $email, string $password, string $username, string $name, UserRole $role)
     {
         $this->email = $email;
         $this->password = $password;
         $this->username = $username;
+        $this->name = $name;
         $this->role = $role;
+        $this->avatar = '/image/user-default-avatar.png';
+        $this->dateOfBirth = DateTime::createFromFormat('d-m-Y', '01-01-2000');
 
         if ($role == UserRole::ADMIN) $this->isFirstTimeLogin = false;
     }

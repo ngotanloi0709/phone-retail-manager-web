@@ -1,7 +1,7 @@
 <?php
 /** @var bool $isAuthenticated */
 
-/** @var \app\dto\SessionUserDTO $sessionUser */
+/** @var SessionUserDTO $sessionUser */
 
 use app\dto\SessionUserDTO;
 use app\models\UserRole;
@@ -48,9 +48,13 @@ use app\models\UserRole;
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="profile-pic">
                                         <?php
-                                        if (isset($sessionUser) && $sessionUser->getAvatar() != null) {
-                                            echo '<img src="' . $sessionUser->getAvatar() . '" alt="user-avatar">';
-                                        } else {
+                                        try {
+                                            if (isset($sessionUser) && $sessionUser->getAvatar() != null && $sessionUser->getAvatar() != '') {
+                                                echo '<img src="' . $sessionUser->getAvatar() . '" alt="user-avatar">';
+                                            } else {
+                                                echo '<img src="/image/user-default-avatar.png" alt="user-avatar">';
+                                            }
+                                        } catch (Exception $e) {
                                             echo '<img src="/image/user-default-avatar.png" alt="user-avatar">';
                                         }
                                         ?>
@@ -91,4 +95,8 @@ use app\models\UserRole;
         </div>
     </nav>
 
-<?= $this->insert('modal/change-password-modal') ?>
+<?php
+if ($isAuthenticated) {
+    echo $this->insert('modal/change-password-modal');
+}
+?>

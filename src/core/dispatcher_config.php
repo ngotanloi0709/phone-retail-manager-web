@@ -13,6 +13,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/register', 'HomeController@postRegister');
         $r->addRoute('GET', '/logout', 'HomeController@postLogout');
         $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
+        $r->addRoute('GET', '/login-by-email', 'HomeController@loginByEmail');
     });
 
     $r->addGroup('/user', function (RouteCollector $r) {
@@ -28,5 +29,6 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '', 'AdminController@index');
         $r->addRoute('GET', '/', 'AdminController@index');
         $r->addRoute('GET', '/user-management', 'AdminController@getUserManagement');
+        $r->addRoute('POST', '/create-new-user', 'AdminUserController@createNewUser');
     });
 });

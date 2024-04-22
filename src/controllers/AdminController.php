@@ -22,6 +22,6 @@ class AdminController extends Controller
 
     public function getUserManagement(): void
     {
-        $this->render('admin/user_management');
+        $this->render('admin/user-management');
     }
 }

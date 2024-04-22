@@ -1,4 +1,6 @@
 <?php use app\models\User;
+use app\utils\DataHelper;
+
 /** @var User $userInformation */
 
 $this->layout('base',
@@ -16,7 +18,7 @@ $this->layout('base',
         <div class="col-6 col-lg-4 mx-auto mb-5 position-relative">
             <div class="ratio ratio-1x1 card-img-top">
                 <?php
-                if (isset($userInformation) && $userInformation->getAvatar() != null) {
+                if (isset($userInformation) && $userInformation->getAvatar() != null && $userInformation->getAvatar() != '') {
                     echo '<img id="displayAvatar" src="' . $userInformation->getAvatar() . '" class="rounded-circle overflow-hidden"
                      alt="user-avatar">';
                 } else {
@@ -37,78 +39,49 @@ $this->layout('base',
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-envelope"></i></span>
             <input id="readonlyEmail" type="text" class="form-control" placeholder="Email" aria-label="Email"
                    aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation) && $userInformation->getEmail() != null) {
-                       echo $userInformation->getEmail();
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getEmail()); ?>">
         </div>
         <label for="readonlyUsername" class="form-label">Username:</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user"></i></span>
             <input id="readonlyUsername" type="text" class="form-control" placeholder="Username" aria-label="Username"
                    aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation) && $userInformation->getUsername() != null) {
-                       echo $userInformation->getUsername();
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getUsername()); ?>">
         </div>
-        <label for="readonlyPhone" class="form-label">Số điện thoại:</label>
+        <label for="readonlyName" class="form-label">Username:</label>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-phone"></i></span>
-            <input id="readonlyPhone" type="text" class="form-control" placeholder="Số điện thoại"
-                   aria-label="phone" aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation) && $userInformation->getPhone() != null) {
-                       echo $userInformation->getPhone();
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-bars"></i></span>
+            <input id="readonlyName" type="text" class="form-control" placeholder="Họ và tên" aria-label="Name"
+                   aria-describedby="basic-addon1" disabled readonly
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getName()); ?>">
         </div>
         <label for="readonlyIdentityNumber" class="form-label">Số chứng minh:</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-address-card"></i></span>
             <input id="readonlyIdentityNumber" type="text" class="form-control" placeholder="Số chứng minh"
                    aria-label="identityNumber" aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation) && $userInformation->getIdentityNumber() != null) {
-                       echo $userInformation->getIdentityNumber();
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getIdentityNumber()); ?>">
+        </div>
+        <label for="readonlyPhone" class="form-label">Số điện thoại:</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-phone"></i></span>
+            <input id="readonlyPhone" type="text" class="form-control" placeholder="Số điện thoại"
+                   aria-label="phone" aria-describedby="basic-addon1" disabled readonly
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getPhone()); ?>">
         </div>
         <label for="readonlyAddress" class="form-label">Địa chỉ:</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-location-dot"></i></span>
             <input id="readonlyAddress" type="text" class="form-control" placeholder="Địa chỉ" aria-label="address"
                    aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation) && $userInformation->getAddress() != null) {
-                       echo $userInformation->getAddress();
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getAddress()); ?>">
         </div>
         <label for="readonlyGender" class="form-label">Giới tính:</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-venus-mars"></i></i></span>
             <input id="readonlyGender" type="text" class="form-control" placeholder="Giới tính" aria-label="gender"
                    aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation)) {
-                       echo $userInformation->isFemale() ? 'Nữ' : 'Nam';
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+                   value="<?= $userInformation->isFemale() ? 'Nữ' : 'Nam'; ?>">
         </div>
         <label for="readonlyDateOfBirth" class="form-label">Ngày sinh:</label>
         <div class="input-group mb-3">
@@ -116,13 +89,7 @@ $this->layout('base',
             <input id="readonlyDateOfBirth" type="text" class="form-control" placeholder="Ngày sinh"
                    aria-label="dateOfBirth"
                    aria-describedby="basic-addon1" disabled readonly
-                   value="<?php
-                   if (isset($userInformation) && $userInformation->getDateOfBirth() != null) {
-                       echo $userInformation->getDateOfBirthString();
-                   } else {
-                       echo 'Chưa có dữ liệu';
-                   }
-                   ?>">
+                   value="<?= DataHelper::getDisplayStringData($userInformation->getDateOfBirthString()); ?>">
         </div>
         <button class="btn btn-success d-flex ms-auto" data-bs-toggle="modal"
                 data-bs-target="#changePersonalInformationModal">Chỉnh sửa thông tin

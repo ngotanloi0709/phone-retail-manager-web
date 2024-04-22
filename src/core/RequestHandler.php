@@ -12,13 +12,12 @@ use FastRoute\Dispatcher;
 
 class RequestHandler
 {
-    private Container $container;
-    private authorizationMiddleware $authorizationMiddleware;
-
-    public function __construct(Container $container, AuthorizationMiddleware $authorizationMiddleware)
+    public function __construct(
+        private readonly Container               $container,
+        private readonly AuthorizationMiddleware $authorizationMiddleware
+    )
     {
-        $this->container = $container;
-        $this->authorizationMiddleware = $authorizationMiddleware;
+        //
     }
 
     /**

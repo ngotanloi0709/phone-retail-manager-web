@@ -6,26 +6,27 @@ use app\services\AuthenticationService;
 
 class AuthorizationMiddleware
 {
-    private AuthenticationService $authenticationService;
     private array $publicRoutes = [
         '/',
         '/home',
         '/login',
         '/error-not-found',
         '/register',
-        '/logout'
+        '/logout',
+        '/login-by-email'
     ];
 
     private array $adminRoutes = [
         '/admin',
         '/admin/',
-        '/admin/user-management'
+        '/admin/user-management',
+        '/admin/create-new-user'
     ];
 
-    public function __construct(AuthenticationService $authenticationService)
+    public function __construct(
+        private readonly AuthenticationService $authenticationService
+    )
     {
-        $this->authenticationService = $authenticationService;
-
         foreach ($this->adminRoutes as $adminRoute) {
             if (in_array($adminRoute, $this->publicRoutes)) {
                 throw new \InvalidArgumentException("Admin route '{$adminRoute}' cannot be a public route.");

@@ -4,10 +4,14 @@ namespace app\services;
 
 use app\dto\EditablePersonalInformationDTO;
 use app\dto\SessionUserDTO;
+use app\models\LoginEmail;
 use app\models\User;
 use app\models\UserRole;
+use app\repositories\LoginEmailRepository;
 use app\repositories\UserRepository;
 use app\utils\AuthenticationValidateHelper;
+use app\utils\EmailHelper;
+use app\utils\LoginTokenGenerator;
 use DateTime;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -15,11 +19,11 @@ use Exception;
 
 class UserService
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly LoginEmailRepository $loginEmailRepository
+    )
     {
-        $this->userRepository = $userRepository;
     }
 
     /**
@@ -49,7 +53,7 @@ class UserService
                 return false;
             }
 
-            $user = new User($email, password_hash($password, PASSWORD_DEFAULT), explode('@', $email)[0], $role);
+            $user = new User($email, password_hash($password, PASSWORD_DEFAULT), explode('@', $email)[0], '', $role);
 
             $this->userRepository->save($user);
         } catch (Exception $e) {
@@ -154,6 +158,49 @@ class UserService
 
             $_SESSION['user'] = SessionUserDTO::fromUserEntity($currentUser);
         } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function createNewUserByAdmin(string $email, string $name, UserRole $role): bool
+    {
+        try {
+            if ($this->userRepository->findByEmail($email)) {
+                $_SESSION['alerts'][] = 'Email đã tồn tại';
+                return false;
+            }
+
+            $username = explode('@', $email)[0];
+
+            if (strlen($username) < 6 || strlen($username) > 18) {
+                $_SESSION['alerts'][] = 'Email có độ dài không hợp lệ (6-18 ký tự)';
+                return false;
+            }
+
+            $user = new User($email, password_hash($username, PASSWORD_DEFAULT), $username, $name, $role);
+
+            if ($role == UserRole::USER) {
+                $token = LoginTokenGenerator::generateToken($email);
+                $loginEmail = new LoginEmail($email, $token);
+                $this->loginEmailRepository->save($loginEmail);
+
+                // the same speed with on code EmailHelper::sendLoginEmail($email, $token); :(((
+//                $sendLoginEmailPath = dirname($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'sendLoginEmail.php';
+//                $_SESSION['logger'][] = "php $sendLoginEmailPath $email $token";
+//
+//                exec("php \"$sendLoginEmailPath\" \"$email\" \"$token\"");
+
+                EmailHelper::sendLoginEmail($email, $token);
+            }
+
+            $this->userRepository->save($user);
+        } catch (Exception $e) {
+            $_SESSION['logger'][] = $e->getMessage();
             return false;
         }
 
