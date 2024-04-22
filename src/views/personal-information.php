@@ -34,7 +34,7 @@ $this->layout('base',
         </div>
         <label for="readonlyEmail" class="form-label">Địa chỉ Email:</label>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"><i class="fa-regular fa-envelope"></i></span>
+            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-envelope"></i></span>
             <input id="readonlyEmail" type="text" class="form-control" placeholder="Email" aria-label="Email"
                    aria-describedby="basic-addon1" disabled readonly
                    value="<?php
@@ -53,6 +53,19 @@ $this->layout('base',
                    value="<?php
                    if (isset($userInformation) && $userInformation->getUsername() != null) {
                        echo $userInformation->getUsername();
+                   } else {
+                       echo 'Chưa có dữ liệu';
+                   }
+                   ?>">
+        </div>
+        <label for="readonlyPhone" class="form-label">Số điện thoại:</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-phone"></i></span>
+            <input id="readonlyPhone" type="text" class="form-control" placeholder="Số điện thoại"
+                   aria-label="phone" aria-describedby="basic-addon1" disabled readonly
+                   value="<?php
+                   if (isset($userInformation) && $userInformation->getPhone() != null) {
+                       echo $userInformation->getPhone();
                    } else {
                        echo 'Chưa có dữ liệu';
                    }

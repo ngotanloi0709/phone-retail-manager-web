@@ -1,4 +1,5 @@
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,17 +8,20 @@
             </div>
             <form method="post" action="/user/change-password">
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="oldPassword" class="form-label">Mật khẩu cũ</label>
-                        <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+                    <label for="oldPassword" class="form-label">Mật khẩu cũ:</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-unlock"></i></span>
+                        <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Nhập mật khẩu cũ">
                     </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                        <input type="password" class="form-control" id="newPassword" name="newPassword">
+                    <label for="newPassword" class="form-label">Mật khẩu mới:</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-key"></i></span>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Nhập mật khẩu mới">
                     </div>
-                    <div class="mb-3">
-                        <label for="repeatPassword" class="form-label">Nhập lại mật khẩu</label>
-                        <input type="password" class="form-control" id="repeatPassword" name="repeatPassword">
+                    <label for="repeatPassword" class="form-label">Nhập lại mật khẩu:</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-rotate-right"></i></span>
+                        <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" placeholder="Nhập lại mật khẩu ">
                     </div>
                     <input name="currentLocation" type="hidden" value="<?= $_SERVER['REQUEST_URI']; ?>">
                 </div>

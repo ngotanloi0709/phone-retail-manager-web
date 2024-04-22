@@ -8,13 +8,14 @@ class EditablePersonalInformationDTO
 {
     const GENDER_FEMALE = "F";
     const GENDER_MALE = "M";
-
+    private ?string $phone;
     private string $gender;
     private ?string $dateOfBirth;
     private ?string $address;
 
     public function fromRequest(array $data = []): self
     {
+        $this->phone = $data['phone'];
         $this->gender = $data['gender'];
         $this->dateOfBirth = $data['dateOfBirth'];
         $this->address = $data['address'];
@@ -60,4 +61,14 @@ class EditablePersonalInformationDTO
         return $this;
     }
 
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+        return $this;
+    }
 }

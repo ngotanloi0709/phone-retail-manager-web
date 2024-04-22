@@ -26,3 +26,7 @@ header {
 main {
     margin-top: 20px !important;
 }
+
+.input-group span {
+    width: 40px;
+}

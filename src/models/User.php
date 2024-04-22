@@ -27,6 +27,8 @@ class User
     #[Column(nullable: true)]
     private ?string $address;
     #[Column(nullable: true)]
+    private ?string $phone;
+    #[Column(nullable: true)]
     private ?string $identityNumber;
     #[Column]
     private bool $isFemale = false;
@@ -223,6 +225,19 @@ class User
         $this->isFirstTimeLogin = $isFirstTimeLogin;
         return $this;
     }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): User
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+
 
     public function __toString(): string
     {
