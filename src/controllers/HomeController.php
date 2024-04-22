@@ -94,6 +94,9 @@ class HomeController extends Controller
         header('Location: /');
     }
 
+    /**
+     * @throws ORMException
+     */
     public function loginByEmail(): void
     {
         $token = $_GET['token'];

@@ -94,6 +94,9 @@ class AuthenticationService
         return isset($_SESSION['user']) ? $this->userRepository->find($_SESSION['user']->getId()) : null;
     }
 
+    /**
+     * @throws ORMException
+     */
     public function loginByEmail(string $token, string $email): bool
     {
         try {
@@ -104,12 +107,21 @@ class AuthenticationService
                 return false;
             }
 
+            if ($loginEmail->isExpired()) {
+                $_SESSION['alerts'][] = 'Đường link đăng nhập đã hết hạn (1 phút)!';
+                return false;
+            }
+
+            /** @var User $user */
             $user = $this->userRepository->findByEmail($email);
 
             if (!$user) {
                 $_SESSION['alerts'][] = 'Tài khoản không tồn tại!';
                 return false;
             }
+
+            $user->setIsFirstTimeLogin(false);
+            $this->userRepository->save($user);
 
             $_SESSION['user'] = SessionUserDTO::fromUserEntity($user);
         } catch (Exception $e) {

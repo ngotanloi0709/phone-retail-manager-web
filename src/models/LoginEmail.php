@@ -3,11 +3,13 @@
 namespace app\models;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Exception;
 
 #[Entity, Table(name: 'login_emails')]
 class LoginEmail
@@ -24,12 +26,21 @@ class LoginEmail
     /**
      * @param string $email
      * @param string $token
+     * @throws Exception
      */
     public function __construct(string $email, string $token)
     {
         $this->email = $email;
         $this->token = $token;
         $this->expiredAt = new DateTime('+1 minute');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function isExpired(): bool
+    {
+        return $this->expiredAt < new DateTime('now');
     }
 
     public function getId(): ?int

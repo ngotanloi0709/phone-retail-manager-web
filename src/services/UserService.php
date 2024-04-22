@@ -187,13 +187,8 @@ class UserService
             if ($role == UserRole::USER) {
                 $token = LoginTokenGenerator::generateToken($email);
                 $loginEmail = new LoginEmail($email, $token);
-                $this->loginEmailRepository->save($loginEmail);
 
-                // the same speed with on code EmailHelper::sendLoginEmail($email, $token); :(((
-//                $sendLoginEmailPath = dirname($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'sendLoginEmail.php';
-//                $_SESSION['logger'][] = "php $sendLoginEmailPath $email $token";
-//
-//                exec("php \"$sendLoginEmailPath\" \"$email\" \"$token\"");
+                $this->loginEmailRepository->save($loginEmail);
 
                 EmailHelper::sendLoginEmail($email, $token);
             }
