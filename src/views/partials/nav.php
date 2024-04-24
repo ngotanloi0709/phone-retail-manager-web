@@ -5,6 +5,7 @@
 
 use app\dto\SessionUserDTO;
 use app\models\UserRole;
+use app\utils\DataHelper;
 
 ?>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
@@ -48,14 +49,8 @@ use app\models\UserRole;
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="profile-pic">
                                         <?php
-                                        try {
-                                            if (isset($sessionUser) && $sessionUser->getAvatar() != null && $sessionUser->getAvatar() != '') {
-                                                echo '<img src="' . $sessionUser->getAvatar() . '" alt="user-avatar">';
-                                            } else {
-                                                echo '<img src="/image/user-default-avatar.png" alt="user-avatar">';
-                                            }
-                                        } catch (Exception $e) {
-                                            echo '<img src="/image/user-default-avatar.png" alt="user-avatar">';
+                                        if (isset($sessionUser)) {
+                                            echo '<img src="' . DataHelper::getDisplayAvatarData($sessionUser->getAvatar()) . '" alt="user-avatar">';
                                         }
                                         ?>
                                     </div>

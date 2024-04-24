@@ -17,4 +17,19 @@ class DataHelper
 
         return $input != null && $input != '' ? $input : 'Chưa có dữ liệu';
     }
+
+    public static function getDisplayAvatarData(?string $avatar): string
+    {
+        $defaultAvatar = '/image/user-default-avatar.png';
+
+        if ($avatar == null || $avatar == '') {
+            return $defaultAvatar;
+        }
+
+        if (!str_starts_with($avatar, 'data:image')) {
+            return $defaultAvatar;
+        }
+
+        return $avatar;
+    }
 }

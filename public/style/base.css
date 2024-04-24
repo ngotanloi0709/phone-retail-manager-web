@@ -30,3 +30,20 @@ main {
 .input-group span {
     width: 40px;
 }
+
+table th, table td {
+    text-align: center;
+    white-space: nowrap;
+}
+
+table {
+    /*display: block;*/ /* optional */
+    overflow: auto;
+}
+
+.sticky-col {
+    right: 0;
+    position: sticky;
+    background-color: white;
+    min-width: 100px;
+}

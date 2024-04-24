@@ -10,10 +10,10 @@
                 <div class="modal-body">
                         <b class="mb-3 d-block">Bạn chỉ có thể chỉnh sửa các thông tin bên dưới, vui lòng quan hệ quản trị viên để chỉnh sửa các
                             thông tin khác.</b>
-                    <label for="readonlyPhone" class="form-label">Số điện thoại:</label>
+                    <label for="phone" class="form-label">Số điện thoại:</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-phone"></i></span>
-                        <input id="readonlyPhone" type="text" class="form-control" placeholder="Số điện thoại"
+                        <input id="phone" type="text" class="form-control" placeholder="Số điện thoại"
                                aria-label="phone" aria-describedby="basic-addon1" name="phone"
                                value="<?php
                                if (isset($userInformation) && $userInformation->getPhone() != null) {

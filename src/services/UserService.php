@@ -10,7 +10,6 @@ use app\models\UserRole;
 use app\repositories\LoginEmailRepository;
 use app\repositories\UserRepository;
 use app\utils\AuthenticationValidateHelper;
-use app\utils\EmailHelper;
 use app\utils\LoginTokenGenerator;
 use DateTime;
 use Doctrine\ORM\Exception\ORMException;
@@ -21,7 +20,8 @@ class UserService
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly LoginEmailRepository $loginEmailRepository
+        private readonly LoginEmailRepository $loginEmailRepository,
+        private readonly EmailService $emailService
     )
     {
     }
@@ -185,20 +185,23 @@ class UserService
             $user = new User($email, password_hash($username, PASSWORD_DEFAULT), $username, $name, $role);
 
             if ($role == UserRole::USER) {
-                $token = LoginTokenGenerator::generateToken($email);
-                $loginEmail = new LoginEmail($email, $token);
 
-                $this->loginEmailRepository->save($loginEmail);
 
-                EmailHelper::sendLoginEmail($email, $token);
+                if ($this->emailService->sendLoginEmailOnAccountCreation($email)) {
+                    $_SESSION['alerts'][] = 'Đã gửi email đăng nhâp cho người dùng';
+                }
             }
 
             $this->userRepository->save($user);
         } catch (Exception $e) {
-            $_SESSION['logger'][] = $e->getMessage();
             return false;
         }
 
         return true;
+    }
+
+    public function findAllUsers(): array
+    {
+        return $this->userRepository->findAll();
     }
 }

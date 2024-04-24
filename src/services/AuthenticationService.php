@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\dto\SessionUserDTO;
+use app\models\LoginEmail;
 use app\models\User;
 use app\models\UserRole;
 use app\repositories\LoginEmailRepository;
@@ -72,7 +73,7 @@ class AuthenticationService
 
     public function logout(): void
     {
-        unset($_SESSION['user']);
+        session_destroy();
     }
 
     public function isAuthenticated(): bool
@@ -100,6 +101,7 @@ class AuthenticationService
     public function loginByEmail(string $token, string $email): bool
     {
         try {
+            /** @var LoginEmail $loginEmail */
             $loginEmail = $this->loginEmailRepository->findByEmailAndToken($email, $token);
 
             if (!$loginEmail) {

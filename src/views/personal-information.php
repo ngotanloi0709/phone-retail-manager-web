@@ -18,12 +18,9 @@ $this->layout('base',
         <div class="col-6 col-lg-4 mx-auto mb-5 position-relative">
             <div class="ratio ratio-1x1 card-img-top">
                 <?php
-                if (isset($userInformation) && $userInformation->getAvatar() != null && $userInformation->getAvatar() != '') {
-                    echo '<img id="displayAvatar" src="' . $userInformation->getAvatar() . '" class="rounded-circle overflow-hidden"
-                     alt="user-avatar">';
-                } else {
-                    echo '<img id="displayAvatar" src="/image/user-default-avatar.png" class="rounded-circle overflow-hidden"
-                     alt="default-avatar">';
+                if (isset($userInformation) ) {
+                    echo '<img id="displayAvatar" src="' . DataHelper::getDisplayAvatarData($userInformation->getAvatar()) . '" class="rounded-circle overflow-hidden"
+                    alt="user-avatar" onerror="this.onerror=null; this.src=\'/image/user-default-avatar.png\';">';
                 }
                 ?>
             </div>
@@ -48,7 +45,7 @@ $this->layout('base',
                    aria-describedby="basic-addon1" disabled readonly
                    value="<?= DataHelper::getDisplayStringData($userInformation->getUsername()); ?>">
         </div>
-        <label for="readonlyName" class="form-label">Username:</label>
+        <label for="readonlyName" class="form-label">Họ và tên:</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-bars"></i></span>
             <input id="readonlyName" type="text" class="form-control" placeholder="Họ và tên" aria-label="Name"
