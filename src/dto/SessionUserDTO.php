@@ -13,6 +13,7 @@ class SessionUserDTO
     private ?string $email;
     private ?UserRole $role;
     private ?string $avatar;
+    private bool $isNeededToChangePassword = false;
 
     /**
      * @throws Exception
@@ -26,6 +27,10 @@ class SessionUserDTO
         $sessionUser->email = $user->getEmail() != null ? $user->getEmail() : null;
         $sessionUser->role = $user->getRole() != null ? $user->getRole() : null;
         $sessionUser->avatar = $user->getAvatar() != null ? $user->getAvatar() : null;
+
+        if (password_hash($user->getUsername(), PASSWORD_DEFAULT) == $user->getPassword()) {
+            $sessionUser->isNeededToChangePassword = true;
+        }
 
         return $sessionUser;
     }
@@ -87,6 +92,17 @@ class SessionUserDTO
     public function setAvatar(string $avatar): SessionUserDTO
     {
         $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function isNeededToChangePassword(): bool
+    {
+        return $this->isNeededToChangePassword;
+    }
+
+    public function setIsNeededToChangePassword(bool $isNeededToChangePassword): SessionUserDTO
+    {
+        $this->isNeededToChangePassword = $isNeededToChangePassword;
         return $this;
     }
 }

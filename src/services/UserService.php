@@ -4,13 +4,11 @@ namespace app\services;
 
 use app\dto\EditablePersonalInformationDTO;
 use app\dto\SessionUserDTO;
-use app\models\LoginEmail;
 use app\models\User;
 use app\models\UserRole;
 use app\repositories\LoginEmailRepository;
 use app\repositories\UserRepository;
 use app\utils\AuthenticationValidateHelper;
-use app\utils\LoginTokenGenerator;
 use DateTime;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -77,6 +75,12 @@ class UserService
                 return false;
             }
 
+            $username = $currentUser->getUsername();
+            if ($newPassword === $username) {
+                $_SESSION['alerts'][] = 'Mật khẩu mới không được trùng với tên đăng nhập';
+                return false;
+            }
+
             if ($newPassword !== $repeatPassword) {
                 $_SESSION['alerts'][] = 'Mật khẩu mới không khớp';
                 return false;
@@ -96,9 +100,7 @@ class UserService
 
             $this->userRepository->save($currentUser);
 
-            $sessionUser = SessionUserDTO::fromUserEntity($currentUser);
-
-            $_SESSION['user'] = $sessionUser;
+            $_SESSION['user'] = SessionUserDTO::fromUserEntity($currentUser);
         } catch (Exception $e) {
             return false;
         }

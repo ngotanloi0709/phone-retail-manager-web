@@ -133,4 +133,17 @@ class AuthenticationService
 
         return true;
     }
+
+    private function isNeededChangePassword(User $user): bool
+    {
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $result = password_hash($username, PASSWORD_DEFAULT) == $password;
+        // default password setup when login are the same with username
+        // so if password is the same with username, user need to change password
+        // the navigation to change password page will be handled in the Request Handler
+        $_SESSION['isNeededChangePassword'] =  $result;
+
+        return $result;
+    }
 }

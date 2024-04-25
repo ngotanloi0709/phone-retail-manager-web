@@ -110,4 +110,9 @@ class HomeController extends Controller
 
         header('Location: /');
     }
+
+    public function getChangePassword(): void
+    {
+        $this->render('change-password');
+    }
 }
