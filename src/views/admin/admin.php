@@ -13,7 +13,7 @@
     <div class="card-body">
         <h5 class="card-title">Quản trị nhân viên bán hàng</h5>
         <p class="card-text">Quản trị, can thiệp vào các hoạt động ... của tài khoản nhân viên bán hàng.</p>
-        <a href="/admin/user-management" class="btn btn-primary">Enter</a>
+        <a href="/admin/user_management" class="btn btn-primary">Enter</a>
     </div>
 </div>
 <?php $this->end('main') ?>
