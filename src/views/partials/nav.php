@@ -27,6 +27,11 @@ use app\utils\DataHelper;
                             <a class="nav-link active" href="/admin"><i class="fa-solid fa-user-tie"></i> Admin</a>
                         </li>
                     <?php endif; ?>
+                    <?php if ($isAuthenticated): ?>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/transaction"><i class="fa-solid fa-user-tie"></i> Đơn Hàng</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
 
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
