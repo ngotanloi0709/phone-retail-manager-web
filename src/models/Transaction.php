@@ -28,5 +28,40 @@ class Transaction
     #[ManyToOne(targetEntity: User::class)]
     private User $user;
     #[ManyToOne(targetEntity: Customer::class)]
+    // #[ManyToOne(targetEntity: Customer::class, cascade: ['persist'])]    // van loi :' ))
     private Customer $customer;
+
+    public function __construct(int $givenMoney, Collection $items, User $user, Customer $customer)
+    {
+        $this->givenMoney = $givenMoney;
+        $this->items = $items;
+        $this->user = $user;
+        $this->customer = $customer;
+        $this->created = new DateTime();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getGivenMoney(): int
+    {
+        return $this->givenMoney;
+    }
+
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getCustomer(): Customer
+    {
+        return $this->customer;
+    }
 }

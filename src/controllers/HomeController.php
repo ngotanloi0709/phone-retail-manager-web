@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\UserRole;
 use app\services\AuthenticationService;
 use app\services\UserService;
+use DI\Container;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
