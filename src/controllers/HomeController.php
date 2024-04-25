@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\UserRole;
 use app\services\AuthenticationService;
 use app\services\UserService;
 use DI\Container;
@@ -11,12 +12,13 @@ use League\Plates\Engine;
 
 class HomeController extends Controller
 {
-    private UserService $userService;
-
-    public function __construct(Engine $engine, UserService $userService, AuthenticationService $authenticationService)
+    public function __construct(
+        Engine                       $engine,
+        AuthenticationService        $authenticationService,
+        private readonly UserService $userService
+    )
     {
         parent::__construct($engine, $authenticationService);
-        $this->userService = $userService;
     }
 
     public function index(): void
@@ -39,6 +41,10 @@ class HomeController extends Controller
         $this->render('login');
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function postLogin(): void
     {
         $username = $_POST['username'];
@@ -72,8 +78,9 @@ class HomeController extends Controller
         $email = $_POST['email'];
         $password = $_POST['password'];
         $repeatPassword = $_POST['repeatPassword'];
+        $role = $_POST['role'] == 'admin' ? UserRole::ADMIN : UserRole::USER;
 
-        if ($this->userService->register($email, $password, $repeatPassword)) {
+        if ($this->userService->register($email, $password, $repeatPassword, $role)) {
             $_SESSION['alerts'][] = 'Đăng ký thành công';
             header('Location: /login');
         } else {
@@ -84,8 +91,29 @@ class HomeController extends Controller
 
     public function postLogout(): void
     {
-        unset($_SESSION['user']);
         $this->authenticationService->logout();
         header('Location: /');
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function loginByEmail(): void
+    {
+        $token = $_GET['token'];
+        $email = $_GET['email'];
+
+        if ($this->authenticationService->loginByEmail($token, $email)) {
+            $_SESSION['alerts'][] = 'Đăng nhập thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Đăng nhập thất bại';
+        }
+
+        header('Location: /');
+    }
+
+    public function getChangePassword(): void
+    {
+        $this->render('change-password');
     }
 }

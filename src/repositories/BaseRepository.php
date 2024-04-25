@@ -2,10 +2,8 @@
 
 namespace app\repositories;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -19,6 +17,10 @@ abstract class BaseRepository extends EntityRepository
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function find($id, LockMode|int|null $lockMode = null, int|null $lockVersion = null): ?object
     {
         return $this->entityManager->find($this->getEntityClass(), $id);
@@ -29,7 +31,7 @@ abstract class BaseRepository extends EntityRepository
         return $this->entityManager->getRepository($this->getEntityClass())->findAll();
     }
 
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    public function findBy(array $criteria, array|null $orderBy = null, int|null $limit = null, int|null $offset = null): array
     {
         return $this->entityManager->getRepository($this->getEntityClass())->findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -49,6 +51,10 @@ abstract class BaseRepository extends EntityRepository
         $this->entityManager->flush();
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function delete($entity): void
     {
         $this->entityManager->remove($entity);
@@ -56,6 +62,7 @@ abstract class BaseRepository extends EntityRepository
     }
 
     abstract protected function getEntityClass(): string;
+
     protected function getEntityRepository(): EntityRepository
     {
         return $this->entityManager->getRepository($this->getEntityClass());

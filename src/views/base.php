@@ -3,31 +3,37 @@
 /** @var string $header */
 /** @var bool $isShowAside */
 require_once __DIR__ . '/../utils/Logger.php';
+
 use app\utils\Logger;
 
 $isAuthenticated = isset($_SESSION['user']);
-$currentUser = $_SESSION['user'] ?? null;
+$sessionUser = $_SESSION['user'] ?? null;
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title><?= $this->e($title) ?></title>
+<!--    boostrap 5-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-
+<!--    jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<!--    font awesome-->
+    <script src="https://kit.fontawesome.com/bfb86ceec6.js" crossorigin="anonymous"></script>
+<!--    custom css-->
     <link rel="stylesheet" href="../style/base.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="../style/profile-image.css">
 </head>
 <body>
 <?= $this->insert('partials/nav', [
-        'isAuthenticated' => $isAuthenticated,
-        'currentUser' => $currentUser,
-    ]) ?>
+    'isAuthenticated' => $isAuthenticated,
+    'sessionUser' => $sessionUser,
+]) ?>
 
 <div class="container body">
     <div class="row">
@@ -38,7 +44,7 @@ $currentUser = $_SESSION['user'] ?? null;
             <aside class="col-12 col-lg-3">
                 <?= $this->insert('partials/aside', [
                     'isAuthenticated' => $isAuthenticated,
-                    'currentUser' => $currentUser,
+                    'sessionUser' => $sessionUser,
                 ]) ?>
             </aside>
             <main class="col-12 col-lg-9">

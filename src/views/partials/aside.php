@@ -1,9 +1,9 @@
 <?php
 /** @var bool $isAuthenticated */
 
-/** @var User $currentUser */
+/** @var \app\dto\SessionUserDTO $sessionUser */
 
-use app\models\User;
+use app\dto\SessionUserDTO;
 use app\models\UserRole;
 
 ?>
@@ -12,7 +12,7 @@ use app\models\UserRole;
         <a class="list-group-item list-group-item-action" href="/login"
            role="tab" aria-controls="list-home">Đăng nhập</a>
     <?php else: ?>
-        <p>Welcome, <?= $currentUser->getEmail() ?></p>
+        <p>Welcome, <b><?= $sessionUser->getEmail() ?></b></p>
     <?php endif; ?>
     <?php if (!$isAuthenticated): ?>
         <a class="list-group-item list-group-item-action" href="/register"
@@ -21,9 +21,9 @@ use app\models\UserRole;
 
     <a class="list-group-item list-group-item-action" href="/home"
        role="tab" aria-controls="list-home">Trang chủ</a>
-    <?php if ($isAuthenticated && $currentUser->getRole() == UserRole::ADMIN): ?>
+    <?php if ($isAuthenticated && $sessionUser->getRole() == UserRole::ADMIN): ?>
         <a class="list-group-item list-group-item-action" href="/admin"
-           role="tab" aria-controls="list-home">Admin</a>
+           role="tab" aria-controls="list-home">Điều hướng</a>
     <?php endif; ?>
     <?php if ($isAuthenticated): ?>
         <a class="list-group-item list-group-item-action" href="/logout"

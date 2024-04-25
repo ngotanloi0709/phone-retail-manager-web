@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,17 +17,29 @@ class User
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
     #[Column(unique: true)]
-    private string $email;
+    private ?string $email;
     #[Column]
-    private string $password;
+    private ?string $password;
     #[Column(unique: true)]
-    private string $username;
+    private ?string $username;
     #[Column(nullable: true)]
-    private string $name;
-    #[Column(type: 'blob', nullable: true)]
-    private string $avatar;
+    private ?string $name;
+    #[Column(nullable: true)]
+    private ?string $address;
+    #[Column(nullable: true)]
+    private ?string $phone;
+    #[Column(nullable: true)]
+    private ?string $identityNumber;
+    #[Column]
+    private bool $isFemale = false;
+    #[Column(nullable: true)]
+    private ?DateTime $dateOfBirth = null;
+    #[Column(type: 'text', nullable: true)] // save as base64 dataURL
+    private ?string $avatar;
     #[Column]
     private bool $isLocked = false;
+    #[Column]
+    private bool $isFirstTimeLogin = true;
     #[Column(type: 'string', enumType: UserRole::class)]
     private UserRole $role = UserRole::USER;
     /** @var Collection */
@@ -37,14 +50,21 @@ class User
      * @param string $email
      * @param string $password
      * @param string $username
+     * @param string $name
+     * @param UserRole $role
      */
-    public function __construct(string $email, string $password, string $username)
+    public function __construct(string $email, string $password, string $username, string $name, UserRole $role)
     {
         $this->email = $email;
         $this->password = $password;
         $this->username = $username;
-    }
+        $this->name = $name;
+        $this->role = $role;
+        $this->avatar = '/image/user-default-avatar.png';
+        $this->dateOfBirth = DateTime::createFromFormat('d-m-Y', '01-01-2000');
 
+        if ($role == UserRole::ADMIN) $this->isFirstTimeLogin = false;
+    }
 
     public function getId(): ?int
     {
@@ -57,7 +77,7 @@ class User
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -68,7 +88,7 @@ class User
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -79,7 +99,7 @@ class User
         return $this;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -90,7 +110,7 @@ class User
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -101,7 +121,7 @@ class User
         return $this;
     }
 
-    public function getAvatar(): string
+    public function getAvatar(): ?string
     {
         return $this->avatar;
     }
@@ -139,7 +159,7 @@ class User
         return $this;
     }
 
-    public function getTransactions(): Collection
+    public function getTransactions(): ?Collection
     {
         return $this->transactions;
     }
@@ -149,6 +169,79 @@ class User
         $this->transactions = $transactions;
         return $this;
     }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): User
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    public function getIdentityNumber(): ?string
+    {
+        return $this->identityNumber;
+    }
+
+    public function setIdentityNumber(string $identityNumber): User
+    {
+        $this->identityNumber = $identityNumber;
+        return $this;
+    }
+
+    public function isFemale(): bool
+    {
+        return $this->isFemale;
+    }
+
+    public function setIsFemale(bool $isFemale): User
+    {
+        $this->isFemale = $isFemale;
+        return $this;
+    }
+
+    public function getDateOfBirth(): ?DateTime
+    {
+        return $this->dateOfBirth;
+    }
+
+    public function getDateOfBirthString(): ?string
+    {
+        return $this->dateOfBirth->format('d-m-Y');
+    }
+
+    public function setDateOfBirth(?DateTime $dateOfBirth): User
+    {
+        $this->dateOfBirth = $dateOfBirth;
+        return $this;
+    }
+
+    public function isFirstTimeLogin(): bool
+    {
+        return $this->isFirstTimeLogin;
+    }
+
+    public function setIsFirstTimeLogin(bool $isFirstTimeLogin): User
+    {
+        $this->isFirstTimeLogin = $isFirstTimeLogin;
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): User
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+
 
     public function __toString(): string
     {

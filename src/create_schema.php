@@ -4,6 +4,7 @@ global $container;
 
 use app\models\Category;
 use app\models\Customer;
+use app\models\LoginEmail;
 use app\models\Transaction;
 use app\models\TransactionDetail;
 use app\models\Product;
@@ -24,6 +25,7 @@ $classes = array(
     $entityManager->getClassMetadata(TransactionDetail::class),
     $entityManager->getClassMetadata(Product::class),
     $entityManager->getClassMetadata(Category::class),
+    $entityManager->getClassMetadata(LoginEmail::class),
 );
 
 $schemaTool->updateSchema($classes);
