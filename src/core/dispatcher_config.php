@@ -30,15 +30,5 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '', 'AdminController@index');
         $r->addRoute('GET', '/', 'AdminController@index');
         $r->addRoute('GET', '/user-management', 'AdminController@getUserManagement');
-        $r->addRoute('POST', '/create-new-user', 'AdminUserController@createNewUser');
-    });
-
-    $r->addGroup('/transaction', function (RouteCollector $r) {
-        $r->addRoute('GET', '', 'TransactionController@index');
-        $r->addRoute('GET', '/', 'TransactionController@index');
-        $r->addRoute('GET', '/transaction_management', 'TransactionController@getTransactionManagement');
-        $r->addRoute('GET', '/transaction_create', 'TransactionController@getTransactionCreate');
-        $r->addRoute('GET', '/get_data', 'TransactionController@getData');
-        $r->addRoute('POST', '/transaction_create', 'TransactionController@postTransaction');
     });
 });
