@@ -41,4 +41,9 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/get_data', 'TransactionController@getData');
         $r->addRoute('POST', '/transaction_create', 'TransactionController@postTransaction');
     });
+    $r->addGroup('/customer_management', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'CustomerController@index');
+        $r->addRoute('GET', '/', 'CustomerController@index');
+        
+    });
 });

@@ -4,6 +4,7 @@ namespace app\services;
 
 use app\models\User;
 use app\models\UserRole;
+use app\models\Product;
 use app\repositories\ProductRepository;
 
 class ProductService

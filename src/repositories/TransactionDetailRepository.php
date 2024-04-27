@@ -3,6 +3,7 @@
 namespace app\repositories;
 
 use app\models\Transaction;
+use app\models\TransactionDetail;
 use Doctrine\ORM\EntityRepository;
 
 class TransactionDetailRepository extends BaseRepository
