@@ -13,7 +13,10 @@
             <div>
                 <label for="productName">Tên sản phẩm:</label>
                 <input type="text" id="productName"/>
-                <a id="addToTransButton" class="btn btn-primary">Thêm</a>
+                <a id="addToTransButton" class="btn btn-primary">Thêm</a><br>
+                <label for="productBarcode">Barcode sản phẩm:</label>
+                <input type="file" id="productBarcode" accept="image/*"/>
+                <input type="text" id="productBarcodeValue" readonly/>
                 <ul id="productSuggestList"></ul>
             </div>
             <table id="productList" class="table">
@@ -66,7 +69,7 @@
     </div>
 </form>
 
-<script>
+<script type="module">
     $(document).ready(function(){
         $("#productName").on("keyup", function() {
             $str = $("#productName").val();
@@ -142,6 +145,17 @@
         });
 
         $("#addToTransButton").on("click", function() {
+            var productName = document.getElementById("productName").value;
+            var isExistProduct = false;
+            <?php foreach ($products as $product): ?>
+                if (productName == "<?= $product->getName() ?>") {
+                    isExistProduct = true;
+                }
+            <?php endforeach; ?>
+            if (!isExistProduct) {
+                alert("Sản phẩm không tồn tại!");
+                return;
+            }
             addToTrans();
             getTotal();
         });
@@ -241,6 +255,41 @@
                 event.preventDefault();
                 return;
             }
+        });
+
+        $("#productBarcode").on("change", function() {
+            var file = document.getElementById("productBarcode").files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    var barcode = new BarcodeDetector();
+                    barcode.detect(img).then(barcodes => {
+                        if (barcodes.length == 0) {
+                            alert("Không tìm thấy barcode!");
+                            return;
+                        }
+                        var barcodeValue = barcodes[0].rawValue;
+                        document.getElementById("productBarcodeValue").value = barcodeValue;
+                        var productName = "";
+                        <?php foreach ($products as $product): ?>
+                            if (barcodeValue == "<?= $product->getBarcode() ?>") {
+                                productName = "<?= $product->getName() ?>";
+                            }
+                        <?php endforeach; ?>
+                        if (productName == "") {
+                            alert("Sản phẩm không tồn tại!");
+                            return;
+                        }
+                        document.getElementById("productName").value = productName;
+                        addToTrans();
+                        getTotal();
+                    });
+                }
+            }
+            reader.readAsDataURL(file);
+            document.getElementById("productBarcode").value = null;
         });
     });
 </script>
