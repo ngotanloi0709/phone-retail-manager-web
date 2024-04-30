@@ -39,8 +39,8 @@
                 <div class="col-sm-3 col-md-6 col-lg-4">
                     
                     <div class="form-group">
-                        <label for="customerId">Số điện thoại khách hàng:</label>
-                        <input type="text" class="form-control" id="customerId" name="customerId" required>
+                        <label for="customerPhone">Số điện thoại khách hàng:</label>
+                        <input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="Nhập số điện thoại và nhấn Enter!" required>
                         <label for="customerName">Tên khách hàng:</label>
                         <input type="text" class="form-control" id="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
                         <a href="/customer/customer_create">Tạo tài khoản khách hàng</a>
@@ -53,7 +53,7 @@
 
                     <div class="form-group">
                         <label for="paymentMethod">Phương thức thanh toán:</label>
-                        <select multiple="multiple" size="2" class="form-control form-select mb-3" id="paymentMethod" require>
+                        <select multiple="multiple" size="2" class="form-control form-select mb-3" id="paymentMethod" required>
                             <option value="cash">Tiền mặt</option>
                             <option value="card">Thẻ</option>
                         </select>
@@ -61,7 +61,7 @@
 
                     <div hidden class="form-group">
                         <label for="givenMoney">Số tiền khách đưa:</label>
-                        <input type="text" class="form-control" id="givenMoney"/>
+                        <input type="text" class="form-control" id="givenMoney" required>
                     </div>
 
                     <div hidden class="form-group">
@@ -96,7 +96,8 @@
 
         function addToTrans() {
             var productName = document.getElementById("productName").value;
-            <?php foreach ($products as $product): ?>
+            <?php /** @var array $products */
+            foreach ($products as $product): ?>
                 if (productName == "<?= $product->getName() ?>") {
                     var id = <?= $product->getId() ?>;
                     var price = <?= $product->getPrice() ?>;
@@ -139,7 +140,8 @@
                 if (productList.rows[i].cells[4].innerHTML == "") {
                     continue;
                 }
-                var tmp = productList.rows[i].cells[4].innerHTML.replace(/,/g, '');
+                let tmp = productList.rows[i].cells[4].innerHTML.replace(/[,\.]/gm, '');
+
                 total += parseInt(tmp);
             }
             document.getElementById("total").value = total.toLocaleString();
@@ -173,8 +175,11 @@
             getTotal();
         });
 
+        // "this" in below code are $("#productList")
         $("#productList").on("change", "input[type='number']", function() {
+            // get name of current product (first column of row)
             var $name = $(this).closest("tr").find("td:nth-child(1)").text();
+            // get value of current input (quantity)
             var quantity = parseInt($(this).val());
             
             var inStock = function () {
@@ -205,16 +210,21 @@
             }
 
             var price = $(this).closest("tr").find("td:nth-child(3)").text();
-            price = parseInt(price.replace(/,/g, ''));
+            price = parseInt(price.replace(/[,\.]/g, ''));
             var total = quantity * price;
             $(this).closest("tr").find("td:nth-child(5)").text(total.toLocaleString());
 
             getTotal();
         });
 
-        $("#customerId").on("keyup", function(event) {
+        $("#customerPhone").on("keyup", function(event) {
             if (event.key === "Enter" || event.keyCode === 13) {
                 event.preventDefault();
+                if (this.value === "") {
+                    document.getElementById("customerName").value = "";
+                    return;
+                }
+
                 $str = $(this).val();
                 if ($str.length == 0) {
                     return;
@@ -222,13 +232,14 @@
                 $.ajax({
                     url: '/transaction/get_data',
                     type: 'GET',
-                    data: 'customerId='+$str,
+                    data: 'customerPhone='+$str,
                     success: function(result){
                         if (result == "") {
                             alert("Khách hàng chưa có tài khoản!");
+                            document.getElementById("customerName").value = "";
                             return;
                         }
-                        document.getElementById("customerId").value = $str;
+                        document.getElementById("customerPhone").value = $str;
                         document.getElementById("customerName").value = result;
                     }
                 });
@@ -252,9 +263,11 @@
             if ($("#paymentMethod").val() == "cash") {
                 $("#givenMoney").closest(".form-group").removeAttr("hidden");
                 $("#change").closest(".form-group").removeAttr("hidden");
+                $("#givenMoney").attr("required", "required");
             } else {
                 $("#givenMoney").closest(".form-group").attr("hidden", "");
                 $("#change").closest(".form-group").attr("hidden", "");
+                $("#givenMoney").removeAttr("required");
             }
         });
 

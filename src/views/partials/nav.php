@@ -5,6 +5,7 @@
 
 use app\dto\SessionUserDTO;
 use app\models\UserRole;
+use app\utils\DataHelper;
 
 ?>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">

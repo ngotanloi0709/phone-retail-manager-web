@@ -2,6 +2,7 @@
 
 namespace app\services;
 
+use app\models\Customer;
 use app\models\Transaction;
 use app\repositories\CustomerRepository;
 use app\utils\Logger;
@@ -18,18 +19,29 @@ class CustomerService
         $this->customerRepository = $customerRepository;
     }
 
+    public function getCustomers(): array
+    {
+        return $this->customerRepository->findAll();
+    }
+
+    public function getCustomerByPhone(?string $phone)
+    {
+        return $this->customerRepository->findByPhone($phone);
+    }
+
     /**
      * @throws OptimisticLockException
      * @throws ORMException
      */
-
-    public function getCustomernById(string $id)
+    public function createCustomer(?string $customerPhone): Customer
     {
-        return $this->customerRepository->findByID($id);
-    }
+        $customer = $this->customerRepository->findByPhone($customerPhone);
 
-    public function getCustomers()
-    {
-        return $this->customerRepository->findAll();
+        if ($customer === null) {
+            $customer = new Customer($customerPhone);
+            $this->customerRepository->save($customer);
+        }
+
+        return $customer;
     }
 }

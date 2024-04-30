@@ -14,33 +14,21 @@ use Doctrine\ORM\OptimisticLockException;
 
 class TransactionDetailService
 {
-    private TransactionDetailRepository $transactionDetailRepository;
-    private TransactionRepository $transactionRepository;
 
-    public function __construct(TransactionDetailRepository $transactionDetailRepository, TransactionRepository $transactionRepository)
+    public function __construct(
+        private readonly TransactionDetailRepository $transactionDetailRepository,
+    )
     {
-        $this->transactionDetailRepository = $transactionDetailRepository;
-        $this->transactionRepository = $transactionRepository;
     }
 
     /**
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function createTransactionDetail(Transaction $order, Product $product, int $quantity): TransactionDetail
+    public function createTransactionDetail(Transaction $transaction, Product $product, int $quantity): TransactionDetail
     {
-        $transactionDetail = new TransactionDetail($order, $product, $quantity);
+        $transactionDetail = new TransactionDetail($transaction, $product, $quantity);
         $this->transactionDetailRepository->save($transactionDetail);
         return $transactionDetail;
-    }
-
-    public function getTransactionDetailById(string $id)
-    {
-        return $this->transactionDetailRepository->findByID($id);
-    }
-
-    public function getTransactionDetails()
-    {
-        return $this->transactionDetailRepository->findAll();
     }
 }
