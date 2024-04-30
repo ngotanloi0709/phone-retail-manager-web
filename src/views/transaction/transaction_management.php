@@ -19,6 +19,7 @@
 </div>
 <div class="card">
     <div class="card-header">
+        <a href="/transaction/transaction_create" class="btn btn-outline-warning"><i class="fa-solid fa-inbox"></i> Tạo Đơn Hàng</a>
     </div>
     <div class="card-body">
         <table class="table table-bordered">
@@ -63,11 +64,15 @@
                         <?php
                         foreach ($transaction->getItems() as $item) : ?>
                             $total += <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
-                            transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td><?= $item->getProduct()->getPrice() ?></td><td><?= $item->getQuantity() ?></td><td><?= $item->getProduct()->getPrice() * $item->getQuantity() ?></td></tr>";
+                            $price = <?= $item->getProduct()->getPrice() ?>;
+                            $price = $price.toLocaleString();
+                            $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
+                            $temptotal = $temptotal.toLocaleString();
+                            transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal + "</td></tr>";
                         <?php endforeach; 
                         ?>
                         var row = transDetailPopupTable.insertRow(-1);
-                        row.innerHTML = "<td colspan='4'>Tổng tiền</td><td>" + $total.toLocaleString() + "</td>";
+                        row.innerHTML = "<td colspan='4'></td><td>" + $total.toLocaleString() + "</td>";
                         
                         document.getElementById("transDetailPopup").style.display = "block";
                     }
