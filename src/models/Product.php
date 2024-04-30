@@ -26,7 +26,7 @@ class Product
     #[Column(nullable: true)]
     private int $stock;
     #[Column(unique: true, nullable: true)]
-    private int $barcode;
+    private ?int $barcode = null;
     #[Column(nullable: true)]
     private DateTime $created;
     #[ManyToOne(targetEntity: Category::class)]
@@ -98,12 +98,12 @@ class Product
         return $this;
     }
 
-    public function getBarcode(): int
+    public function getBarcode(): ?int
     {
         return $this->barcode;
     }
 
-    public function setBarcode(int $barcode): Product
+    public function setBarcode(?int $barcode): Product
     {
         $this->barcode = $barcode;
         return $this;
