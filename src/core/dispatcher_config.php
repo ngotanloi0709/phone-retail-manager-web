@@ -44,6 +44,6 @@ return simpleDispatcher(function (RouteCollector $r) {
     $r->addGroup('/customer_management', function (RouteCollector $r) {
         $r->addRoute('GET', '', 'CustomerController@index');
         $r->addRoute('GET', '/', 'CustomerController@index');
-        
+        $r->addRoute('GET', '/customer_transhistory', 'CustomerController@getTransactionHistory');
     });
 });
