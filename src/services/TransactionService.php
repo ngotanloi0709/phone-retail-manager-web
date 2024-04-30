@@ -2,31 +2,74 @@
 
 namespace app\services;
 
+use app\dto\CreateTransactionDTO;
 use app\models\Transaction;
 use app\repositories\TransactionRepository;
-use app\utils\Logger;
-use app\utils\AuthenticationValidateHelper;
+use app\utils\TransactionValidateHelper;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use Exception;
 
 class TransactionService
 {
-    private TransactionRepository $transactionRepository;
-
-    public function __construct(TransactionRepository $transactionRepository)
+    public function __construct(
+        private readonly TransactionRepository $transactionRepository,
+        private readonly AuthenticationService $authenticationService,
+        private readonly CustomerService $customerService,
+        private readonly ProductService $productService,
+        private readonly TransactionDetailService $transactionDetailService,
+    )
     {
-        $this->transactionRepository = $transactionRepository;
+        //
     }
 
     /**
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function createTransaction(int $givenMoney, $items, $user, $customer): bool
+    public function createTransaction(CreateTransactionDTO $createTransactionDTO): bool
     {
-        $transaction = new Transaction($givenMoney, $items, $user, $customer);
+        try {
+            $customerPhone = $createTransactionDTO->getCustomerPhone();
 
-        $this->transactionRepository->save($transaction);
+            $user = $this->authenticationService->getCurrentUser();
+            $customer = $this->customerService->getCustomerByPhone($customerPhone);
+            $givenMoney = $createTransactionDTO->getGivenMoney();
+            $productIdArray = $createTransactionDTO->getProductIdArray();
+            $productQuantityArray = $createTransactionDTO->getProductQuantityArray();
+
+            if ($user === null) {
+                $_SESSION['alerts'][] = 'Người dùng không tồn tại, vui lòng đăng nhập!';
+                return false;
+            }
+
+            if ($customer === null && TransactionValidateHelper::isValidPhoneNumber($customerPhone)) {
+                $customer = $this->customerService->createCustomer($customerPhone);
+            }
+
+            if ($customer === null) {
+                $_SESSION['alerts'][] = 'Số điện thoại không hợp lệ';
+                return false;
+            }
+
+            $error = TransactionValidateHelper::validateTransactionInformation($productIdArray, $productQuantityArray, $givenMoney);
+
+            if (!empty($error)) {
+                $_SESSION['alerts'][] = $error['product'];
+                return false;
+            }
+
+            $transaction = new Transaction($givenMoney, $user, $customer);
+            $this->transactionRepository->save($transaction);
+
+            for ($i = 0; $i < sizeof($productIdArray); $i++) {
+                $product = $this->productService->getProductById($productIdArray[$i]);
+                $quantity = $productQuantityArray[$i];
+                $this->transactionDetailService->createTransactionDetail($transaction, $product, $quantity);
+            }
+        } catch (Exception $e) {
+            return false;
+        }
 
         return true;
     }
@@ -36,7 +79,7 @@ class TransactionService
         return $this->transactionRepository->findByID($id);
     }
 
-    public function getTransactions()
+    public function getTransactions(): array
     {
         return $this->transactionRepository->findAll();
     }

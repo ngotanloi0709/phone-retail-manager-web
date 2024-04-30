@@ -3,6 +3,7 @@
 namespace app\models;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -28,12 +29,12 @@ class Transaction
     #[ManyToOne(targetEntity: User::class)]
     private User $user;
     #[ManyToOne(targetEntity: Customer::class)]
-    private Customer $customer;
+    private ?Customer $customer;
 
-    public function __construct(int $givenMoney, Collection $items, User $user, Customer $customer)
+    public function __construct(int $givenMoney, User $user, ?Customer $customer)
     {
         $this->givenMoney = $givenMoney;
-        $this->items = $items;
+        $this->items = new ArrayCollection();
         $this->user = $user;
         $this->customer = $customer;
         $this->created = new DateTime();
@@ -59,7 +60,7 @@ class Transaction
         return $this->user;
     }
 
-    public function getCustomer(): Customer
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
