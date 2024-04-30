@@ -43,7 +43,6 @@
                         <input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="Nhập số điện thoại và nhấn Enter!" required>
                         <label for="customerName">Tên khách hàng:</label>
                         <input type="text" class="form-control" id="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
-                        <a href="/customer/customer_create">Tạo tài khoản khách hàng</a>
                     </div>
                     
                     <div class="form-group">

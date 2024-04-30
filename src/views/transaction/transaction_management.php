@@ -1,4 +1,7 @@
-<?php $this->layout('base',
+<?php use app\models\Transaction;
+use app\utils\DataHelper;
+
+$this->layout('base',
     [
         'title' => 'Quản Lý Đơn Hàng',
         'header' => 'Quản Lý Đơn Hàng',
@@ -35,12 +38,14 @@
             </thead>
             <tbody>
             <?php
+            /** @var array $transactions */
             $transactions = array_reverse($transactions);
+            /** @var Transaction $transaction */
             foreach ($transactions as $transaction) : ?>
                 <tr>
                     <td><?= $transaction->getId() ?></td>
                     <td><?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></td>
-                    <td><?= "i will fix this later" ?></td>
+                    <td><?= DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></td>
                     <td><?= $transaction->getUser()->getUsername() ?></td>
                     <td>
                         <button class="getDetailBnt">Chi tiết</button>
@@ -59,7 +64,8 @@
             foreach ($transactions as $transaction) : ?>
 
             if ($(this).closest('tr').find('td').eq(0).text() === '<?= $transaction->getId() ?>') {
-                document.getElementById("transInfo").innerHTML = "<h3>CHI TIẾT ĐƠN HÀNG <?= $transaction->getId() ?></h3><p>Thời Gian Tạo: <?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></p><p>Khách Hàng: <?= "i will fix this later" ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p>";
+                document.getElementById("transInfo").innerHTML = "<h3>CHI TIẾT ĐƠN HÀNG <?= $transaction->getId() ?></h3><p>Thời Gian Tạo: <?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></p><p>Khách Hàng: <?= /** @var Transaction $transaction */
+                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p>";
                 let transDetailPopupTable = document.getElementById("transDetailPopupTable");
                 transDetailPopupTable.innerHTML = "<tr><th>Tên sản phẩm</th><th>Mã sản phẩm</th><th>Đơn giá</th><th>Số Lượng</th><th>Thành tiền</th></tr>"
                 let $total = 0;
