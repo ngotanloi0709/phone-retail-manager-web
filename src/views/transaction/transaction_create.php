@@ -247,11 +247,11 @@
 
         $("#givenMoney").on("keyup", function() {
             if (event.key === "Enter" || event.keyCode === 13) {
-                var total = parseInt($("#total").val().replace(/,/g, ''));
+                var total = parseInt($("#total").val().replace(/[,\.]/g, ''));
 
                 var givenMoney = parseInt($(this).val());
                 $("#givenMoney").val(givenMoney.toLocaleString());
-                givenMoney = parseInt($(this).val().replace(/,/g, ''));
+                givenMoney = parseInt($(this).val().replace(/[,\.]/g, ''));
 
                 var change = givenMoney - total;
                 $("#change").val(change.toLocaleString());
