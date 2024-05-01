@@ -40,5 +40,6 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/transaction_create', 'TransactionController@getTransactionCreate');
         $r->addRoute('GET', '/get_data', 'TransactionController@getData');
         $r->addRoute('POST', '/transaction_create', 'TransactionController@postTransaction');
+        $r->addRoute('GET', '/transaction_invoice', 'TransactionController@getTransactionInvoice');
     });
 });

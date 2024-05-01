@@ -59,6 +59,14 @@ $this->layout('base',
 </div>
 <script>
     $(document).ready(function () {
+        if (window.location.href.indexOf("paymentMethod=cash") !== -1) {
+            let givenMoney = new URLSearchParams(window.location.search).get('givenMoney');
+            window.open("/transaction/transaction_invoice?paymentMethod=cash&givenMoney=" + givenMoney, "_blank");
+        }
+        if (window.location.href.indexOf("paymentMethod=card") !== -1) {
+            window.open("/transaction/transaction_invoice?paymentMethod=card", "_blank");
+        }
+
         $('.getDetailBnt').click(function () {
             <?php
             foreach ($transactions as $transaction) : ?>
