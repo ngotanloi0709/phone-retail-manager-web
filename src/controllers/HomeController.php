@@ -59,35 +59,35 @@ class HomeController extends Controller
         }
     }
 
-    public function getRegister(): void
-    {
-        if ($this->authenticationService->isAuthenticated()) {
-            header('Location: /');
-            exit();
-        }
-
-        $this->render('register');
-    }
-
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public function postRegister(): void
-    {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $repeatPassword = $_POST['repeatPassword'];
-        $role = $_POST['role'] == 'admin' ? UserRole::ADMIN : UserRole::USER;
-
-        if ($this->userService->register($email, $password, $repeatPassword, $role)) {
-            $_SESSION['alerts'][] = 'Đăng ký thành công';
-            header('Location: /login');
-        } else {
-            $_SESSION['alerts'][] = 'Đăng ký thất bại';
-            header('Location: /register');
-        }
-    }
+//    public function getRegister(): void
+//    {
+//        if ($this->authenticationService->isAuthenticated()) {
+//            header('Location: /');
+//            exit();
+//        }
+//
+//        $this->render('register');
+//    }
+//
+//    /**
+//     * @throws OptimisticLockException
+//     * @throws ORMException
+//     */
+//    public function postRegister(): void
+//    {
+//        $email = $_POST['email'];
+//        $password = $_POST['password'];
+//        $repeatPassword = $_POST['repeatPassword'];
+//        $role = $_POST['role'] == 'admin' ? UserRole::ADMIN : UserRole::USER;
+//
+//        if ($this->userService->register($email, $password, $repeatPassword, $role)) {
+//            $_SESSION['alerts'][] = 'Đăng ký thành công';
+//            header('Location: /login');
+//        } else {
+//            $_SESSION['alerts'][] = 'Đăng ký thất bại';
+//            header('Location: /register');
+//        }
+//    }
 
     public function postLogout(): void
     {
@@ -110,10 +110,5 @@ class HomeController extends Controller
         }
 
         header('Location: /');
-    }
-
-    public function getChangePassword(): void
-    {
-        $this->render('change-password');
     }
 }

@@ -92,6 +92,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="detailInformationRole" class="form-label">Vai trò</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-venus-mars"></i></i></span>
+                            <input id="detailInformationRole" type="text" class="form-control" placeholder="Vai trò"
+                                   aria-label="role"
+                                   aria-describedby="basic-addon1" disabled readonly>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="detailInformationIsLocked" class="form-label">Trạng thái</label>
+                        <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i
+                                class="fa-regular fa-calendar-days"></i></i></span>
+                            <input id="detailInformationIsLocked" type="text" class="form-control" placeholder="Trạng thái"
+                                   aria-label="status"
+                                   aria-describedby="basic-addon1" disabled readonly>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>

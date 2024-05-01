@@ -29,7 +29,8 @@ use app\utils\DataHelper;
                     <?php endif; ?>
                     <?php if ($isAuthenticated): ?>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/transaction"><i class="fa-solid fa-box"></i> Đơn Hàng</a>
+                            <a class="nav-link active" aria-current="page" href="/transaction"><i
+                                        class="fa-solid fa-box"></i> Đơn Hàng</a>
                         </li>
                     <?php endif; ?>
                     <?php if ($isAuthenticated): ?>
@@ -68,31 +69,34 @@ use app\utils\DataHelper;
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/user/personal-information"><i
                                                     class="fa-solid fa-sliders"></i> Thông tin tài khoản</a></li>
-                                    <li><a class="dropdown-item" data-bs-toggle="modal"
-                                           data-bs-target="#changePasswordModal" href="#"><i
-                                                    class="fa-solid fa-key"></i></i> Đổi mật khẩu</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="/logout"><i
-                                                    class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
-                                </ul>
+                                    <?php
+                                    if (isset($_SESSION['isNeededChangePassword']) && $_SESSION['isNeededChangePassword']) {
+                                        echo '<li><a class="dropdown-item" href="/user/change-password-first-time"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a></li>';
+                                    } else {
+                                        echo '<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal" href="#"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a></li>';
+                                    }
+                                    ?>
+                                    <hr class="dropdown-divider">
                             </li>
+                            <li><a class="dropdown-item" href="/logout"><i
+                                            class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                         </ul>
                         <div class="d-lg-none d-flex justify-content-between">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/user/personal-information"><i
-                                            class="fa-solid fa-sliders"></i>
-                                    Thông tin tài khoản</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal"
-                                   href="#"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Đăng
-                                    xuất</a>
-                            </li>
+                            <ul>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/user/personal-information"><i
+                                                class="fa-solid fa-sliders"></i>
+                                        Thông tin tài khoản</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal"
+                                       href="#"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i>Đăng
+                                        xuất</a>
+                                </li>
+                            </ul>
                         </div>
                     <?php endif; ?>
                 </ul>
