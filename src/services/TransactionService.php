@@ -4,6 +4,7 @@ namespace app\services;
 
 use app\dto\CreateTransactionDTO;
 use app\models\Transaction;
+use app\repositories\TransactionDetailRepository;
 use app\repositories\TransactionRepository;
 use app\utils\TransactionValidateHelper;
 use Doctrine\ORM\Exception\ORMException;
@@ -13,10 +14,11 @@ use Exception;
 class TransactionService
 {
     public function __construct(
-        private readonly TransactionRepository $transactionRepository,
-        private readonly AuthenticationService $authenticationService,
-        private readonly CustomerService $customerService,
-        private readonly ProductService $productService,
+        private readonly TransactionRepository    $transactionRepository,
+        private readonly TransactionDetailRepository $transactionDetailRepository,
+        private readonly AuthenticationService    $authenticationService,
+        private readonly CustomerService          $customerService,
+        private readonly ProductService           $productService,
         private readonly TransactionDetailService $transactionDetailService,
     )
     {
@@ -82,5 +84,29 @@ class TransactionService
     public function getTransactions(): array
     {
         return $this->transactionRepository->findAll();
+    }
+
+
+    public function getTransactionsByUserId(string $userId): array
+    {
+        /** @var array $transactions */
+        $transactions = $this->transactionRepository->findBy(['user' => $userId]);
+
+        $transactionsWithDetails = [];
+
+        // Loop through each transaction
+        foreach ($transactions as $transaction) {
+            // Fetch the details for the current transaction
+            $transactionDetails = $this->transactionDetailRepository->findBy(['transaction' => $transaction]);
+
+            // Add the transaction and its details to the array
+            $transactionsWithDetails[] = [
+                'transaction' => $transaction,
+                'details' => $transactionDetails
+            ];
+        }
+
+        // Return the array of transactions and their details
+        return $transactionsWithDetails;
     }
 }

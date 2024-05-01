@@ -6,6 +6,7 @@ use app\dto\EditUserInformationDTO;
 use app\models\UserRole;
 use app\services\AuthenticationService;
 use app\services\EmailService;
+use app\services\TransactionService;
 use app\services\UserService;
 use app\utils\LoginTokenGenerator;
 use Doctrine\ORM\Exception\ORMException;
@@ -18,7 +19,8 @@ class AdminUserController extends Controller
         Engine                        $engine,
         AuthenticationService         $authenticationService,
         private readonly UserService  $userService,
-        private readonly EmailService $emailService
+        private readonly EmailService $emailService,
+        private readonly TransactionService $transactionService
     )
     {
         parent::__construct($engine, $authenticationService);
@@ -114,7 +116,11 @@ class AdminUserController extends Controller
     public function getUserSaleInformation(): void
     {
         $userId = $_GET['id'];
+        /** @var array $user */
         $user = $this->userService->findUserById($userId);
+        /** @var array $transactions */
+        $transactions = $this->transactionService->getTransactionsByUserId($userId);
+
 
         $this->render('admin/user-sale-information', [
             'header' => "Lịch sử bán hàng của " . $user->getName(),

@@ -16,4 +16,15 @@ class TransactionRepository extends BaseRepository
     {
         return $this->getEntityRepository()->findOneBy(['id' => $id]);
     }
+
+    public function findAllWithDetails()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('t', 'td')
+            ->from(Transaction::class, 't')
+            ->leftJoin('t.transactionDetails', 'td');
+
+        return $qb->getQuery()->getResult();
+    }
 }
