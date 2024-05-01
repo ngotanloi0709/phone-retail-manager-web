@@ -28,7 +28,10 @@ class CustomerService
     {
         return $this->customerRepository->findByPhone($phone);
     }
-
+    public function getCustomerByID(string $id)
+    {
+        return $this->customerRepository->findByID($id);
+    }
     /**
      * @throws OptimisticLockException
      * @throws ORMException

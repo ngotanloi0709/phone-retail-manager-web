@@ -142,7 +142,8 @@ class Product
             'stock' => $this->stock,
             'barcode' => $this->barcode,
             'created' => $this->created,
-            'category' => $this->category->toArray()
+            //chỗ này thêm toArray() thì có lỗi (khum bt)
+            'category' => $this->category
         ];
     }
 }
