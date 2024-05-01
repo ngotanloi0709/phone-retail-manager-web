@@ -2,28 +2,30 @@
 
 namespace app\controllers;
 
+use app\dto\CreateTransactionDTO;
 use app\services\AuthenticationService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
 use app\services\TransactionService;
 use app\services\ProductService;
 use app\services\CustomerService;
+use app\services\TransactionDetailService;
 use app\services\Cus;
 use Doctrine\Common\Collections\Collection;
 
 class TransactionController extends Controller
 {
-    private TransactionService $transactionService;
-    private ProductService $productService;
-    private CustomerService $customerService;
-
-    public function __construct(Engine $engine, AuthenticationService $authenticationService,
-                                TransactionService $transactionService, ProductService $productService,
-                                CustomerService $customerService)
+    public function __construct(
+        Engine                                    $engine,
+        AuthenticationService                     $authenticationService,
+        private readonly TransactionService       $transactionService,
+        private readonly ProductService           $productService,
+        private readonly CustomerService          $customerService,
+    )
     {
         parent::__construct($engine, $authenticationService);
-        $this->transactionService = $transactionService;
-        $this->productService = $productService;
-        $this->customerService = $customerService;
     }
 
     public function index(): void
@@ -43,22 +45,21 @@ class TransactionController extends Controller
         $this->render('transaction/transaction_create', ['products' => $products]);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function postTransaction(): void
     {
-        $givenMoney = str_replace(",", "", $_POST['total']);
-        $givenMoney = (int)$givenMoney;
-        // $items = $_POST['items'];
-        // khuc na`y Chi chua hieu lam, co can dung collection chua item khong a?
-        $items = new \Doctrine\Common\Collections\ArrayCollection();
-        $user = $_SESSION['user'];
-        $customer = $this->customerService->getCustomernById($_POST["customerId"]);
+        $createTransactionDTO = new CreateTransactionDTO();
+        $createTransactionDTO->fromRequest($_POST);
 
-        if ($this->transactionService->createTransaction($givenMoney, $items, $user, $customer)) {
+        if ($this->transactionService->createTransaction($createTransactionDTO)) {
             $_SESSION['alerts'][] = 'Tạo giao dịch thành công';
-            header('Location: /getTransactionManagement');
+            header('Location: /transaction/transaction_management');
         } else {
             $_SESSION['alerts'][] = 'Tạo giao dịch thất bại';
-            header('Location: /getTransactionCreate');
+            header('Location: /transaction/transaction_create');
         }
     }
 

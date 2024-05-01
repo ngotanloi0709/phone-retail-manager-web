@@ -29,7 +29,7 @@ use app\utils\DataHelper;
                     <?php endif; ?>
                     <?php if ($isAuthenticated): ?>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/transaction"><i class="fa-solid fa-user-tie"></i> Đơn Hàng</a>
+                            <a class="nav-link active" aria-current="page" href="/transaction"><i class="fa-solid fa-box"></i> Đơn Hàng</a>
                         </li>
                     <?php endif; ?>
                     <?php if ($isAuthenticated): ?>

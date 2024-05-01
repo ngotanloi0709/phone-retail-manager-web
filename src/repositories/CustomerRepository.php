@@ -7,6 +7,11 @@ use Doctrine\ORM\EntityRepository;
 
 class CustomerRepository extends BaseRepository
 {
+    public function findByPhone(?string $phone)
+    {
+        return $this->getEntityRepository()->findOneBy(['phone' => $phone]);
+    }
+
     protected function getEntityClass(): string
     {
         return Customer::class;

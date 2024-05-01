@@ -7,60 +7,70 @@
 ?>
 
 <?php $this->start('main') ?>
-<div class="row">
-    <div class="col-sm-9 col-md-6 col-lg-8">
-        <form>
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName"/>
-            <a id="addToTransButton" class="btn btn-primary">Add</a>
-            <ul id="productSuggestList"></ul>
-        </form>
-        <table id="productList" class="table">
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>-</th>
-            </tr>
-        </table>
+<div class="card">
+    <div class="card-header">
+        <a href="/transaction/transaction_management" class="btn btn-outline-warning"><i class="fa-solid fa-boxes"></i> Quản Lý Đơn Hàng</a>
     </div>
-
-    <div class="col-sm-3 col-md-6 col-lg-4">
-        
+    <div class="card-body" style="min-height:800px;">
         <form action="" method="post" onkeydown="return event.key != 'Enter';">
-            <div class="form-group">
-                <label for="customerId">Số điện thoại khách hàng:</label>
-                <input type="text" class="form-control" id="customerId" name="customerId" required>
-                <label for="customerName">Tên khách hàng:</label>
-                <input type="text" class="form-control" id="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
-                <a href="/customer/customer_create">Tạo tài khoản khách hàng</a>
-            </div>
-            
-            <div class="form-group">
-                <label for="total">Total:</label>
-                <input type="text" class="form-control" id="total" name="total" required readonly>
-            </div>
+            <div class="row">
+                <div class="col-sm-9 col-md-6 col-lg-8">
+                    <div>
+                        <label for="productBarcode" style="width:150px;">Barcode sản phẩm:</label>
+                        <input type="text" id="productBarcodeValue" readonly/>
+                        <input type="file" id="productBarcode" accept="image/*"/><br><br>
+                        <label for="productName" style="width:150px;">Tên sản phẩm:</label>
+                        <input type="text" id="productName"/>
+                        <a id="addToTransButton" class="btn btn-outline-secondary"><i class='far fa-plus-square'></i> Thêm</a>
+                        <ul id="productSuggestList"></ul>
+                    </div>
+                    <table id="productList" class="table">
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Mã sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th>-</th>
+                        </tr>
+                    </table>
+                </div>
 
-            <div class="form-group">
-                <label for="paymentMethod">Payment Method:</label>
-                <select multiple="multiple" size="2" class="form-control" id="paymentMethod">
-                    <option value="cash">Cash</option>
-                    <option value="card">Card</option>
-                </select>
-            </div>
+                <div class="col-sm-3 col-md-6 col-lg-4">
+                    
+                    <div class="form-group">
+                        <label for="customerPhone">Số điện thoại khách hàng:</label>
+                        <input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="Nhập số điện thoại và nhấn Enter!" required>
+                        <label for="customerName">Tên khách hàng:</label>
+                        <input type="text" class="form-control" id="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="total">Tổng tiền đơn hàng:</label>
+                        <input type="text" class="form-control" id="total" name="total" required readonly>
+                    </div>
 
-            <div hidden class="form-group">
-                <label for="givenMoney">Given Money:</label>
-                <input type="text" class="form-control" id="givenMoney"/>
-            </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Phương thức thanh toán:</label>
+                        <select multiple="multiple" size="2" class="form-control form-select mb-3" id="paymentMethod" required>
+                            <option value="cash">Tiền mặt</option>
+                            <option value="card">Thẻ</option>
+                        </select>
+                    </div>
 
-            <div hidden class="form-group">
-                <label for="change">Change:</label>
-                <input type="text" class="form-control" id="change" readonly/>
-            </div>
+                    <div hidden class="form-group">
+                        <label for="givenMoney">Số tiền khách đưa:</label>
+                        <input type="text" class="form-control" id="givenMoney" required>
+                    </div>
 
-            <button id="submitTransButton" class="btn btn-primary">Submit</button>
+                    <div hidden class="form-group">
+                        <label for="change">Tiền thừa:</label>
+                        <input type="text" class="form-control" id="change" readonly/>
+                    </div>
+
+                    <button id="submitTransButton" class="btn btn-outline-secondary"><i class='fas fa-shopping-basket'></i> Tạo đơn</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -85,34 +95,39 @@
 
         function addToTrans() {
             var productName = document.getElementById("productName").value;
-            <?php foreach ($products as $product): ?>
+            <?php /** @var array $products */
+            foreach ($products as $product): ?>
                 if (productName == "<?= $product->getName() ?>") {
+                    var id = <?= $product->getId() ?>;
                     var price = <?= $product->getPrice() ?>;
                 }
             <?php endforeach; ?>
             var productList = document.getElementById("productList");
+            // Check if product already exists, if so, increase quantity
             for (var i = 0; i < productList.rows.length; i++) {
                 if (productList.rows[i].cells[0].innerHTML == productName) {
-                    var quantity = parseInt(productList.rows[i].cells[2].children[0].value) + 1;
-                    productList.rows[i].cells[2].children[0].value = quantity;
-                    var total = quantity * price;
-                    productList.rows[i].cells[3].innerHTML = total;
+                    var quantity = parseInt(productList.rows[i].cells[3].children[0].value);
+                    productList.rows[i].cells[3].children[0].value = quantity + 1;
+                    var total = (quantity+1) * price;
+                    productList.rows[i].cells[4].innerHTML = total.toLocaleString();
                     document.getElementById("productName").value = null;
                     document.getElementById("productSuggestList").innerHTML = "";
                     return;
                 }
             }
             var row = productList.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            var cell5 = row.insertCell(4);
-            cell1.innerHTML = productName;
-            cell2.innerHTML = price;
-            cell3.innerHTML = "<input type='number' value='1' min='0'/>";
-            cell4.innerHTML = price;
-            cell5.innerHTML = "<a class='btn btn-danger'>&#10006;</a>";
+            var nameCell = row.insertCell(0);
+            var idCell = row.insertCell(1);
+            var priceCell = row.insertCell(2);
+            var quantityCell = row.insertCell(3);
+            var totalCell = row.insertCell(4);
+            var toDoCell = row.insertCell(5);
+            nameCell.innerHTML = productName;
+            idCell.innerHTML = "<input type='text' name='productId[]' style='text-align:center;' value='" + id + "' readonly/>";
+            priceCell.innerHTML = price.toLocaleString();
+            quantityCell.innerHTML = "<input type='number' style='text-align:center;' value='1' min='0' name='productQuantity[]'/>";
+            totalCell.innerHTML = price.toLocaleString();
+            toDoCell.innerHTML = "<a class='btn btn-danger'>&#10006;</a>";
             document.getElementById("productName").value = null;
             document.getElementById("productSuggestList").innerHTML = "";
         }
@@ -121,10 +136,12 @@
             var total = 0;
             var productList = document.getElementById("productList");
             for (var i = 1; i < productList.rows.length; i++) {
-                if (productList.rows[i].cells[3].innerHTML == "") {
+                if (productList.rows[i].cells[4].innerHTML == "") {
                     continue;
                 }
-                total += parseInt(productList.rows[i].cells[3].innerHTML);
+                let tmp = productList.rows[i].cells[4].innerHTML.replace(/[,\.]/gm, '');
+
+                total += parseInt(tmp);
             }
             document.getElementById("total").value = total.toLocaleString();
         }
@@ -137,6 +154,17 @@
         });
 
         $("#addToTransButton").on("click", function() {
+            var productName = document.getElementById("productName").value;
+            var isExistProduct = false;
+            <?php foreach ($products as $product): ?>
+                if (productName == "<?= $product->getName() ?>") {
+                    isExistProduct = true;
+                }
+            <?php endforeach; ?>
+            if (!isExistProduct) {
+                alert("Sản phẩm không tồn tại!");
+                return;
+            }
             addToTrans();
             getTotal();
         });
@@ -146,8 +174,11 @@
             getTotal();
         });
 
+        // "this" in below code are $("#productList")
         $("#productList").on("change", "input[type='number']", function() {
+            // get name of current product (first column of row)
             var $name = $(this).closest("tr").find("td:nth-child(1)").text();
+            // get value of current input (quantity)
             var quantity = parseInt($(this).val());
             
             var inStock = function () {
@@ -177,16 +208,22 @@
                 quantity = 1;
             }
 
-            var price = $(this).closest("tr").find("td:nth-child(2)").text();
+            var price = $(this).closest("tr").find("td:nth-child(3)").text();
+            price = parseInt(price.replace(/[,\.]/g, ''));
             var total = quantity * price;
-            $(this).closest("tr").find("td:nth-child(4)").text(total);
+            $(this).closest("tr").find("td:nth-child(5)").text(total.toLocaleString());
 
             getTotal();
         });
 
-        $("#customerId").on("keyup", function(event) {
+        $("#customerPhone").on("keyup", function(event) {
             if (event.key === "Enter" || event.keyCode === 13) {
                 event.preventDefault();
+                if (this.value === "") {
+                    document.getElementById("customerName").value = "";
+                    return;
+                }
+
                 $str = $(this).val();
                 if ($str.length == 0) {
                     return;
@@ -194,13 +231,14 @@
                 $.ajax({
                     url: '/transaction/get_data',
                     type: 'GET',
-                    data: 'customerId='+$str,
+                    data: 'customerPhone='+$str,
                     success: function(result){
                         if (result == "") {
                             alert("Khách hàng chưa có tài khoản!");
+                            document.getElementById("customerName").value = "";
                             return;
                         }
-                        document.getElementById("customerId").value = $str;
+                        document.getElementById("customerPhone").value = $str;
                         document.getElementById("customerName").value = result;
                     }
                 });
@@ -209,11 +247,11 @@
 
         $("#givenMoney").on("keyup", function() {
             if (event.key === "Enter" || event.keyCode === 13) {
-                var total = parseInt($("#total").val().replace(/,/g, ''));
+                var total = parseInt($("#total").val().replace(/[,\.]/g, ''));
 
                 var givenMoney = parseInt($(this).val());
                 $("#givenMoney").val(givenMoney.toLocaleString());
-                givenMoney = parseInt($(this).val().replace(/,/g, ''));
+                givenMoney = parseInt($(this).val().replace(/[,\.]/g, ''));
 
                 var change = givenMoney - total;
                 $("#change").val(change.toLocaleString());
@@ -224,9 +262,11 @@
             if ($("#paymentMethod").val() == "cash") {
                 $("#givenMoney").closest(".form-group").removeAttr("hidden");
                 $("#change").closest(".form-group").removeAttr("hidden");
+                $("#givenMoney").attr("required", "required");
             } else {
                 $("#givenMoney").closest(".form-group").attr("hidden", "");
                 $("#change").closest(".form-group").attr("hidden", "");
+                $("#givenMoney").removeAttr("required");
             }
         });
 
@@ -236,6 +276,40 @@
                 event.preventDefault();
                 return;
             }
+        });
+
+        $("#productBarcode").on("change", function() {
+            var file = document.getElementById("productBarcode").files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    var barcode = new BarcodeDetector();
+                    barcode.detect(img).then(barcodes => {
+                        if (barcodes.length == 0) {
+                            alert("Không tìm thấy barcode!");
+                            return;
+                        }
+                        var barcodeValue = barcodes[0].rawValue;
+                        document.getElementById("productBarcodeValue").value = barcodeValue;
+                        var productName = "";
+                        <?php foreach ($products as $product): ?>
+                            if (barcodeValue == "<?= $product->getBarcode() ?>") {
+                                productName = "<?= $product->getName() ?>";
+                            }
+                        <?php endforeach; ?>
+                        if (productName == "") {
+                            alert("Sản phẩm không tồn tại!");
+                            return;
+                        }
+                        document.getElementById("productName").value = productName;
+                        addToTrans();
+                        getTotal();
+                    });
+                }
+            }
+            reader.readAsDataURL(file);
         });
     });
 </script>
