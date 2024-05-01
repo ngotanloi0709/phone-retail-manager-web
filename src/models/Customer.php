@@ -24,10 +24,9 @@ class Customer
     #[OneToMany(targetEntity: Transaction::class, mappedBy: 'customer')]
     private Collection $transactions;
 
-    public function __construct(string $name, string $email, string $phone)
+    public function __construct(string $phone)
     {
-        $this->name = $name;
-        $this->email = $email;
+        $this->name = 'Chưa có dữ liệu';
         $this->phone = $phone;
     }
 
