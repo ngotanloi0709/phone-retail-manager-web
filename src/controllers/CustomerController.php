@@ -27,12 +27,21 @@ class CustomerController extends Controller
     public function index(): void
     {
         $customers = $this->customerService->getCustomers();
-        $this->render('customer/customer_management', ['customers' => $customers]);
+        $this->render('customer/customer', ['customers' => $customers]);
     }
     public function getTransactionHistory(): void
     {
-        $customers = $this->customerService->getCustomers();
-        $transactions = $this->transactionService->getTransactions();
-        $this->render('customer/customer_transhistory', ['customers' => $customers,'transactions' => $transactions]);
+        if (isset($_GET['customerid'])) {
+            $customerId = $_GET['customerid'];
+            $customers = $this->customerService->getCustomerByID($customerId);
+            $transactions = $customers->getTransactions();
+            $this->render("customer/customer_transhistory", ['customers' => $customers,'transactions' => $transactions]);
+        }
+        else{
+            header('Location: /customer');
+            return;
+        }
+        
+        
     }
 }

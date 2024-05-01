@@ -29,7 +29,7 @@ $this->layout('base',
                         <td><?= $customer->getEmail() ?></td>
                         <td><?= $customer->getPhone() ?></td>
                         <td>
-                            <a href="<?= $baseUrl . '/customer/customer_transhistory/' . $customer->getId() ?>" class="btn btn-primary">Xem lịch sử mua hàng</a>
+                            <a href="/customer/customer_transhistory?customerid=<?= $customer->getId() ?>" class="btn btn-primary">Xem lịch sử mua hàng</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -34,7 +34,7 @@ use app\utils\DataHelper;
                     <?php endif; ?>
                     <?php if ($isAuthenticated): ?>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/customer_management"><i class="fa-solid fa-book"></i> Quản Lí Khách Hàng</a>
+                            <a class="nav-link active" aria-current="page" href="/customer"><i class="fa-solid fa-book"></i> Quản Lí Khách Hàng</a>
                         </li>
                     <?php endif; ?>
                 </ul>
