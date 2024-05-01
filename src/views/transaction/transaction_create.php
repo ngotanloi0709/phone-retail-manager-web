@@ -38,11 +38,15 @@
 
                 <div class="col-sm-3 col-md-6 col-lg-4">
                     
-                    <div class="form-group">
+                    <div class="form-group" id="customerInfo">
+                        <div id="createNewCustomerDiv" style="display: none">
+                            <label for="createNewCustomer"><i class='fas fa-user-edit'></i> Khách hàng mới:</label>
+                            <input type="checkbox" id="createNewCustomerCheckbox" name="createNewCustomer" value="yes" checked>
+                        </div>
                         <label for="customerPhone">Số điện thoại khách hàng:</label>
                         <input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="Nhập số điện thoại và nhấn Enter!" required>
                         <label for="customerName">Tên khách hàng:</label>
-                        <input type="text" class="form-control" id="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
+                        <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
                     </div>
                     
                     <div class="form-group">
@@ -52,7 +56,7 @@
 
                     <div class="form-group">
                         <label for="paymentMethod">Phương thức thanh toán:</label>
-                        <select multiple="multiple" size="2" class="form-control form-select mb-3" id="paymentMethod" required>
+                        <select multiple="multiple" size="2" class="form-control form-select mb-3" id="paymentMethod" name="paymentMethod" required>
                             <option value="cash">Tiền mặt</option>
                             <option value="card">Thẻ</option>
                         </select>
@@ -60,7 +64,7 @@
 
                     <div hidden class="form-group">
                         <label for="givenMoney">Số tiền khách đưa:</label>
-                        <input type="text" class="form-control" id="givenMoney" required>
+                        <input type="text" class="form-control" id="givenMoney" name="givenMoney" required>
                     </div>
 
                     <div hidden class="form-group">
@@ -235,7 +239,11 @@
                     success: function(result){
                         if (result == "") {
                             alert("Khách hàng chưa có tài khoản!");
+                            document.getElementById("createNewCustomerDiv").style.display = "block";
                             document.getElementById("customerName").value = "";
+                            document.getElementById("customerName").removeAttribute("readonly");
+                            document.getElementById("customerName").setAttribute("placeholder", "Nhập tên khách hàng");
+                            document.getElementById("customerName").setAttribute("required", "");
                             return;
                         }
                         document.getElementById("customerPhone").value = $str;
@@ -276,6 +284,14 @@
                 event.preventDefault();
                 return;
             }
+            if ($("#productList").find("tr").length == 1) {
+                alert("Chưa có sản phẩm nào trong đơn hàng!");
+                event.preventDefault();
+                return;
+            }
+            var paymentMethod = $("#paymentMethod").val();
+            var givenMoney = $("#givenMoney").val();
+            givenMoney = parseInt(givenMoney.replace(/[,\.]/g, ''));
         });
 
         $("#productBarcode").on("change", function() {
@@ -310,6 +326,19 @@
                 }
             }
             reader.readAsDataURL(file);
+        });
+
+        $("#createNewCustomerCheckbox").on("change", function() {
+            if (this.checked) {
+                document.getElementById("customerName").value = "";
+                document.getElementById("customerName").removeAttribute("readonly");
+                document.getElementById("customerName").setAttribute("placeholder", "Nhập tên khách hàng");
+                document.getElementById("customerName").setAttribute("required", "");
+            } else {
+                document.getElementById("customerName").value = "";
+                document.getElementById("customerName").setAttribute("readonly", "");
+                document.getElementById("customerName").setAttribute("placeholder", "Nhập số điện thoại phía trên");
+            }
         });
     });
 </script>

@@ -51,12 +51,25 @@ class TransactionController extends Controller
      */
     public function postTransaction(): void
     {
+        if ($_POST['createNewCustomer'] == 'yes') {
+            $this->customerService->createCustomer($_POST['customerPhone']);
+            $customer = $this->customerService->getCustomerByPhone($_POST['customerPhone']);
+            $customer->setName($_POST['customerName']);
+        }
+
         $createTransactionDTO = new CreateTransactionDTO();
         $createTransactionDTO->fromRequest($_POST);
 
         if ($this->transactionService->createTransaction($createTransactionDTO)) {
             $_SESSION['alerts'][] = 'Tạo giao dịch thành công';
-            header('Location: /transaction/transaction_management');
+            if ($_POST['paymentMethod'] == 'cash') {
+                $givenMoney = $_POST['givenMoney'];
+                $givenMoney = str_replace(',', '', $givenMoney);
+                header("Location: /transaction/transaction_management?paymentMethod=cash&givenMoney=" . $givenMoney);
+            }
+            else {
+                header('Location: /transaction/transaction_management?paymentMethod=card');
+            }
         } else {
             $_SESSION['alerts'][] = 'Tạo giao dịch thất bại';
             header('Location: /transaction/transaction_create');
@@ -68,5 +81,18 @@ class TransactionController extends Controller
         $products = $this->productService->getProducts();
         $customers = $this->customerService->getCustomers();
         $this->render('transaction/get_data', ['products' => $products, 'customers' => $customers]);
+    }
+
+    public function getTransactionDetail(): void
+    {
+        $transactionId = $_GET['transactionId'];
+        $transactionDetails = $this->transactionDetailService->getTransactionDetailsByTransactionId($transactionId);
+        $this->render('transaction/transaction_detail', ['transactionDetails' => $transactionDetails]);
+    }
+
+    public function getTransactionInvoice(): void
+    {
+        $transactions = $this->transactionService->getTransactions();
+        $this->render('transaction/transaction_invoice', ['transactions' => $transactions]);
     }
 }

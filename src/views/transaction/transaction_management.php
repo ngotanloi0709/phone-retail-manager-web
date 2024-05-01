@@ -59,6 +59,14 @@ $this->layout('base',
 </div>
 <script>
     $(document).ready(function () {
+        if (window.location.href.indexOf("paymentMethod=cash") !== -1) {
+            let givenMoney = new URLSearchParams(window.location.search).get('givenMoney');
+            window.open("/transaction/transaction_invoice?paymentMethod=cash&givenMoney=" + givenMoney, "_blank");
+        }
+        if (window.location.href.indexOf("paymentMethod=card") !== -1) {
+            window.open("/transaction/transaction_invoice?paymentMethod=card", "_blank");
+        }
+
         $('.getDetailBnt').click(function () {
             <?php
             foreach ($transactions as $transaction) : ?>
@@ -72,9 +80,9 @@ $this->layout('base',
                 <?php
                 foreach ($transaction->getItems() as $item) : ?>
                 $total += <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
-                let $price = <?= $item->getProduct()->getPrice() ?>;
+                var $price = <?= $item->getProduct()->getPrice() ?>;
                 $price = $price.toLocaleString();
-                let $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
+                var $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
                 $temptotal = $temptotal.toLocaleString();
                 transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal + "</td></tr>";
                 <?php endforeach;
