@@ -67,6 +67,17 @@ class RequestHandler
      */
     private function handleFoundRoute(array $routeInfo): void
     {
+        // require change password if needed
+        if (isset($_SESSION['isNeededChangePassword'])
+            && $_SESSION['isNeededChangePassword']
+            && RequestHelper::getUri() !== '/user/change-password-first-time'
+            && RequestHelper::getUri() !== '/logout'
+            && RequestHelper::getUri() !== '/error-not-found'
+        ){
+            header('Location: /user/change-password-first-time');
+            return;
+        }
+
         // Controller@Function
         $handler = $routeInfo[1];
         // Variable parameters
