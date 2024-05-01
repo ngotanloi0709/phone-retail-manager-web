@@ -17,7 +17,7 @@ class CustomerRepository extends BaseRepository
         return Customer::class;
     }
 
-    public function findByID(string $id)
+    public function findByID(string $id): Customer
     {
         return $this->getEntityRepository()->findOneBy(['id' => $id]);
     }
