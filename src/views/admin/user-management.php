@@ -11,7 +11,7 @@ $this->layout('base',
     ]) ?>
 
 <?php $this->start('main') ?>
-<link rel="stylesheet" href="../style/personal-information.css"">
+<link rel="stylesheet" href="../style/personal-information.css">
 
 <?= $this->insert('modal/create-new-user-modal') ?>
 
