@@ -24,10 +24,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/personal-information', 'UserController@getPersonalInformation');
         $r->addRoute('POST', '/change-personal-information', 'UserController@changPersonalInformation');
         $r->addRoute('POST', '/change-password', 'UserController@changePersonalPassword');
-        $r->addRoute('POST', '/change-password', 'UserController@changePersonalPassword');
         $r->addRoute('POST', '/change-avatar', 'UserController@changeAvatar');
-        $r->addRoute('GET', '/change-password-first-time', 'UserController@getChangePasswordFirstTime');
-        $r->addRoute('POST', '/change-password-first-time', 'UserController@postChangePasswordFirstTime');
         $r->addRoute('GET', '/change-password-first-time', 'UserController@getChangePasswordFirstTime');
         $r->addRoute('POST', '/change-password-first-time', 'UserController@postChangePasswordFirstTime');
     });
@@ -42,13 +39,6 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/edit-user', 'AdminUserController@editUser');
         $r->addRoute('POST', '/change-user-password', 'AdminUserController@changeUserPassword');
         $r->addRoute('GET', '/sale-information', 'AdminUserController@getUserSaleInformation');
-
-        $r->addRoute('POST', '/send-login-email', 'AdminUserController@sendLoginEmail');
-        $r->addRoute('POST', '/delete-user', 'AdminUserController@deleteUser');
-        $r->addRoute('POST', '/edit-user', 'AdminUserController@editUser');
-        $r->addRoute('POST', '/change-user-password', 'AdminUserController@changeUserPassword');
-        $r->addRoute('GET', '/sale-information', 'AdminUserController@getUserSaleInformation');
-
     });
 
     $r->addGroup('/transaction', function (RouteCollector $r) {
