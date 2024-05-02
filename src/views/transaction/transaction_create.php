@@ -12,34 +12,34 @@
         <a href="/transaction/transaction_management" class="btn btn-outline-warning"><i class="fa-solid fa-boxes"></i> Quản Lý Đơn Hàng</a>
     </div>
     <div class="card-body" style="min-height:800px;">
+        <div style="display: flex; align-items: center; margin-bottom: 8px">
+            <label for="productBarcode" style="width:150px; margin-right: 8px">Barcode sản phẩm:</label>
+            <input type="text" id="productBarcodeValue" class="form-control" style="width: 300px; margin-right: 8px" readonly>
+            <input type="file" id="productBarcode" accept="image/*"/>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 8px">
+            <label label for="productName" style="width:150px; margin-right: 8px">Tìm sản phẩm:</label>
+            <input input type="text" id="productName" class="form-control" style="width: 300px; margin-right: 8px">
+            <button id="addToTransButton" class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+        </div>
+        <ul id="productSuggestList" style="margin-left: 150px"></ul>
         <form action="/transaction/transaction_checkout" method="get" onkeydown="return event.key != 'Enter';">
-            <div class="row">
-                <div>
-                    <label for="productBarcode" style="width:150px;">Barcode sản phẩm:</label>
-                    <input type="text" id="productBarcodeValue" readonly/>
-                    <input type="file" id="productBarcode" accept="image/*"/><br><br>
-                    <label for="productName" style="width:150px;">Tên sản phẩm:</label>
-                    <input type="text" id="productName"/>
-                    <a id="addToTransButton" class="btn btn-outline-secondary"><i class='far fa-plus-square'></i> Thêm</a>
-                    <ul id="productSuggestList" style="padding-left:170px"></ul>
-                </div>
-                <table id="productList" class="table table-bordered">
-                    <tr>
-                        <th>Tên sản phẩm</th>
-                        <th>Mã sản phẩm</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th>-</th>
-                    </tr>
-                    <tr style="font-weight: bold;">
-                        <td colspan="3"></td>
-                        <td id="totalQuantity"></td>
-                        <td id="totalMoney"></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
+            <table id="productList" class="table table-bordered">
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Mã sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th>-</th>
+                </tr>
+                <tr style="font-weight: bold;">
+                    <td colspan="3"></td>
+                    <td id="totalQuantity"></td>
+                    <td id="totalMoney"></td>
+                    <td></td>
+                </tr>
+            </table>
             <button id="submitTransButton" class="btn btn-outline-secondary" style="width: 180px; float: right; margin:5px;"><i class='fas fa-money-check-alt'></i> </i>Thanh toán</button>
         </form>
     </div>
@@ -97,7 +97,7 @@
             priceCell.innerHTML = price.toLocaleString();
             quantityCell.innerHTML = "<input type='number' style='text-align:center;' value='1' min='0' name='productQuantity[]'/>";
             totalCell.innerHTML = price.toLocaleString();
-            toDoCell.innerHTML = "<a class='btn btn-danger'>&#10006;</a>";
+            toDoCell.innerHTML = "<button class='btn btn-danger'><i class='fas fa-trash'></i></button>";
             document.getElementById("productName").value = null;
             document.getElementById("productSuggestList").innerHTML = "";
         }
