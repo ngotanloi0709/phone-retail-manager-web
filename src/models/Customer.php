@@ -18,7 +18,7 @@ class Customer
     #[Column(nullable: true)]
     private string $name;
     #[Column(nullable: true)]
-    private string $email;
+    private ?string $email;
     #[Column(nullable: true)]
     private string $address;
     #[Column(nullable: true)]
@@ -57,7 +57,7 @@ class Customer
         $this->name = $name;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }

@@ -37,8 +37,12 @@ table th, table td {
 }
 
 table {
-    /*display: block;*/ /* optional */
+
+}
+
+.long-table {
     overflow: auto;
+    display: block;
 }
 
 .sticky-col {
