@@ -106,17 +106,4 @@ class TransactionController extends Controller
         $transactions = $this->transactionService->getTransactions();
         $this->render('transaction/transaction_invoice', ['transactions' => $transactions]);
     }
-
-    public function getTransactionDetail(): void
-    {
-        $transactionId = $_GET['transactionId'];
-        $transactionDetails = $this->transactionDetailService->getTransactionDetailsByTransactionId($transactionId);
-        $this->render('transaction/transaction_detail', ['transactionDetails' => $transactionDetails]);
-    }
-
-    public function getTransactionInvoice(): void
-    {
-        $transactions = $this->transactionService->getTransactions();
-        $this->render('transaction/transaction_invoice', ['transactions' => $transactions]);
-    }
 }
