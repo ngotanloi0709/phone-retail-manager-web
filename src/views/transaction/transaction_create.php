@@ -12,66 +12,34 @@
         <a href="/transaction/transaction_management" class="btn btn-outline-warning"><i class="fa-solid fa-boxes"></i> Quản Lý Đơn Hàng</a>
     </div>
     <div class="card-body" style="min-height:800px;">
-        <form action="" method="post" onkeydown="return event.key != 'Enter';">
+        <form action="/transaction/transaction_checkout" method="get" onkeydown="return event.key != 'Enter';">
             <div class="row">
-                <div class="col-sm-9 col-md-6 col-lg-8">
-                    <div>
-                        <label for="productBarcode" style="width:150px;">Barcode sản phẩm:</label>
-                        <input type="text" id="productBarcodeValue" readonly/>
-                        <input type="file" id="productBarcode" accept="image/*"/><br><br>
-                        <label for="productName" style="width:150px;">Tên sản phẩm:</label>
-                        <input type="text" id="productName"/>
-                        <a id="addToTransButton" class="btn btn-outline-secondary"><i class='far fa-plus-square'></i> Thêm</a>
-                        <ul id="productSuggestList"></ul>
-                    </div>
-                    <table id="productList" class="table">
-                        <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Mã sản phẩm</th>
-                            <th>Đơn giá</th>
-                            <th>Số lượng</th>
-                            <th>Thành tiền</th>
-                            <th>-</th>
-                        </tr>
-                    </table>
+                <div>
+                    <label for="productBarcode" style="width:150px;">Barcode sản phẩm:</label>
+                    <input type="text" id="productBarcodeValue" readonly/>
+                    <input type="file" id="productBarcode" accept="image/*"/><br><br>
+                    <label for="productName" style="width:150px;">Tên sản phẩm:</label>
+                    <input type="text" id="productName"/>
+                    <a id="addToTransButton" class="btn btn-outline-secondary"><i class='far fa-plus-square'></i> Thêm</a>
+                    <ul id="productSuggestList" style="padding-left:170px"></ul>
                 </div>
-
-                <div class="col-sm-3 col-md-6 col-lg-4">
-                    
-                    <div class="form-group" id="customerInfo">
-                        <div id="createNewCustomerDiv" style="display: none">
-                            <label for="createNewCustomer"><i class='fas fa-user-edit'></i> Khách hàng mới:</label>
-                            <input type="checkbox" id="createNewCustomerCheckbox" name="createNewCustomer" value="yes" checked>
-                        </div>
-                        <label for="customerPhone">Số điện thoại khách hàng:</label>
-                        <input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="Nhập số điện thoại và nhấn Enter!" required>
-                        <label for="customerName">Tên khách hàng:</label>
-                        <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Nhập số điện thoại phía trên" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="total">Tổng tiền đơn hàng:</label>
-                        <input type="text" class="form-control" id="total" name="total" required readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="paymentMethod">Phương thức thanh toán:</label>
-                        <select multiple="multiple" size="2" class="form-control form-select mb-3" id="paymentMethod" name="paymentMethod" required>
-                            <option value="cash">Tiền mặt</option>
-                            <option value="card">Thẻ</option>
-                        </select>
-                    </div>
-
-                    <div hidden class="form-group">
-                        <label for="givenMoney">Số tiền khách đưa:</label>
-                        <input type="text" class="form-control" id="givenMoney" name="givenMoney" required>
-                    </div>
-
-                    <div hidden class="form-group">
-                        <label for="change">Tiền thừa:</label>
-                        <input type="text" class="form-control" id="change" readonly/>
-                    </div>
-
+                <table id="productList" class="table table-bordered">
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>-</th>
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td colspan="3"></td>
+                        <td id="totalQuantity"></td>
+                        <td id="totalMoney"></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div style="width: 180px; float: right;">
                     <button id="submitTransButton" class="btn btn-outline-secondary"><i class='fas fa-shopping-basket'></i> Tạo đơn</button>
                 </div>
             </div>
@@ -108,7 +76,7 @@
             <?php endforeach; ?>
             var productList = document.getElementById("productList");
             // Check if product already exists, if so, increase quantity
-            for (var i = 0; i < productList.rows.length; i++) {
+            for (var i = 0; i < productList.rows.length - 1; i++) {
                 if (productList.rows[i].cells[0].innerHTML == productName) {
                     var quantity = parseInt(productList.rows[i].cells[3].children[0].value);
                     productList.rows[i].cells[3].children[0].value = quantity + 1;
@@ -119,7 +87,7 @@
                     return;
                 }
             }
-            var row = productList.insertRow(-1);
+            var row = productList.insertRow(productList.rows.length - 1);
             var nameCell = row.insertCell(0);
             var idCell = row.insertCell(1);
             var priceCell = row.insertCell(2);
@@ -137,17 +105,19 @@
         }
 
         function getTotal() {
+            var quantity = 0;
             var total = 0;
             var productList = document.getElementById("productList");
-            for (var i = 1; i < productList.rows.length; i++) {
+            for (var i = 1; i < productList.rows.length - 1; i++) {
                 if (productList.rows[i].cells[4].innerHTML == "") {
                     continue;
                 }
+                quantity += parseInt(productList.rows[i].cells[3].children[0].value);
                 let tmp = productList.rows[i].cells[4].innerHTML.replace(/[,\.]/gm, '');
-
                 total += parseInt(tmp);
             }
-            document.getElementById("total").value = total.toLocaleString();
+            document.getElementById("totalQuantity").innerHTML = quantity;
+            document.getElementById("totalMoney").innerHTML = total.toLocaleString();
         }
 
         $("#productSuggestList").on("click", "li", function() {
@@ -220,78 +190,12 @@
             getTotal();
         });
 
-        $("#customerPhone").on("keyup", function(event) {
-            if (event.key === "Enter" || event.keyCode === 13) {
-                event.preventDefault();
-                if (this.value === "") {
-                    document.getElementById("customerName").value = "";
-                    return;
-                }
-
-                $str = $(this).val();
-                if ($str.length == 0) {
-                    return;
-                }
-                $.ajax({
-                    url: '/transaction/get_data',
-                    type: 'GET',
-                    data: 'customerPhone='+$str,
-                    success: function(result){
-                        if (result == "") {
-                            alert("Khách hàng chưa có tài khoản!");
-                            document.getElementById("createNewCustomerDiv").style.display = "block";
-                            document.getElementById("customerName").value = "";
-                            document.getElementById("customerName").removeAttribute("readonly");
-                            document.getElementById("customerName").setAttribute("placeholder", "Nhập tên khách hàng");
-                            document.getElementById("customerName").setAttribute("required", "");
-                            return;
-                        }
-                        document.getElementById("customerPhone").value = $str;
-                        document.getElementById("customerName").value = result;
-                    }
-                });
-            }
-        });
-
-        $("#givenMoney").on("keyup", function() {
-            if (event.key === "Enter" || event.keyCode === 13) {
-                var total = parseInt($("#total").val().replace(/[,\.]/g, ''));
-
-                var givenMoney = parseInt($(this).val());
-                $("#givenMoney").val(givenMoney.toLocaleString());
-                givenMoney = parseInt($(this).val().replace(/[,\.]/g, ''));
-
-                var change = givenMoney - total;
-                $("#change").val(change.toLocaleString());
-            }
-        });
-
-        $("#paymentMethod").on("change", function() {
-            if ($("#paymentMethod").val() == "cash") {
-                $("#givenMoney").closest(".form-group").removeAttr("hidden");
-                $("#change").closest(".form-group").removeAttr("hidden");
-                $("#givenMoney").attr("required", "required");
-            } else {
-                $("#givenMoney").closest(".form-group").attr("hidden", "");
-                $("#change").closest(".form-group").attr("hidden", "");
-                $("#givenMoney").removeAttr("required");
-            }
-        });
-
         $("#submitTransButton").on("click", function(event) {
-            if ($("#paymentMethod").val() == "cash" && $("#change").val() < 0) {
-                alert("Số tiền nhận không đủ!");
-                event.preventDefault();
-                return;
-            }
-            if ($("#productList").find("tr").length == 1) {
+            if ($("#productList").find("tr").length == 2) {
                 alert("Chưa có sản phẩm nào trong đơn hàng!");
                 event.preventDefault();
                 return;
             }
-            var paymentMethod = $("#paymentMethod").val();
-            var givenMoney = $("#givenMoney").val();
-            givenMoney = parseInt(givenMoney.replace(/[,\.]/g, ''));
         });
 
         $("#productBarcode").on("change", function() {
@@ -326,19 +230,6 @@
                 }
             }
             reader.readAsDataURL(file);
-        });
-
-        $("#createNewCustomerCheckbox").on("change", function() {
-            if (this.checked) {
-                document.getElementById("customerName").value = "";
-                document.getElementById("customerName").removeAttribute("readonly");
-                document.getElementById("customerName").setAttribute("placeholder", "Nhập tên khách hàng");
-                document.getElementById("customerName").setAttribute("required", "");
-            } else {
-                document.getElementById("customerName").value = "";
-                document.getElementById("customerName").setAttribute("readonly", "");
-                document.getElementById("customerName").setAttribute("placeholder", "Nhập số điện thoại phía trên");
-            }
         });
     });
 </script>

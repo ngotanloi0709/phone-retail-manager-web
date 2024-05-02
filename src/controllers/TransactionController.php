@@ -45,6 +45,15 @@ class TransactionController extends Controller
         $this->render('transaction/transaction_create', ['products' => $products]);
     }
 
+    public function getTransactionCheckout(): void
+    {
+        $products = $this->productService->getProducts();
+        $productIdArray = $_GET['productId'];
+        $productQuantityArray = $_GET['productQuantity'];
+        $this->render('transaction/transaction_checkout', ['products' => $products, 'productIdArray' => $productIdArray,
+                                                            'productQuantityArray' => $productQuantityArray]);
+    }
+
     /**
      * @throws OptimisticLockException
      * @throws ORMException
