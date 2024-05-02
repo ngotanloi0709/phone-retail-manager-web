@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\dto\EditUserInformationDTO;
+use app\models\User;
 use app\models\UserRole;
 use app\services\AuthenticationService;
 use app\services\EmailService;
@@ -116,14 +117,13 @@ class AdminUserController extends Controller
     public function getUserSaleInformation(): void
     {
         $userId = $_GET['id'];
-        /** @var array $user */
         $user = $this->userService->findUserById($userId);
-        /** @var array $transactions */
         $transactions = $this->transactionService->getTransactionsByUserId($userId);
-
 
         $this->render('admin/user-sale-information', [
             'header' => "Lịch sử bán hàng của " . $user->getName(),
+            'saleUser' => $user,
+            'transactions' => $transactions,
         ]);
     }
 }
