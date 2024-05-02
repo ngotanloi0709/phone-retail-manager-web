@@ -37,7 +37,6 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/edit-user', 'AdminUserController@editUser');
         $r->addRoute('POST', '/change-user-password', 'AdminUserController@changeUserPassword');
         $r->addRoute('GET', '/sale-information', 'AdminUserController@getUserSaleInformation');
-
     });
 
     $r->addGroup('/transaction', function (RouteCollector $r) {
@@ -46,9 +45,11 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/transaction_management', 'TransactionController@getTransactionManagement');
         $r->addRoute('GET', '/transaction_create', 'TransactionController@getTransactionCreate');
         $r->addRoute('GET', '/get_data', 'TransactionController@getData');
-        $r->addRoute('POST', '/transaction_create', 'TransactionController@postTransaction');
+        $r->addRoute('GET', '/transaction_checkout', 'TransactionController@getTransactionCheckout');
+        $r->addRoute('POST', '/transaction_checkout', 'TransactionController@postTransaction');
         $r->addRoute('GET', '/transaction_invoice', 'TransactionController@getTransactionInvoice');
     });
+
     $r->addGroup('/customer', function (RouteCollector $r) {
         $r->addRoute('GET', '', 'CustomerController@index');
         $r->addRoute('GET', '/', 'CustomerController@index');

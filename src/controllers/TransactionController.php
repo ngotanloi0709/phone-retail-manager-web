@@ -45,6 +45,15 @@ class TransactionController extends Controller
         $this->render('transaction/transaction_create', ['products' => $products]);
     }
 
+    public function getTransactionCheckout(): void
+    {
+        $products = $this->productService->getProducts();
+        $productIdArray = $_GET['productId'];
+        $productQuantityArray = $_GET['productQuantity'];
+        $this->render('transaction/transaction_checkout', ['products' => $products, 'productIdArray' => $productIdArray,
+                                                            'productQuantityArray' => $productQuantityArray]);
+    }
+
     /**
      * @throws OptimisticLockException
      * @throws ORMException
@@ -55,13 +64,14 @@ class TransactionController extends Controller
             $this->customerService->createCustomer($_POST['customerPhone']);
             $customer = $this->customerService->getCustomerByPhone($_POST['customerPhone']);
             $customer->setName($_POST['customerName']);
+            $customer->setAddress($_POST['customerAddress']);
+            $_SESSION['alerts'][] = 'Tạo giao tài khoản khách hàng thành công';
         }
 
         $createTransactionDTO = new CreateTransactionDTO();
         $createTransactionDTO->fromRequest($_POST);
 
         if ($this->transactionService->createTransaction($createTransactionDTO)) {
-            $_SESSION['alerts'][] = 'Tạo giao dịch thành công';
             if ($_POST['paymentMethod'] == 'cash') {
                 $givenMoney = $_POST['givenMoney'];
                 $givenMoney = str_replace(',', '', $givenMoney);
@@ -70,8 +80,9 @@ class TransactionController extends Controller
             else {
                 header('Location: /transaction/transaction_management?paymentMethod=card');
             }
+            $_SESSION['alerts'][] = 'Tạo đơn hàng thành công';
         } else {
-            $_SESSION['alerts'][] = 'Tạo giao dịch thất bại';
+            $_SESSION['alerts'][] = 'Tạo đơn hàng thất bại';
             header('Location: /transaction/transaction_create');
         }
     }

@@ -11,6 +11,7 @@ $this->layout('base',
 <body>
 <link rel="stylesheet" href="../../style/popup.css">
 <div id="transDetailPopup" class="popup" style="display: block;">
+    <button id="printBnt" class="btn btn-warning" style="padding-top: 90px; float: right">In hoá đơn</button>
     <div class="popup-content" id="invoiceContent">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -34,7 +35,7 @@ $this->layout('base',
             </div>
         </div>
         <hr>
-        <table class="table table-bordered" class="transDetailPopupTable">
+        <table class="table table-bordered">
             <tr>
                 <th>Tên sản phẩm</th>
                 <th>Mã sản phẩm</th>
@@ -44,9 +45,11 @@ $this->layout('base',
             </tr>
             <?php if (!empty($transactions)) : ?>
                 <?php $latestTransaction = end($transactions); ?>
-                <?php $total = 0; ?>
+                <?php $totalQuality = 0; ?>
+                <?php $totalMoney = 0; ?>
                 <?php foreach ($latestTransaction->getItems() as $item) : ?>
-                    <?php $total += $item->getProduct()->getPrice() * $item->getQuantity(); ?>
+                    <?php $totalMoney += $item->getProduct()->getPrice() * $item->getQuantity(); ?>
+                    <?php $totalQuality += $item->getQuantity(); ?>
                     <tr>
                         <td><?= $item->getProduct()->getName() ?></td>
                         <td><?= $item->getProduct()->getId() ?></td>
@@ -55,13 +58,14 @@ $this->layout('base',
                         <td><?= number_format($item->getProduct()->getPrice() * $item->getQuantity()) ?></td>
                     </tr>
                 <?php endforeach; ?>
-                <tr>
-                    <td colspan="4"></td>
-                    <td><?= number_format($total) ?></td>
+                <tr style="font-weight: bold;">
+                    <td colspan="3"></td>
+                    <td><?= $totalQuality ?></td>
+                    <td><?= number_format($totalMoney) ?></td>
                 </tr>
             <?php else : ?>
                 <tr>
-                    <td colspan="5">No items found.</td>
+                    <td colspan="5">Không tìm thấy sản phẩm.</td>
                 </tr>
             <?php endif; ?>
         </table>
@@ -78,8 +82,12 @@ $this->layout('base',
             <div class="col-md-10 col-sm-10 col-xs-12">Số tiền trả lại khách:</div>
             <div class="col-md-2 col-sm-2 col-xs-12" id="backMoney"></div>
         </div>
+        <hr>
+        <div style="text-align: center;">
+            <h6>Cảm ơn quý khách đã mua hàng!</h6>
+            <h6>PHP POINT OF SALE hẹn gặp lại quý khách!</h6>
+        </div>
     </div>
-    <button id="printBnt" class="btn btn-warning">In hoá đơn</button>
 </div>
 </body>
 
@@ -89,7 +97,7 @@ $this->layout('base',
             $paymentMethod = $_GET['paymentMethod'];
             $givenMoney = $_GET['givenMoney'];
             if ($paymentMethod == 'cash') {
-                $backMoney = $givenMoney - $total;
+                $backMoney = $givenMoney - $totalMoney;
                 $givenMoney = number_format($givenMoney);
                 $backMoney = number_format($backMoney);
                 echo "document.getElementById('paymentMethod').innerHTML = 'Tiền mặt';";
@@ -101,8 +109,8 @@ $this->layout('base',
             }
         ?>
         $('#printBnt').click(function () {
-            var printContents = document.getElementById("invoiceContent").innerHTML;
-            var originalContents = document.body.innerHTML;
+            let printContents = document.getElementById("invoiceContent").innerHTML;
+            let originalContents = document.body.innerHTML;
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
