@@ -76,19 +76,22 @@ $this->layout('base',
                     DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p>";
                 let transDetailPopupTable = document.getElementById("transDetailPopupTable");
                 transDetailPopupTable.innerHTML = "<tr><th>Tên sản phẩm</th><th>Mã sản phẩm</th><th>Đơn giá</th><th>Số Lượng</th><th>Thành tiền</th></tr>"
+                let $quantity = 0;
                 let $total = 0;
                 <?php
                 foreach ($transaction->getItems() as $item) : ?>
+                $quantity += <?= $item->getQuantity() ?>;
                 $total += <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
-                var $price = <?= $item->getProduct()->getPrice() ?>;
+                let $price = <?= $item->getProduct()->getPrice() ?>;
                 $price = $price.toLocaleString();
-                var $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
+                let $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
                 $temptotal = $temptotal.toLocaleString();
                 transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal + "</td></tr>";
                 <?php endforeach;
                 ?>
                 let row = transDetailPopupTable.insertRow(-1);
-                row.innerHTML = "<td colspan='4'></td><td>" + $total.toLocaleString() + "</td>";
+                row.style.fontWeight = "bold";
+                row.innerHTML = "<td colspan='3'></td><td>" + $quantity + "</td><td>" + $total.toLocaleString() + "</td>";
 
                 document.getElementById("transDetailPopup").style.display = "block";
             }

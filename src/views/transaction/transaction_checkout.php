@@ -9,13 +9,14 @@
 <?php $this->start('main') ?>
 <div class="card">
     <div class="card-header">
+        <button class="btn btn-outline-warning" onclick="history.back()"><i class='fas fa-reply'></i> Về Trang Tạo Đơn Hàng</button>
         <a href="/transaction/transaction_management" class="btn btn-outline-warning"><i class="fa-solid fa-boxes"></i> Quản Lý Đơn Hàng</a>
     </div>
     <div class="card-body" style="min-height:800px;">
         <form action="" method="post" onkeydown="return event.key != 'Enter';">
             <div class="row">
                 <div class="col-sm-9 col-md-6 col-lg-8">
-                    <table id="productList" class="table">
+                    <table id="productList" class="table table-bordered">
                         <tr>
                             <th>Tên sản phẩm</th>
                             <th>Mã sản phẩm</th>
@@ -24,7 +25,7 @@
                             <th>Thành tiền</th>
                         </tr>
                         <tr style="font-weight: bold;">
-                            <td colspan="3" style="text-align:right;">Tổng tiền:</td>
+                            <td colspan="3"></td>
                             <td id="totalQuantity"></td>
                             <td id="totalMoney"></td>
                         </tr>
@@ -113,7 +114,7 @@
             let total = 0;
             let quantity = 0;
             let productList = document.getElementById("productList");
-            for (var i = 1; i < productList.rows.length - 1; i++) {
+            for (let i = 1; i < productList.rows.length - 1; i++) {
                 quantity += parseInt(productList.rows[i].cells[3].children[0].value);
                 total += parseInt(productList.rows[i].cells[4].innerHTML.replace(/[,\.]/g, ''));
             }
@@ -139,8 +140,8 @@
                     type: 'GET',
                     data: 'customerPhone='+$str,
                     success: function(result){
-                        let cusName = document.getElementById("customerName");
-                        let cusAddress = document.getElementById("customerAddress");
+                        var cusName = document.getElementById("customerName");
+                        var cusAddress = document.getElementById("customerAddress");
                         let responce = result.split("-");
                         if (responce[0] == "") {
                             alert("Khách hàng chưa có tài khoản!");
@@ -151,7 +152,7 @@
                             cusName.setAttribute("required", "");
                             cusAddress.value = "";
                             cusAddress.removeAttribute("readonly");
-                            cusAddress.setAttribute("placeholder", "Nhập tên khách hàng");
+                            cusAddress.setAttribute("placeholder", "Nhập địa chỉ khách hàng");
                             cusAddress.setAttribute("required", "");
                             return;
                         }
@@ -206,14 +207,21 @@
 
         $("#createNewCustomerCheckbox").on("change", function() {
             if (this.checked) {
-                document.getElementById("customerName").value = "";
-                document.getElementById("customerName").removeAttribute("readonly");
-                document.getElementById("customerName").setAttribute("placeholder", "Nhập tên khách hàng");
-                document.getElementById("customerName").setAttribute("required", "");
+                cusName.value = "";
+                cusName.removeAttribute("readonly");
+                cusName.setAttribute("placeholder", "Nhập tên khách hàng");
+                cusName.setAttribute("required", "");
+                cusAddress.value = "";
+                cusAddress.removeAttribute("readonly");
+                cusAddress.setAttribute("placeholder", "Nhập địa chỉ khách hàng");
+                cusAddress.setAttribute("required", "");
             } else {
-                document.getElementById("customerName").value = "";
-                document.getElementById("customerName").setAttribute("readonly", "");
-                document.getElementById("customerName").setAttribute("placeholder", "Nhập số điện thoại phía trên");
+                cusName.value = "";
+                cusName.setAttribute("readonly", "");
+                cusName.setAttribute("placeholder", "Nhập số điện thoại phía trên");
+                cusAddress.value = "";
+                cusAddress.setAttribute("readonly", "");
+                cusAddress.setAttribute("placeholder", "Nhập số điện thoại phía trên");
             }
         });
     });

@@ -104,8 +104,8 @@ $this->layout('base',
             }
         ?>
         $('#printBnt').click(function () {
-            var printContents = document.getElementById("invoiceContent").innerHTML;
-            var originalContents = document.body.innerHTML;
+            let printContents = document.getElementById("invoiceContent").innerHTML;
+            let originalContents = document.body.innerHTML;
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;

@@ -64,6 +64,8 @@ class TransactionController extends Controller
             $this->customerService->createCustomer($_POST['customerPhone']);
             $customer = $this->customerService->getCustomerByPhone($_POST['customerPhone']);
             $customer->setName($_POST['customerName']);
+            $customer->setAddress($_POST['customerAddress']);
+            $_SESSION['alerts'][] = 'Tạo giao tài khoản khách hàng thành công';
         }
 
         $createTransactionDTO = new CreateTransactionDTO();
