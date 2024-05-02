@@ -38,6 +38,7 @@ class Customer
     }
 
     public function getName(): ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -63,6 +64,7 @@ class Customer
     }
 
     public function getPhone(): ?string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -72,6 +74,7 @@ class Customer
         return $this->transactions;
     }
 
+    public function getTransactionCount(): ?int
     public function getTransactionCount(): ?int
     {
         return count($this->transactions);

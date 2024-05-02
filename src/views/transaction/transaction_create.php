@@ -229,6 +229,19 @@
             }
             reader.readAsDataURL(file);
         });
+
+        $("#createNewCustomerCheckbox").on("change", function() {
+            if (this.checked) {
+                document.getElementById("customerName").value = "";
+                document.getElementById("customerName").removeAttribute("readonly");
+                document.getElementById("customerName").setAttribute("placeholder", "Nhập tên khách hàng");
+                document.getElementById("customerName").setAttribute("required", "");
+            } else {
+                document.getElementById("customerName").value = "";
+                document.getElementById("customerName").setAttribute("readonly", "");
+                document.getElementById("customerName").setAttribute("placeholder", "Nhập số điện thoại phía trên");
+            }
+        });
     });
 </script>
 <?php $this->end('main') ?>
