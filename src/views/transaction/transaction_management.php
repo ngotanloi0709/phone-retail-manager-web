@@ -48,7 +48,7 @@ $this->layout('base',
                     <td><?= DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></td>
                     <td><?= $transaction->getUser()->getUsername() ?></td>
                     <td>
-                        <button class="getDetailBnt">Chi tiết</button>
+                        <button class="btn btn-outline-secondary getDetailBnt ">Chi tiết</button>
                     </td>
                 </tr>
             <?php endforeach;
@@ -59,12 +59,15 @@ $this->layout('base',
 </div>
 <script>
     $(document).ready(function () {
+        //render new tab contains transaction's invoice if this page been call from transaction_checkout
         if (window.location.href.indexOf("paymentMethod=cash") !== -1) {
             let givenMoney = new URLSearchParams(window.location.search).get('givenMoney');
             window.open("/transaction/transaction_invoice?paymentMethod=cash&givenMoney=" + givenMoney, "_blank");
+            window.location.href = "/transaction/transaction_management";
         }
         if (window.location.href.indexOf("paymentMethod=card") !== -1) {
             window.open("/transaction/transaction_invoice?paymentMethod=card", "_blank");
+            window.location.href = "/transaction/transaction_management";
         }
 
         $('.getDetailBnt').click(function () {
@@ -82,11 +85,9 @@ $this->layout('base',
                 foreach ($transaction->getItems() as $item) : ?>
                 $quantity += <?= $item->getQuantity() ?>;
                 $total += <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
-                let $price = <?= $item->getProduct()->getPrice() ?>;
-                $price = $price.toLocaleString();
-                let $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
-                $temptotal = $temptotal.toLocaleString();
-                transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal + "</td></tr>";
+                var $price = <?= $item->getProduct()->getPrice() ?>;
+                var $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
+                transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price.toLocaleString() + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal.toLocaleString() + "</td></tr>";
                 <?php endforeach;
                 ?>
                 let row = transDetailPopupTable.insertRow(-1);

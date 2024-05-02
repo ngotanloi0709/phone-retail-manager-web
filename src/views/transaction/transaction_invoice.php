@@ -65,7 +65,7 @@ $this->layout('base',
                 </tr>
             <?php else : ?>
                 <tr>
-                    <td colspan="5">No items found.</td>
+                    <td colspan="5">Không tìm thấy sản phẩm.</td>
                 </tr>
             <?php endif; ?>
         </table>
@@ -81,6 +81,11 @@ $this->layout('base',
         <div hidden class="row" style="text-align: right;">
             <div class="col-md-10 col-sm-10 col-xs-12">Số tiền trả lại khách:</div>
             <div class="col-md-2 col-sm-2 col-xs-12" id="backMoney"></div>
+        </div>
+        <hr>
+        <div style="text-align: center;">
+            <h6>Cảm ơn quý khách đã mua hàng!</h6>
+            <h6>PHP POINT OF SALE hẹn gặp lại quý khách!</h6>
         </div>
     </div>
 </div>

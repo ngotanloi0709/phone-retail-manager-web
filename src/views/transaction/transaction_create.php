@@ -40,7 +40,7 @@
                     </tr>
                 </table>
             </div>
-            <button id="submitTransButton" class="btn btn-outline-secondary" style="width: 200px; float: right; margin:5px;"><i class='fas fa-shopping-basket'></i> Tạo đơn</button>
+            <button id="submitTransButton" class="btn btn-outline-secondary" style="width: 180px; float: right; margin:5px;"><i class='fas fa-money-check-alt'></i> </i>Thanh toán</button>
         </form>
     </div>
 </div>

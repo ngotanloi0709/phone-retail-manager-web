@@ -37,7 +37,7 @@
                     <div class="form-group" id="customerInfo">
                         <div id="createNewCustomerDiv" style="display: none">
                             <label for="createNewCustomer"><i class='fas fa-user-edit'></i> Khách hàng mới:</label>
-                            <input type="checkbox" id="createNewCustomerCheckbox" name="createNewCustomer" value="yes" checked>
+                            <input type="checkbox" id="createNewCustomerCheckbox" name="createNewCustomer">
                         </div>
                         <label for="customerPhone">Số điện thoại khách hàng:</label>
                         <input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="Nhập số điện thoại và nhấn Enter!" required>
@@ -87,6 +87,9 @@
         }
         echo "getTotal();";
         ?>
+
+        var cusName = document.getElementById("customerName");
+        var cusAddress = document.getElementById("customerAddress");
 
         function addToTrans(id, quantity) {
             <?php /** @var array $products */
@@ -140,11 +143,11 @@
                     type: 'GET',
                     data: 'customerPhone='+$str,
                     success: function(result){
-                        var cusName = document.getElementById("customerName");
-                        var cusAddress = document.getElementById("customerAddress");
                         let responce = result.split("-");
                         if (responce[0] == "") {
                             alert("Khách hàng chưa có tài khoản!");
+                            document.getElementById("createNewCustomerCheckbox").setAttribute("checked", "");
+                            document.getElementById("createNewCustomerCheckbox").value = "yes";
                             document.getElementById("createNewCustomerDiv").style.display = "block";
                             cusName.value = "";
                             cusName.removeAttribute("readonly");
@@ -159,6 +162,9 @@
                         document.getElementById("customerPhone").value = $str;
                         cusName.value = responce[0];
                         cusAddress.value = responce[1];
+                        document.getElementById("createNewCustomerCheckbox").removeAttribute("checked");
+                        document.getElementById("createNewCustomerCheckbox").value = "no";
+                        document.getElementById("createNewCustomerDiv").style.display = "none";
                     }
                 });
             }
@@ -207,6 +213,7 @@
 
         $("#createNewCustomerCheckbox").on("change", function() {
             if (this.checked) {
+                this.value = "yes";
                 cusName.value = "";
                 cusName.removeAttribute("readonly");
                 cusName.setAttribute("placeholder", "Nhập tên khách hàng");
@@ -216,6 +223,7 @@
                 cusAddress.setAttribute("placeholder", "Nhập địa chỉ khách hàng");
                 cusAddress.setAttribute("required", "");
             } else {
+                this.value = "no";
                 cusName.value = "";
                 cusName.setAttribute("readonly", "");
                 cusName.setAttribute("placeholder", "Nhập số điện thoại phía trên");

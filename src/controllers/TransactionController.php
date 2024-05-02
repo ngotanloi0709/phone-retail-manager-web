@@ -72,7 +72,6 @@ class TransactionController extends Controller
         $createTransactionDTO->fromRequest($_POST);
 
         if ($this->transactionService->createTransaction($createTransactionDTO)) {
-            $_SESSION['alerts'][] = 'Tạo giao dịch thành công';
             if ($_POST['paymentMethod'] == 'cash') {
                 $givenMoney = $_POST['givenMoney'];
                 $givenMoney = str_replace(',', '', $givenMoney);
@@ -81,8 +80,9 @@ class TransactionController extends Controller
             else {
                 header('Location: /transaction/transaction_management?paymentMethod=card');
             }
+            $_SESSION['alerts'][] = 'Tạo đơn hàng thành công';
         } else {
-            $_SESSION['alerts'][] = 'Tạo giao dịch thất bại';
+            $_SESSION['alerts'][] = 'Tạo đơn hàng thất bại';
             header('Location: /transaction/transaction_create');
         }
     }
