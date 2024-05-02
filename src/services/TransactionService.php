@@ -89,24 +89,6 @@ class TransactionService
 
     public function getTransactionsByUserId(string $userId): array
     {
-        /** @var array $transactions */
-        $transactions = $this->transactionRepository->findBy(['user' => $userId]);
-
-        $transactionsWithDetails = [];
-
-        // Loop through each transaction
-        foreach ($transactions as $transaction) {
-            // Fetch the details for the current transaction
-            $transactionDetails = $this->transactionDetailRepository->findBy(['transaction' => $transaction]);
-
-            // Add the transaction and its details to the array
-            $transactionsWithDetails[] = [
-                'transaction' => $transaction,
-                'details' => $transactionDetails
-            ];
-        }
-
-        // Return the array of transactions and their details
-        return $transactionsWithDetails;
+        return $this->transactionRepository->findAllWithDetails();
     }
 }

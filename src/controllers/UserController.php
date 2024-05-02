@@ -37,11 +37,6 @@ class UserController extends Controller
             $_SESSION['alerts'][] = 'Đổi mật khẩu thất bại';
         }
 
-        if ($currentLocation === '/change-password') {
-            header("Location: /");
-            return;
-        }
-
         header("Location: $currentLocation");
     }
 
