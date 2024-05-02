@@ -97,7 +97,7 @@ $this->layout('base',
             $paymentMethod = $_GET['paymentMethod'];
             $givenMoney = $_GET['givenMoney'];
             if ($paymentMethod == 'cash') {
-                $backMoney = $givenMoney - $total;
+                $backMoney = $givenMoney - $totalMoney;
                 $givenMoney = number_format($givenMoney);
                 $backMoney = number_format($backMoney);
                 echo "document.getElementById('paymentMethod').innerHTML = 'Tiền mặt';";

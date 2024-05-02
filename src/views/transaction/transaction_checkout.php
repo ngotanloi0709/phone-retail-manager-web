@@ -49,7 +49,7 @@
                     
                     <div class="form-group">
                         <label for="total">Tổng tiền đơn hàng:</label>
-                        <input type="text" class="form-control" id="total" name="total" required readonly>
+                        <input type="text" class="form-control" id="total" required readonly>
                     </div>
 
                     <div class="form-group">
