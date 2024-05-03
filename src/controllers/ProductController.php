@@ -19,9 +19,9 @@ class ProductController extends Controller
 
     }
 
-    public function getProducts(): void 
+    public function getProducts(): void
     {
-        $products = $this->productService->getProducts(); 
+        $products = $this->productService->getProducts();
         $this->render('product/product_management', ['products' => $products]);
     }
 
@@ -32,21 +32,21 @@ class ProductController extends Controller
 
     public function postAddProduct(): void
     {
-    
+
         $category = $_POST['category'];
         if ($category == 'new') {
             $category = $_POST['newCategoryName'];
         }
 
-         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
             $targetDirectory = "../public/product_images/";
 
-             if (!file_exists($targetDirectory)) {
-                 mkdir($targetDirectory, 0777, true);
-             }
+            if (!file_exists($targetDirectory)) {
+                mkdir($targetDirectory, 0777, true);
+            }
 
             $targetFile = $targetDirectory . basename($_FILES['image']['name']);
-            
+
             if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
                 $imgUrl = $targetFile;
             } else {
@@ -57,13 +57,13 @@ class ProductController extends Controller
         }
 
         $barcode = isset($_POST['barcode']) ? intval($_POST['barcode']) : null;
-        $productName = $_POST['name'];  
+        $productName = $_POST['name'];
         $price = isset($_POST['price']) ? intval($_POST['price']) : null;
         $importPrice = isset($_POST['import_price']) ? intval($_POST['import_price']) : null;
         $stock = isset($_POST['stock']) ? intval($_POST['stock']) : null;
         $description = $_POST['description'];
-        
-      
+
+
         if ($this->productService->createProduct($barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl)) {
             $_SESSION['alerts'][] = 'Tạo sản phẩm thành công';
             header('Location: /product/');
@@ -88,12 +88,12 @@ class ProductController extends Controller
     {
         $id = $_GET['id'];
         $barcode = isset($_POST['barcode']) ? intval($_POST['barcode']) : null;
-        $productName = $_POST['name'];  
+        $productName = $_POST['name'];
         $price = isset($_POST['price']) ? intval($_POST['price']) : null;
         $importPrice = isset($_POST['import_price']) ? intval($_POST['import_price']) : null;
         $stock = isset($_POST['stock']) ? intval($_POST['stock']) : null;
         $description = $_POST['description'];
-        
+
         $category = $_POST['category'];
         if ($category == 'new') {
             $category = $_POST['new_category'];
@@ -107,7 +107,7 @@ class ProductController extends Controller
             }
 
             $targetFile = $targetDirectory . basename($_FILES['image']['name']);
-            
+
             if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
                 $imgUrl = $targetFile;
             } else {
@@ -117,8 +117,8 @@ class ProductController extends Controller
             $product = $this->productService->getProductById($id);
             $imgUrl = $product->getImageUrl();
         }
-        
-        
+
+
         //var_dump($barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl);
         if ($this->productService->updateProduct($id, $barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl)) {
             $_SESSION['alerts'][] = 'Chỉnh sửa sản phẩm thành công';
@@ -129,17 +129,21 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * @throws ORMException
+     */
     public function deleteProduct(): void
     {
         $id = $_GET['id'];
+
         if ($this->productService->deleteProduct($id)) {
             $_SESSION['alerts'][] = 'Xóa sản phẩm thành công';
-            header('Location: /product');
         } else {
             $_SESSION['alerts'][] = 'Xóa sản phẩm thất bại';
-            header('Location: /product');
         }
-    } 
+
+        header('Location: /product');
+    }
 
     public function getProductDetail(): void
     {
@@ -148,6 +152,5 @@ class ProductController extends Controller
         $this->render('product/product_detail', ['product' => $product]);
     }
 
-    
 
 }

@@ -104,18 +104,20 @@ class ProductService
         }
     }
 
+    /**
+     * @throws ORMException
+     */
     public function deleteProduct(int $id): bool
     {
-        if ($this->transactionDetailRepository->findByProduct($id) != null) {
-            return false;
-        }
         try {
             $product = $this->productRepository->findByID($id);
+
             $this->productRepository->delete($product);
-            return true;
         } catch (Exception $e) {
-            error_log($e->getMessage());
+            $_SESSION['alerts'][] = 'Thông tin sản phẩm đang nằm trong đơn hàng, không thể xóa';
             return false;
         }
+
+        return true;
     }
 }
