@@ -73,15 +73,11 @@
                 }
             <?php endforeach; ?>
             let productList = document.getElementById("productList");
-            let productList = document.getElementById("productList");
             // Check if product already exists, if so, increase quantity
-            for (let i = 0; i < productList.rows.length - 1; i++) {
             for (let i = 0; i < productList.rows.length - 1; i++) {
                 if (productList.rows[i].cells[0].innerHTML == productName) {
                     let quantity = parseInt(productList.rows[i].cells[3].children[0].value);
-                    let quantity = parseInt(productList.rows[i].cells[3].children[0].value);
                     productList.rows[i].cells[3].children[0].value = quantity + 1;
-                    let total = (quantity+1) * price;
                     let total = (quantity+1) * price;
                     productList.rows[i].cells[4].innerHTML = total.toLocaleString();
                     document.getElementById("productName").value = null;
@@ -89,13 +85,6 @@
                     return;
                 }
             }
-            let row = productList.insertRow(productList.rows.length - 1);
-            let nameCell = row.insertCell(0);
-            let idCell = row.insertCell(1);
-            let priceCell = row.insertCell(2);
-            let quantityCell = row.insertCell(3);
-            let totalCell = row.insertCell(4);
-            let toDoCell = row.insertCell(5);
             let row = productList.insertRow(productList.rows.length - 1);
             let nameCell = row.insertCell(0);
             let idCell = row.insertCell(1);
@@ -118,14 +107,9 @@
             let total = 0;
             let productList = document.getElementById("productList");
             for (let i = 1; i < productList.rows.length - 1; i++) {
-            let quantity = 0;
-            let total = 0;
-            let productList = document.getElementById("productList");
-            for (let i = 1; i < productList.rows.length - 1; i++) {
                 if (productList.rows[i].cells[4].innerHTML == "") {
                     continue;
                 }
-                quantity += parseInt(productList.rows[i].cells[3].children[0].value);
                 quantity += parseInt(productList.rows[i].cells[3].children[0].value);
                 let tmp = productList.rows[i].cells[4].innerHTML.replace(/[,\.]/gm, '');
                 total += parseInt(tmp);
@@ -144,8 +128,6 @@
         });
 
         $("#addToTransButton").on("click", function() {
-            let productName = document.getElementById("productName").value;
-            let isExistProduct = false;
             let productName = document.getElementById("productName").value;
             let isExistProduct = false;
             <?php foreach ($products as $product): ?>
@@ -170,13 +152,9 @@
         $("#productList").on("change", "input[type='number']", function() {
             // get name of current product (first column of row)
             let $name = $(this).closest("tr").find("td:nth-child(1)").text();
-            let $name = $(this).closest("tr").find("td:nth-child(1)").text();
             // get value of current input (quantity)
             let quantity = parseInt($(this).val());
-            let quantity = parseInt($(this).val());
             
-            let inStock = function () {
-                let tmp = null;
             let inStock = function () {
                 let tmp = null;
                 $.ajax({
@@ -205,9 +183,7 @@
             }
 
             let price = $(this).closest("tr").find("td:nth-child(3)").text();
-            let price = $(this).closest("tr").find("td:nth-child(3)").text();
             price = parseInt(price.replace(/[,\.]/g, ''));
-            let total = quantity * price;
             let total = quantity * price;
             $(this).closest("tr").find("td:nth-child(5)").text(total.toLocaleString());
 
@@ -226,14 +202,10 @@
         $("#productBarcode").on("change", function() {
             let file = document.getElementById("productBarcode").files[0];
             let reader = new FileReader();
-            let file = document.getElementById("productBarcode").files[0];
-            let reader = new FileReader();
             reader.onload = function(e) {
-                let img = new Image();
                 let img = new Image();
                 img.src = e.target.result;
                 img.onload = function() {
-                    let barcode = new BarcodeDetector();
                     let barcode = new BarcodeDetector();
                     barcode.detect(img).then(barcodes => {
                         if (barcodes.length == 0) {
@@ -241,9 +213,7 @@
                             return;
                         }
                         let barcodeValue = barcodes[0].rawValue;
-                        let barcodeValue = barcodes[0].rawValue;
                         document.getElementById("productBarcodeValue").value = barcodeValue;
-                        let productName = "";
                         let productName = "";
                         <?php foreach ($products as $product): ?>
                             if (barcodeValue == "<?= $product->getBarcode() ?>") {
