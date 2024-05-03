@@ -29,6 +29,7 @@ if (isset($_GET["customerPhone"])) {
     foreach ($customers as $customer) {
         if ($customer->getPhone() == $_GET["customerPhone"]) {
             echo $customer->getName(). "-" . $customer->getAddress();
+            return;
         }
     }
 }
