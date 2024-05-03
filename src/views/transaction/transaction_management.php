@@ -53,7 +53,7 @@ $this->layout('base',
                     <td><?= DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></td>
                     <td><?= $transaction->getUser()->getUsername() ?></td>
                     <td>
-                        <button class="btn btn-outline-secondary getDetailBnt ">Chi tiết</button>
+                        <button class="btn btn-outline-secondary getDetailBnt"><i class="fa-solid fa-circle-info"></i> Chi tiết</button>
                     </td>
                 </tr>
             <?php endforeach;

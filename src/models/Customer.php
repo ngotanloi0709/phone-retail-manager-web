@@ -22,8 +22,6 @@ class Customer
     #[Column(nullable: true)]
     private string $address;
     #[Column(nullable: true)]
-    private string $address;
-    #[Column(nullable: true)]
     private string $phone;
     #[OneToMany(targetEntity: Transaction::class, mappedBy: 'customer')]
     private Collection $transactions;

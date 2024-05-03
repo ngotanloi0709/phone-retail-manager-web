@@ -58,7 +58,7 @@ input[type="file"]::after {
     pointer-events: none;
     top: 8px;
     left: 20px;
-    color: #0964b0;
+    color: #5d5d5d;
     content: "Quét barcode";
 }
 
@@ -75,11 +75,11 @@ input[type="file"]::file-selector-button {
 }
   
 input[type="file"]::file-selector-button:hover {
-    background-color: #f5ecc4;
+    background-color: #e7e7e7;
 }
   
 input[type="file"]::file-selector-button:active {
-    background-color: #f8ebab;
+    background-color: #e7e7e7;
 }
 
 input[type="file"] {

@@ -14,12 +14,13 @@
     <div class="card-body" style="min-height:800px;">
         <div style="display: flex; align-items: center; margin-bottom: 8px">
             <label for="productBarcode" style="width:150px; margin-right: 8px">Barcode sản phẩm:</label>
-            <input type="text" id="productBarcodeValue" class="form-control" style="width: 300px; margin-right: 8px" readonly>
+            <input type="text" id="productBarcodeValue" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập hoặc quét barcode">
+            <button id="searchProductByBarcode" class="btn btn-outline-secondary" style="margin-right: 8px"><i class="fas fa-search"></i></button>
             <input type="file" id="productBarcode" accept="image/*"/>
         </div>
         <div style="display: flex; align-items: center; margin-bottom: 8px">
             <label label for="productName" style="width:150px; margin-right: 8px">Tìm sản phẩm:</label>
-            <input input type="text" id="productName" class="form-control" style="width: 300px; margin-right: 8px">
+            <input input type="text" id="productName" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập tên sản phẩm">
             <button id="addToTransButton" class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
         </div>
         <ul id="productSuggestList" style="margin-left: 150px"></ul>
@@ -35,8 +36,8 @@
                 </tr>
                 <tr style="font-weight: bold;">
                     <td colspan="3"></td>
-                    <td id="totalQuantity"></td>
-                    <td id="totalMoney"></td>
+                    <td id="totalQuantity">0</td>
+                    <td id="totalMoney">0</td>
                     <td></td>
                 </tr>
             </table>
@@ -77,8 +78,10 @@
             for (let i = 0; i < productList.rows.length - 1; i++) {
                 if (productList.rows[i].cells[0].innerHTML == productName) {
                     let quantity = parseInt(productList.rows[i].cells[3].children[0].value);
-                    productList.rows[i].cells[3].children[0].value = quantity + 1;
-                    let total = (quantity+1) * price;
+                    quantity++;
+                    quantity = checkInStock(productName, quantity);
+                    productList.rows[i].cells[3].children[0].value = quantity;
+                    let total = (quantity) * price;
                     productList.rows[i].cells[4].innerHTML = total.toLocaleString();
                     document.getElementById("productName").value = null;
                     document.getElementById("productSuggestList").innerHTML = "";
@@ -93,9 +96,9 @@
             let totalCell = row.insertCell(4);
             let toDoCell = row.insertCell(5);
             nameCell.innerHTML = productName;
-            idCell.innerHTML = "<input type='text' name='productId[]' style='text-align:center;' value='" + id + "' readonly/>";
+            idCell.innerHTML = "<input type='text' name='productId[]' style='text-align:center; border: none;' value='" + id + "' readonly/>";
             priceCell.innerHTML = price.toLocaleString();
-            quantityCell.innerHTML = "<input type='number' style='text-align:center;' value='1' min='0' name='productQuantity[]'/>";
+            quantityCell.innerHTML = "<input type='number' style='text-align:center; border: none;' value='1' min='0' name='productQuantity[]'/>";
             totalCell.innerHTML = price.toLocaleString();
             toDoCell.innerHTML = "<button class='btn btn-danger'><i class='fas fa-trash'></i></button>";
             document.getElementById("productName").value = null;
@@ -143,18 +146,14 @@
             getTotal();
         });
 
-        $("#productList").on("click", "a", function() {
+        $("#productList").on("click", "button", function() {
             $(this).closest("tr").remove();
             getTotal();
         });
 
-        // "this" in below code are $("#productList")
-        $("#productList").on("change", "input[type='number']", function() {
-            // get name of current product (first column of row)
-            let $name = $(this).closest("tr").find("td:nth-child(1)").text();
-            // get value of current input (quantity)
-            let quantity = parseInt($(this).val());
-            
+        // return expectQuantity if expectQuantity <= inStock, else inStock
+        function checkInStock(productName, expectQuantity) {
+            $name = productName;
             let inStock = function () {
                 let tmp = null;
                 $.ajax({
@@ -171,17 +170,28 @@
                 return parseInt(tmp);
             }();
                        
-            if (quantity > inStock) {
+            if (expectQuantity > inStock) {
                 alert("Số lượng sản phẩm " + $name + " trong kho: " + inStock);
                 $(this).val(inStock);
-                quantity = inStock;
+                expectQuantity = inStock;
             }
             
-            if (quantity <= 0) {
+            if (expectQuantity <= 0) {
                 $(this).val(1);
-                quantity = 1;
+                expectQuantity = 1;
             }
+            return expectQuantity;
+        }
 
+        // "this" in below code are $("#productList")
+        $("#productList").on("change", "input[type='number']", function() {
+            // get name of current product (first column of row)
+            let $name = $(this).closest("tr").find("td:nth-child(1)").text();
+            // get value of current input (quantity)
+            let quantity = parseInt($(this).val());
+            // get in-stock quantity of current product
+            quantity = checkInStock($name, quantity);
+            $(this).val(quantity);
             let price = $(this).closest("tr").find("td:nth-child(3)").text();
             price = parseInt(price.replace(/[,\.]/g, ''));
             let total = quantity * price;
@@ -192,12 +202,27 @@
 
         $("#submitTransButton").on("click", function(event) {
             if ($("#productList").find("tr").length == 2) {
-            if ($("#productList").find("tr").length == 2) {
                 alert("Chưa có sản phẩm nào trong đơn hàng!");
                 event.preventDefault();
                 return;
             }
         });
+
+        function searchBarcode(barcodeValueInput) {
+            let productName = "";
+            <?php foreach ($products as $product): ?>
+                if (barcodeValueInput == "<?= $product->getBarcode() ?>") {
+                    productName = "<?= $product->getName() ?>";
+                }
+            <?php endforeach; ?>
+            if (productName == "") {
+                alert("Không tìm thấy sản phẩm với barcode " + barcodeValueInput);
+                return;
+            }
+            document.getElementById("productName").value = productName;
+            addToTrans();
+            getTotal();
+        }
 
         $("#productBarcode").on("change", function() {
             let file = document.getElementById("productBarcode").files[0];
@@ -214,23 +239,23 @@
                         }
                         let barcodeValue = barcodes[0].rawValue;
                         document.getElementById("productBarcodeValue").value = barcodeValue;
-                        let productName = "";
-                        <?php foreach ($products as $product): ?>
-                            if (barcodeValue == "<?= $product->getBarcode() ?>") {
-                                productName = "<?= $product->getName() ?>";
-                            }
-                        <?php endforeach; ?>
-                        if (productName == "") {
-                            alert("Sản phẩm không tồn tại!");
-                            return;
-                        }
-                        document.getElementById("productName").value = productName;
-                        addToTrans();
-                        getTotal();
+                        searchBarcode(barcodeValue);
                     });
                 }
             }
             reader.readAsDataURL(file);
+        });
+
+        $("#searchProductByBarcode").on("click", function() {
+            let barcodeValue = document.getElementById("productBarcodeValue").value;
+            searchBarcode(barcodeValue);
+        });
+
+        $("#productBarcodeValue").on("keyup", function(event) {
+            if (event.key === "Enter" || event.keyCode === 13) {
+                let barcodeValue = document.getElementById("productBarcodeValue").value;
+                searchBarcode(barcodeValue);
+            }
         });
 
         $("#createNewCustomerCheckbox").on("change", function() {
