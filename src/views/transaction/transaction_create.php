@@ -7,6 +7,7 @@
 ?>
 
 <?php $this->start('main') ?>
+<link rel="stylesheet" href="../../style/transation-style.css">
 <div class="card">
     <div class="card-header">
         <a href="/transaction/transaction_management" class="btn btn-outline-warning"><i class="fa-solid fa-boxes"></i> Quản Lý Đơn Hàng</a>
