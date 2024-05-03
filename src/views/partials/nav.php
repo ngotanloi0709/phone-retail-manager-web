@@ -29,6 +29,10 @@ use app\utils\DataHelper;
                     <?php endif; ?>
                     <?php if ($isAuthenticated): ?>
                         <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/product"><i class="fa-solid fa-mobile"></i> Sản Phẩm</a>
+                        </li>           
+                    <?php if ($isAuthenticated): ?>
+                        <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/transaction"><i
                                         class="fa-solid fa-box"></i> Đơn Hàng</a>
                         </li>
@@ -69,9 +73,9 @@ use app\utils\DataHelper;
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/user/personal-information"><i
                                                     class="fa-solid fa-sliders"></i> Thông tin tài khoản</a></li>
-                                    <?php
+<?php
                                     if (isset($_SESSION['isNeededChangePassword']) && $_SESSION['isNeededChangePassword']) {
-                                        echo '<li><a class="dropdown-item" href="/user/change-password-first-time"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a></li>';
+                                                                            echo '<li><a class="dropdown-item" href="/user/change-password-first-time"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a></li>';
                                     } else {
                                         echo '<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal" href="#"><i class="fa-solid fa-key"></i></i> Đổi mật khẩu</a></li>';
                                     }
@@ -108,4 +112,4 @@ use app\utils\DataHelper;
 if ($isAuthenticated) {
     echo $this->insert('modal/change-password-modal');
 }
-?>
+?><?php endif; ?>

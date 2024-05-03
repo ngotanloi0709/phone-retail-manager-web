@@ -26,11 +26,14 @@ class Product
     #[Column(nullable: true)]
     private int $stock;
     #[Column(unique: true, nullable: true)]
-    private ?int $barcode = null;
+    private int $barcode;
     #[Column(nullable: true)]
     private DateTime $created;
+    #[Column(nullable: true)]
+    private string $image_url;
     #[ManyToOne(targetEntity: Category::class)]
-    private Category $category;
+    private ?Category $category;
+
 
     public function getId(): ?int
     {
@@ -86,7 +89,7 @@ class Product
         $this->import_price = $import_price;
         return $this;
     }
-
+    
     public function getStock(): int
     {
         return $this->stock;
@@ -109,9 +112,9 @@ class Product
         return $this;
     }
 
-    public function getCreated(): DateTime
+    public function getCreated(): string
     {
-        return $this->created;
+        return $this->created->format('Y-m-d');
     }
 
     public function setCreated(DateTime $created): Product
@@ -131,19 +134,26 @@ class Product
         return $this;
     }
 
-    public function toArray(): array
+    public function getImageUrl(): string
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
-            'import_price' => $this->import_price,
-            'stock' => $this->stock,
-            'barcode' => $this->barcode,
-            'created' => $this->created,
-            //chỗ này thêm toArray() thì có lỗi (khum bt)
-            'category' => $this->category
-        ];
+        return $this->image_url;
     }
+
+    public function setImageUrl(string $image_url): Product
+    {
+        $this->image_url = $image_url;
+        return $this;
+    }
+
+    public function getCategoryName(): string
+    {
+        return $this->category->getName();
+    }
+
+    public function getCategoryID(): int
+    {
+        return $this->category->getId();
+    }
+
+    
 }

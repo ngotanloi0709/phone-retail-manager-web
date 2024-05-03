@@ -1,0 +1,181 @@
+.card-body {
+    background-color: #fff;
+    padding: 20px 25px;
+    margin: 6px 0px 40px 0px;
+    width: 100%;
+    overflow: auto;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+
+tr th,
+tr td {
+    border-color: #e9e9e9;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 400;
+    vertical-align: middle;
+    background-color: #fff;
+}
+
+tr th:first-child {
+    width: 60px;
+}
+
+tr th:last-child {
+    width: 100px;
+}
+
+table.table th i {
+    font-size: 17px;
+    margin: 6px 5px;
+    cursor: pointer;
+}
+
+td:last-child {
+    opacity: 0.9;
+    font-size: 22px;
+    margin: 0px 5px;
+}
+
+td a {
+    font-weight: bold;
+    color: #566787;
+    display: inline-block;
+    text-decoration: none;
+    outline: none !important;
+}
+
+td a:hover {
+    color: #2196F3;
+}
+
+
+img {
+    max-width: 100px;
+}
+
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    /* Đảm bảo tính toàn vẹn của kích thước */
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    position: relative;
+    left: 25%;
+    border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+
+th,
+td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.editProduct,
+.deleteProduct {
+    display: inline-block;
+    margin-right: 2px;
+    /* Khoảng cách giữa các nút */
+    cursor: pointer;
+    /* Biến con trỏ thành hình bút chì khi di chuột qua nút */
+}
+
+.editProduct i,
+.deleteProduct i {
+    font-size: 20px;
+}
+
+/* Thêm hover effect */
+.editProduct:hover,
+.deleteProduct:hover {
+    color: black;
+    /* Màu chữ khi di chuột qua */
+}
+
+
+.editProduct {
+    color: #FFC107;
+}
+
+.deleteProduct {
+    color: #F44336;
+}
+
+.pagination {
+    float: right;
+    margin: 0 0 5px;
+}
+
+.pagination li a {
+    border: none;
+    font-size: 13px;
+    min-width: 30px;
+    min-height: 30px;
+    color: #999;
+    margin: 0 2px;
+    line-height: 30px;
+    border-radius: 2px !important;
+    text-align: center;
+    padding: 0 6px;
+}
+
+.pagination li a:hover {
+    color: #666;
+}
+
+
+.pagination li.disabled i {
+    color: #ccc;
+
+}
+
+.pagination li i {
+    font-size: 16px;
+    padding-top: 6px;
+}
+
