@@ -16,9 +16,9 @@ class Product
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
     #[Column(nullable: true)]
-    private string $name;
+    private ?string $name;
     #[Column(nullable: true)]
-    private string $description;
+    private ?string $description;
     #[Column(nullable: true)]
     private int $price;
     #[Column(nullable: true)]
@@ -26,11 +26,11 @@ class Product
     #[Column(nullable: true)]
     private int $stock;
     #[Column(unique: true, nullable: true)]
-    private int $barcode;
+    private ?int $barcode;
     #[Column(nullable: true)]
     private DateTime $created;
     #[Column(nullable: true)]
-    private string $image_url;
+    private ?string $image_url;
     #[ManyToOne(targetEntity: Category::class)]
     private ?Category $category;
 
@@ -46,7 +46,7 @@ class Product
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -57,7 +57,7 @@ class Product
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -89,7 +89,7 @@ class Product
         $this->import_price = $import_price;
         return $this;
     }
-    
+
     public function getStock(): int
     {
         return $this->stock;
@@ -123,31 +123,31 @@ class Product
         return $this;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(Category $category): Product
+    public function setCategory(?Category $category): Product
     {
         $this->category = $category;
         return $this;
     }
 
-    public function getImageUrl(): string
+    public function getImageUrl(): ?string
     {
         return $this->image_url;
     }
 
-    public function setImageUrl(string $image_url): Product
+    public function setImageUrl(?string $image_url): Product
     {
         $this->image_url = $image_url;
         return $this;
     }
 
-    public function getCategoryName(): string
+    public function getCategoryName(): ?string
     {
-        return $this->category->getName();
+        return $this->category?->getName();
     }
 
     public function getCategoryID(): int
@@ -155,5 +155,5 @@ class Product
         return $this->category->getId();
     }
 
-    
+
 }

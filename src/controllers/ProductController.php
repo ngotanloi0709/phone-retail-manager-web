@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\services\AuthenticationService;
 use app\services\ProductService;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
 
 class ProductController extends Controller
@@ -37,7 +39,12 @@ class ProductController extends Controller
         }
 
          if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $targetDirectory = "../public/image/";
+            $targetDirectory = "../public/product_images/";
+
+             if (!file_exists($targetDirectory)) {
+                 mkdir($targetDirectory, 0777, true);
+             }
+
             $targetFile = $targetDirectory . basename($_FILES['image']['name']);
             
             if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
@@ -73,6 +80,10 @@ class ProductController extends Controller
         $this->render('product/product_edit', ['product' => $product, 'categories' => $this->productService->getCategories()]);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function postEditProduct(): void
     {
         $id = $_GET['id'];
@@ -89,7 +100,12 @@ class ProductController extends Controller
         }
 
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $targetDirectory = "../public/image/";
+            $targetDirectory = "../public/product_images/";
+
+            if (!file_exists($targetDirectory)) {
+                mkdir($targetDirectory, 0777, true);
+            }
+
             $targetFile = $targetDirectory . basename($_FILES['image']['name']);
             
             if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {

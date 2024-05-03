@@ -3,40 +3,23 @@
 namespace app\services;
 
 use app\models\Category;
-use app\models\User;
-use app\models\UserRole;
 use app\models\Product;
-use app\models\Transaction;
 use app\repositories\CategoryRepository;
 use app\repositories\ProductRepository;
-use app\repositories\UserRepository;
-use app\repositories\UserRoleRepository;
-use app\services\CategoryService;
-use app\services\TransactionDetailService;
-use app\services\TransactionService;
-use app\repositories\TransactionRepository;
 use app\repositories\TransactionDetailRepository;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Exception;
 
 class ProductService
 {
-
-    private $productRepository;
-    private $categoryRepository;
-    private $categoryService;
-    private $TransactionRepository;
-    private $transactionDetailRepository;
-    private $transactionDetailService;
-
     public function __construct(
-        ProductRepository $productRepository,
-        CategoryRepository $categoryRepository,
-        CategoryService $categoryService,
-        TransactionDetailRepository $transactionDetailRepository,
-    ) {
-        $this->productRepository = $productRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryService = $categoryService;
-        $this->transactionDetailRepository = $transactionDetailRepository;
+        private readonly ProductRepository           $productRepository,
+        private readonly CategoryRepository          $categoryRepository,
+        private readonly TransactionDetailRepository $transactionDetailRepository,
+    )
+    {
+        //
     }
 
     public function getProducts(): array
@@ -62,10 +45,10 @@ class ProductService
     public function createProduct(int $barcode, string $productName, string $categoryString, int $price, int $importPrice, int $stock, string $description, string $imgUrl): bool
     {
         $createdDateTime = new \DateTime();
-        
+
         if (is_numeric($categoryString)) {
             $category = $this->categoryRepository->find(intval($categoryString));
-        } else{
+        } else {
             $category = $this->categoryRepository->getCategoryByName($categoryString);
         }
         if ($category == null) {
@@ -73,7 +56,7 @@ class ProductService
             $category->setName($categoryString);
             $this->categoryRepository->save($category);
         }
-        
+
         try {
             $product = new Product();
             $product->setBarcode($barcode);
@@ -93,23 +76,21 @@ class ProductService
         }
     }
 
-    public function updateProduct(int $id, int $barcode, string $productName, int $categoryString, int $price, int $importPrice, int $stock, string $description, string $imgUrl): bool
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function updateProduct(int $id, ?int $barcode, ?string $productName, ?string $categoryString, ?int $price, ?int $importPrice, ?int $stock, ?string $description, ?string $imgUrl): bool
     {
-        if (is_numeric($categoryString)) {
-            $category = $this->categoryRepository->find(intval($categoryString));
-        } else{
-            $category = $this->categoryRepository->getCategoryByName($categoryString);
-        }
-        if ($category == null) {
-            $category = new Category();
-            $category->setName($categoryString);
-            $this->categoryRepository->save($category);
-        }
         try {
+            $category = $this->categoryRepository->find(intval($categoryString));
+
+            /** @var Product $product */
             $product = $this->productRepository->findByID($id);
+
             $product->setBarcode($barcode);
             $product->setName($productName);
-            $product->setCategory($this->categoryService->getCategoryById($category));
+            $product->setCategory($category);
             $product->setPrice($price);
             $product->setImportPrice($importPrice);
             $product->setStock($stock);
@@ -118,8 +99,7 @@ class ProductService
 
             $this->productRepository->save($product);
             return true;
-        } catch (\Exception $e) {
-            error_log($e->getMessage());
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -133,7 +113,7 @@ class ProductService
             $product = $this->productRepository->findByID($id);
             $this->productRepository->delete($product);
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             error_log($e->getMessage());
             return false;
         }

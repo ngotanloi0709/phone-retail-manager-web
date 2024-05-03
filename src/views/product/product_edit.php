@@ -50,7 +50,8 @@
                         <label for="category">Loại sản phẩm</label>
     <select class="form-select" id="category" name="category" required onchange="checkNewCategory(this)">
         <option selected>Chọn loại sản phẩm</option>
-        <?php foreach ($categories as $category) : ?>
+        <?php /** @var array $categories */
+        foreach ($categories as $category) : ?>
             <option value="<?php echo $category->getId(); ?>" <?php if ($category->getId() == $product->getCategoryId()) echo 'selected'; ?>><?php echo $category->getName(); ?></option>
         <?php endforeach; ?>
         <option value="new">Tạo mới</option>
@@ -59,11 +60,11 @@
                         </div>
                         <div class="form-group">
                             <label for="price">Giá bán</label>
-                            <input type="text" class="form-control" id="price" name="price" value="<?php echo number_format($product->getPrice(), 0, ',', '.') . ' đ'; ?>" required>
+                            <input type="text" class="form-control" id="price" name="price" value="<?php echo $product->getPrice(); ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="import_price">Giá nhập</label>
-                            <input type="text" class="form-control" id="import_price" name="import_price" value="<?php echo number_format($product->getImportPrice(), 0, ',', '.') . ' đ'; ?>" required>
+                            <input type="text" class="form-control" id="import_price" name="import_price" value="<?php echo $product->getImportPrice(); ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="description">Mô Tả</label>

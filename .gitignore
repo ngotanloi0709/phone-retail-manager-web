@@ -477,4 +477,4 @@ composer.lock
 *.sass.map
 *.scss.map
 
-/public/image/*
+/public/product_images/*
