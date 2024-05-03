@@ -28,7 +28,6 @@ $sessionUser = $_SESSION['user'] ?? null;
 <!--    custom css-->
     <link rel="stylesheet" href="../style/base.css">
     <link rel="stylesheet" href="../style/profile-image.css">
-
 <!--    js barcode detector -->
     <script type="module" src="https://fastly.jsdelivr.net/npm/barcode-detector@2/dist/es/side-effects.min.js"></script>
 </head>

@@ -70,7 +70,7 @@
                         <input type="text" class="form-control" id="change" readonly/>
                     </div>
 
-                    <button id="submitTransButton" class="btn btn-outline-secondary"><i class='fas fa-shopping-basket'></i> Tạo đơn</button>
+                    <button id="submitTransButton" class="btn btn-outline-secondary" style="float: right;"><i class='fas fa-shopping-basket'></i> Tạo đơn</button>
                 </div>
             </div>
         </form>
@@ -107,9 +107,9 @@
             let quantityCell = row.insertCell(3);
             let totalCell = row.insertCell(4);
             nameCell.innerHTML = productName;
-            idCell.innerHTML = "<input type='text' name='productId[]' style='text-align:center;' value='" + id + "' readonly/>";
+            idCell.innerHTML = "<input type='text' name='productId[]' style='text-align:center; border: none;' value='" + id + "' readonly/>";
             priceCell.innerHTML = price.toLocaleString();
-            quantityCell.innerHTML = "<input type='text' name='productQuantity[]' style='text-align:center;' value='" + quantity + "' readonly/>";
+            quantityCell.innerHTML = "<input type='text' name='productQuantity[]' style='text-align:center; border: none;' value='" + quantity + "' readonly/>";
             totalCell.innerHTML = price.toLocaleString();
         }
 
