@@ -160,8 +160,7 @@ $(document).ready(function () {
             // Resize/Compress the image
             reader.onload = function (e) {
                 downScaleImage(e.target.result, 500, undefined, undefined, function(newDataUrl) {
-                    document.getElementById('editUserInformationDisplayAvatar').src = newDataUrl;
-
+                    $('.displayAvatar').attr("src",newDataUrl);
                     let avatarInput = document.getElementById('editUserInformationAvatar')
                     avatarInput.value = newDataUrl;
                 });

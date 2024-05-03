@@ -30,7 +30,7 @@ $this->layout('base',
         <b>Bảng thông tin người dùng hệ thống</b>
     </div>
     <div class="card-body">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped table-bordered long-table">
             <thead>
             <tr>
                 <th scope="col">Ảnh đại diện</th>
@@ -44,7 +44,7 @@ $this->layout('base',
             <tbody>
             <?php
             if (count($users) == 0) {
-                echo '<tr><td colspan="4">Không có người dùng nào trong hệ thống</td></tr>';
+                echo '<tr><td colspan="6">Không có người dùng nào trong hệ thống</td></tr>';
             } else {
                 /** @var User $user */
                 foreach ($users as $user) {
@@ -74,7 +74,7 @@ $this->layout('base',
                     echo '<a class="buttonDeleteUserInformation btn btn-danger btn-sm me-1"><span><i class="fa-solid fa-trash"></i></span></a>';
                     echo '<a class="buttonShowSendLoginEmailConfirmation btn btn-info btn-sm me-1"><span><i class="fa-solid fa-paper-plane"></i></span></a>';
                     echo '<a class="buttonChangeUserPassword btn btn-secondary btn-sm me-1"><span><i class="fa-solid fa-key"></i></span></a>';
-                    echo '<a class="buttonShowSaleInformation btn btn-light btn-sm me-1" href="/admin/sale-information?id=' . $user->getId() . '"><span><i class="fa-solid fa-list"></i></span></a>';
+                    echo '<a class="buttonShowSaleInformation btn btn-light btn-sm me-1" href="/admin/sale-information?id=' . $user->getId() . '"><span><i class="fa-solid fa-list"></i> Đơn hàng</span></a>';
                     echo '</td>';
                     echo '</tr>';
                 }

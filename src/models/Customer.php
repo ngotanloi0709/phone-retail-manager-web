@@ -18,7 +18,9 @@ class Customer
     #[Column(nullable: true)]
     private string $name;
     #[Column(nullable: true)]
-    private string $email;
+    private ?string $email;
+    #[Column(nullable: true)]
+    private string $address;
     #[Column(nullable: true)]
     private string $phone;
     #[OneToMany(targetEntity: Transaction::class, mappedBy: 'customer')]
@@ -40,12 +42,22 @@ class Customer
         return $this->name;
     }
 
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
+    }
+
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }

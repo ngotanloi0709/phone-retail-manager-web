@@ -9,7 +9,7 @@ $this->layout('base',
     ]) ?>
 
 <?php $this->start('main') ?>
-<link rel="stylesheet" href="../../style/popup.css">
+<link rel="stylesheet" href="../../style/transation-style.css">
 
 <div id="transDetailPopup" class="popup">
     <div class="popup-content">
@@ -26,6 +26,11 @@ $this->layout('base',
             Đơn Hàng</a>
     </div>
     <div class="card-body">
+        <div style="display: flex; align-items: center; margin-bottom: 8px">
+            <label for="searchTransById" style="margin-right: 8px">Tìm Đơn Hàng:</label>
+            <input type="text" id="searchTransById" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập ID Đơn Hàng">
+            <button class="btn btn-outline-secondary" id="searchTransByIdBtn"><i class="fas fa-search"></i></button>
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -48,7 +53,7 @@ $this->layout('base',
                     <td><?= DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></td>
                     <td><?= $transaction->getUser()->getUsername() ?></td>
                     <td>
-                        <button class="getDetailBnt">Chi tiết</button>
+                        <button class="btn btn-outline-secondary getDetailBnt"><i class="fa-solid fa-circle-info"></i> Chi tiết</button>
                     </td>
                 </tr>
             <?php endforeach;
@@ -59,46 +64,69 @@ $this->layout('base',
 </div>
 <script>
     $(document).ready(function () {
+        //render new tab contains transaction's invoice if this page been call from transaction_checkout
         if (window.location.href.indexOf("paymentMethod=cash") !== -1) {
             let givenMoney = new URLSearchParams(window.location.search).get('givenMoney');
             window.open("/transaction/transaction_invoice?paymentMethod=cash&givenMoney=" + givenMoney, "_blank");
+            window.location.href = "/transaction/transaction_management";
         }
         if (window.location.href.indexOf("paymentMethod=card") !== -1) {
             window.open("/transaction/transaction_invoice?paymentMethod=card", "_blank");
+            window.location.href = "/transaction/transaction_management";
         }
 
-        $('.getDetailBnt').click(function () {
+        function showPopup(transId) {
             <?php
             foreach ($transactions as $transaction) : ?>
 
-            if ($(this).closest('tr').find('td').eq(0).text() === '<?= $transaction->getId() ?>') {
+            if (transId === '<?= $transaction->getId() ?>') {
                 document.getElementById("transInfo").innerHTML = "<h3>CHI TIẾT ĐƠN HÀNG <?= $transaction->getId() ?></h3><p>Thời Gian Tạo: <?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></p><p>Khách Hàng: <?= /** @var Transaction $transaction */
                     DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p>";
                 let transDetailPopupTable = document.getElementById("transDetailPopupTable");
                 transDetailPopupTable.innerHTML = "<tr><th>Tên sản phẩm</th><th>Mã sản phẩm</th><th>Đơn giá</th><th>Số Lượng</th><th>Thành tiền</th></tr>"
+                let $quantity = 0;
                 let $total = 0;
                 <?php
                 foreach ($transaction->getItems() as $item) : ?>
+                $quantity += <?= $item->getQuantity() ?>;
                 $total += <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
                 var $price = <?= $item->getProduct()->getPrice() ?>;
-                $price = $price.toLocaleString();
                 var $temptotal = <?= $item->getProduct()->getPrice() * $item->getQuantity() ?>;
-                $temptotal = $temptotal.toLocaleString();
-                transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal + "</td></tr>";
+                transDetailPopupTable.innerHTML += "<tr><td><?= $item->getProduct()->getName() ?></td><td><?= $item->getProduct()->getId() ?></td><td>" + $price.toLocaleString() + "</td><td><?= $item->getQuantity() ?></td><td>" + $temptotal.toLocaleString() + "</td></tr>";
                 <?php endforeach;
                 ?>
                 let row = transDetailPopupTable.insertRow(-1);
-                row.innerHTML = "<td colspan='4'></td><td>" + $total.toLocaleString() + "</td>";
+                row.style.fontWeight = "bold";
+                row.innerHTML = "<td colspan='3'></td><td>" + $quantity + "</td><td>" + $total.toLocaleString() + "</td>";
 
                 document.getElementById("transDetailPopup").style.display = "block";
+                return;
             }
             <?php endforeach;
             ?>
+            alert("Không tìm thấy đơn hàng " + transId);
+        }
+
+        $('.getDetailBnt').click(function () {
+            let transId = $(this).closest('tr').find('td').eq(0).text();
+            showPopup(transId);
         });
 
         $('#closePopup').click(function () {
             document.getElementById("transDetailPopup").style.display = "none";
             document.getElementById("transDetailPopupTable").innerHTML = "";
+        });
+
+        $('#searchTransByIdBtn').click(function () {
+            let transId = $('#searchTransById').val();
+            showPopup(transId);
+        });
+
+        $('#searchTransById').on("keyup", function (event) {
+            if (event.key === "Enter" || event.keyCode === 13) {
+                let transId = $('#searchTransById').val();
+                showPopup(transId);
+            }
         });
     });
 </script>

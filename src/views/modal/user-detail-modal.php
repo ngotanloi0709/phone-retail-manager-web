@@ -10,7 +10,7 @@
                 <div class="col-4 mx-auto mb-5 position-relative">
                     <div class="ratio ratio-1x1 card-img-top">
                         <img id="detailInformationAvatar" src="/image/user-default-avatar.png"
-                             class="rounded-circle overflow-hidden"
+                             class="rounded-circle overflow-hidden" style="object-fit: cover !important;"
                              alt="default-avatar" onerror="this.onerror=null; this.src='/image/user-default-avatar.png';">
                     </div>
                 </div>

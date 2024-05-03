@@ -17,7 +17,7 @@ class CreateTransactionDTO
     public function fromRequest(array $data = []): self
     {
         $this->customerPhone = $data['customerPhone'];
-        $this->givenMoney = (int)str_replace(",", "", $data['total']);
+        $this->givenMoney = (int)str_replace(",", "", $data['givenMoney']);
         $this->items = new ArrayCollection();
         $this->productIdArray = $data['productId'];
         $this->productQuantityArray = $data['productQuantity'];
