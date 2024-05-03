@@ -1,4 +1,7 @@
 <?php
+
+use app\utils\DataHelper;
+
 $this->layout('base',
     [
         'title' => 'Quản Lý Khách Hàng',
@@ -13,7 +16,6 @@ $this->layout('base',
     <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Mã Khách Hàng</th>
                     <th>Họ Tên</th>
                     <th>Email</th>
                     <th>Số Điện Thoại</th>
@@ -24,10 +26,9 @@ $this->layout('base',
                 <?php 
                     foreach ($customers as $customer) : ?>
                     <tr>
-                        <td><?= $customer->getId() ?></td>
-                        <td><?= $customer->getName() ?></td>
-                        <td><?= $customer->getEmail() ?></td>
-                        <td><?= $customer->getPhone() ?></td>
+                        <td><?= DataHelper::getDisplayStringData($customer->getName()) ?></td>
+                        <td><?= DataHelper::getDisplayStringData($customer->getEmail()) ?></td>
+                        <td><?= DataHelper::getDisplayStringData($customer->getPhone()) ?></td>
                         <td>
                             <a href="/customer/customer_transhistory?customerid=<?= $customer->getId() ?>" class="btn btn-primary">Xem lịch sử mua hàng</a>
                         </td>

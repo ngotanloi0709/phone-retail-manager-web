@@ -10,7 +10,7 @@
                 <div class="col-4 mx-auto mb-5 position-relative">
                     <div class="ratio ratio-1x1 card-img-top">
                         <img id="detailInformationAvatar" src="/image/user-default-avatar.png"
-                             class="rounded-circle overflow-hidden"
+                             class="rounded-circle overflow-hidden" style="object-fit: cover !important;"
                              alt="default-avatar" onerror="this.onerror=null; this.src='/image/user-default-avatar.png';">
                     </div>
                 </div>
@@ -88,6 +88,27 @@
                                 class="fa-regular fa-calendar-days"></i></i></span>
                             <input id="detailInformationDateOfBirth" type="text" class="form-control" placeholder="Ngày sinh"
                                    aria-label="dateOfBirth"
+                                   aria-describedby="basic-addon1" disabled readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="detailInformationRole" class="form-label">Vai trò</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-venus-mars"></i></i></span>
+                            <input id="detailInformationRole" type="text" class="form-control" placeholder="Vai trò"
+                                   aria-label="role"
+                                   aria-describedby="basic-addon1" disabled readonly>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="detailInformationIsLocked" class="form-label">Trạng thái</label>
+                        <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i
+                                class="fa-regular fa-calendar-days"></i></i></span>
+                            <input id="detailInformationIsLocked" type="text" class="form-control" placeholder="Trạng thái"
+                                   aria-label="status"
                                    aria-describedby="basic-addon1" disabled readonly>
                         </div>
                     </div>

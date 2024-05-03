@@ -24,14 +24,14 @@ class UserController extends Controller
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function changePassword(): void
+    public function changePersonalPassword(): void
     {
         $oldPassword = $_POST['oldPassword'];
         $newPassword = $_POST['newPassword'];
         $repeatPassword = $_POST['repeatPassword'];
         $currentLocation = $_POST['currentLocation'];
 
-        if ($this->userService->changePassword($oldPassword, $newPassword, $repeatPassword)) {
+        if ($this->userService->changePersonalPassword($oldPassword, $newPassword, $repeatPassword)) {
             $_SESSION['alerts'][] = 'Đổi mật khẩu thành công';
         } else {
             $_SESSION['alerts'][] = 'Đổi mật khẩu thất bại';
@@ -62,7 +62,7 @@ class UserController extends Controller
         if ($this->userService->changPersonalInformation($editablePersonalInformation)) {
             $_SESSION['alerts'][] = 'Thay đổi thông tin thành công';
         } else {
-            $_SESSION['alerts'][] = 'Thay đổi thông tin thành công';
+            $_SESSION['alerts'][] = 'Thay đổi thông tin thất bại';
         }
 
         header("Location: /user/personal-information");
@@ -83,5 +83,32 @@ class UserController extends Controller
         }
 
         header("Location: /user/personal-information");
+    }
+
+    public function getChangePasswordFirstTime(): void
+    {
+        if (!$_SESSION['isNeededChangePassword']) {
+            header('Location: /');
+            exit();
+        }
+
+        $this->render('change-password-first-time');
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function postChangePasswordFirstTime(): void
+    {
+        $newPassword = $_POST['newPassword'];
+        $repeatPassword = $_POST['repeatPassword'];
+
+        if ($this->userService->changePasswordFirstTime($newPassword, $repeatPassword)) {
+            $_SESSION['alerts'][] = 'Đổi mật khẩu thành công';
+            header("Location: /");
+        } else {
+            $_SESSION['alerts'][] = 'Đổi mật khẩu thất bại';
+            header("Location: /user/change-password-first-time");
+        }
     }
 }

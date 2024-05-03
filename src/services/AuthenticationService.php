@@ -52,7 +52,16 @@ class AuthenticationService
                 return false;
             }
 
+            if ($user->isLocked()) {
+                $_SESSION['alerts'][] = 'Tài khoản của bạn đã bị khóa!';
+                return false;
+            }
+
             $_SESSION['user'] = SessionUserDTO::fromUserEntity($user);
+
+            if ($this->isNeededChangePassword($user)) {
+                $_SESSION['alerts'][] = 'Xin hãy đổi mật khẩu mặc định của bạn!';
+            }
         } catch (Exception $e) {
             $_SESSION['alerts'][] = 'Đã xảy ra lỗi trong quá trình đăng nhập!';
             return false;
@@ -125,7 +134,16 @@ class AuthenticationService
             $user->setIsFirstTimeLogin(false);
             $this->userRepository->save($user);
 
+            if ($user->isLocked()) {
+                $_SESSION['alerts'][] = 'Tài khoản của bạn đã bị khóa!';
+                return false;
+            }
+
             $_SESSION['user'] = SessionUserDTO::fromUserEntity($user);
+
+            if ($this->isNeededChangePassword($user)) {
+                $_SESSION['alerts'][] = 'Xin hãy đổi mật khẩu mặc định của bạn!';
+            }
         } catch (Exception $e) {
             $_SESSION['alerts'][] = 'Đã xảy ra lỗi với đường link đăng nhập! Hãy liên hệ với quản trị viên để nhận lại Email!';
             return false;
@@ -138,11 +156,11 @@ class AuthenticationService
     {
         $username = $user->getUsername();
         $password = $user->getPassword();
-        $result = password_hash($username, PASSWORD_DEFAULT) == $password;
+        $result = password_verify($username, $password);
         // default password setup when login are the same with username
         // so if password is the same with username, user need to change password
         // the navigation to change password page will be handled in the Request Handler
-        $_SESSION['isNeededChangePassword'] =  $result;
+        $_SESSION['isNeededChangePassword'] = $result;
 
         return $result;
     }

@@ -55,6 +55,11 @@ class Transaction
         return $this->created;
     }
 
+    public function getCreatedString(): string
+    {
+        return $this->created->format('d-m-Y H:i:s');
+    }
+
     public function getUser(): User
     {
         return $this->user;
