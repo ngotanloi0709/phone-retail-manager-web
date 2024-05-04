@@ -183,6 +183,14 @@
 
                 let change = givenMoney - total;
                 $("#change").val(change.toLocaleString());
+                if (change < 0) {
+                    alert("Số tiền nhận không đủ!");
+                    $("#change").css("color", "red");
+                    $("#submitTransButton").attr("disabled", "disabled");
+                } else {
+                    $("#change").css("color", "black");
+                    $("#submitTransButton").removeAttr("disabled");
+                }
             }
         });
 
@@ -191,6 +199,7 @@
                 $("#givenMoney").closest(".form-group").removeAttr("hidden");
                 $("#change").closest(".form-group").removeAttr("hidden");
                 $("#givenMoney").val(null);
+                $("#change").val(null);
                 $("#givenMoney").attr("required", "required");
             } else {
                 let total = parseInt($("#total").val().replace(/[,\.]/g, ''));
@@ -198,20 +207,11 @@
                 $("#givenMoney").closest(".form-group").attr("hidden", "");
                 $("#change").closest(".form-group").attr("hidden", "");
                 $("#givenMoney").removeAttr("required");
+                $("#submitTransButton").removeAttr("disabled");
             }
         });
 
         $("#submitTransButton").on("click", function(event) {
-            if ($("#paymentMethod").val() == "cash" && $("#change").val() < 0) {
-                alert("Số tiền nhận không đủ!");
-                event.preventDefault();
-                return;
-            }
-            if ($("#productList").find("tr").length == 1) {
-                alert("Chưa có sản phẩm nào trong đơn hàng!");
-                event.preventDefault();
-                return;
-            }
             let paymentMethod = $("#paymentMethod").val();
             let givenMoney = $("#givenMoney").val();
             givenMoney = parseInt(givenMoney.replace(/[,\.]/g, ''));
