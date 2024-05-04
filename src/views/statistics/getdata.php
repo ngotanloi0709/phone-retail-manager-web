@@ -1,9 +1,46 @@
 <?php
 
     function infor($totalmoney,$numoftrans,$numofproduct){
-        echo "<div>Tổng số tiền đã nhận: $totalmoney</div>";
-        echo "<div>Số lượng đơn hàng: $numoftrans</div>";
-        echo "<div>Số lượng sản phẩm đã bán: $numofproduct</div>";
+        echo '<div class="container">';
+        echo '<div class="row">
+            <div class="col">
+                <div class="card bg-warning p-3 mb-2">
+                    <div class="card-block">
+                        <div class="row align-items-end">
+                            <div >
+                                <h4 class="text-white">'.$totalmoney.'</h4>
+                                <h6 class="text-white ">Tổng số tiền đã nhận</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-danger p-3 mb-2">
+                    <div class="card-block">
+                        <div class="row align-items-end">
+                            <div >
+                                <h4 class="text-white">'.$numoftrans.'</h4>
+                                <h6 class="text-white">Số lượng đơn hàng</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-success p-3 mb-2">
+                    <div class="card-block">
+                        <div class="row align-items-end">
+                            <div >
+                                <h4 class="text-white">'.$numofproduct.'</h4>
+                                <h6 class="text-white">Số lượng sản phẩm đã bán</h6>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>';  
+        echo "</div>";                                     
     }
     function tablehead(){
         echo '<table class="table table-bordered ">
