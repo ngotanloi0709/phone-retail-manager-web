@@ -21,6 +21,7 @@ $this->layout('base',
 </div>
 <div class="card">
     <div class="card-header">
+        <b>Danh sách đơn hàng</b>
     </div>
     <div class="card-body">
     <table class="table table-bordered">
@@ -61,7 +62,7 @@ $this->layout('base',
                         ?>
                         <td ><?php echo $totalquantity?></td>
                         <td>
-                            <button type="button" class="btn btn-primary getDetailBnt">Chi tiết</button>   
+                            <button type="button" class="btn btn-primary getDetailBnt"><span><i class="fa-solid fa-circle-info"></i></span>Chi tiết</button>   
                             
                         </td> 
                     </tr>
