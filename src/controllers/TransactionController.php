@@ -14,6 +14,7 @@ use app\services\CustomerService;
 use app\services\TransactionDetailService;
 use app\services\Cus;
 use Doctrine\Common\Collections\Collection;
+use app\repositories\ProductRepository;
 
 class TransactionController extends Controller
 {
@@ -21,6 +22,7 @@ class TransactionController extends Controller
         Engine                                    $engine,
         AuthenticationService                     $authenticationService,
         private readonly TransactionService       $transactionService,
+        private readonly ProductRepository        $productRepository,
         private readonly ProductService           $productService,
         private readonly CustomerService          $customerService,
     )
@@ -60,6 +62,8 @@ class TransactionController extends Controller
      */
     public function postTransaction(): void
     {
+        $products = $this->productService->getProducts();
+
         if ($_POST['createNewCustomer'] == 'yes') {
             $this->customerService->createCustomer($_POST['customerPhone']);
             $customer = $this->customerService->getCustomerByPhone($_POST['customerPhone']);
@@ -72,6 +76,12 @@ class TransactionController extends Controller
         $createTransactionDTO->fromRequest($_POST);
 
         if ($this->transactionService->createTransaction($createTransactionDTO)) {
+            foreach ($_POST['productId'] as $key => $productId) {
+                $product = $this->productService->getProductById($productId);
+                $product->setStock($product->getStock() - $_POST['productQuantity'][$key]);
+                $this->productRepository->save($product);
+            }
+
             if ($_POST['paymentMethod'] == 'cash') {
                 $givenMoney = $_POST['givenMoney'];
                 $givenMoney = str_replace(',', '', $givenMoney);
@@ -105,5 +115,10 @@ class TransactionController extends Controller
     {
         $transactions = $this->transactionService->getTransactions();
         $this->render('transaction/transaction_invoice', ['transactions' => $transactions]);
+    }
+
+    public function cancelTransaction() : void 
+    {
+        
     }
 }

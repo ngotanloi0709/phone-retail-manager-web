@@ -22,6 +22,8 @@ class Transaction
     private int $givenMoney;
     #[Column(nullable: true)]
     private DateTime $created;
+    #[Column]
+    private bool $isCanceled = false;
 
     /** @var Collection */
     #[OneToMany(targetEntity: TransactionDetail::class, mappedBy: 'order')]
@@ -78,5 +80,15 @@ class Transaction
     public function setItems(Collection $items): void
     {
         $this->items = $items;
+    }
+
+    public function getIsCanceled(): bool
+    {
+        return $this->isCanceled;
+    }
+
+    public function setIsCanceled(bool $isCanceled): void
+    {
+        $this->isCanceled = $isCanceled;
     }
 }

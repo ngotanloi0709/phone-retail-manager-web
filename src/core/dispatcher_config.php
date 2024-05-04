@@ -48,6 +48,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/transaction_checkout', 'TransactionController@getTransactionCheckout');
         $r->addRoute('POST', '/transaction_checkout', 'TransactionController@postTransaction');
         $r->addRoute('GET', '/transaction_invoice', 'TransactionController@getTransactionInvoice');
+        $r->addRoute('GET', '/transaction_delete', 'TransactionController@deleteTransaction');
     });
 
     $r->addGroup('/customer', function (RouteCollector $r) {

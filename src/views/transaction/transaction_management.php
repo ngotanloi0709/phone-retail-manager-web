@@ -38,6 +38,7 @@ $this->layout('base',
                 <th>Thời Gian Tạo</th>
                 <th>Khách Hàng</th>
                 <th>Người Tạo</th>
+                <th>Trạng Thái</th>
                 <th>Thao Tác</th>
             </tr>
             </thead>
@@ -47,13 +48,24 @@ $this->layout('base',
             $transactions = array_reverse($transactions);
             /** @var Transaction $transaction */
             foreach ($transactions as $transaction) : ?>
+                <?php 
+                    if (DataHelper::getDisplayStringData($transaction->getIsCanceled()) === "Chưa có dữ liệu") {
+                        $status = "Đã Hoàn Tất";
+                    }
+                    else {
+                        $status = $transaction->getIsCanceled() ? "Đã Huỷ" : "Đã Hoàn Tất";
+                    }
+                ?>
+
                 <tr>
                     <td><?= $transaction->getId() ?></td>
                     <td><?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></td>
                     <td><?= DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></td>
+                    <td><?= $status ?></td>
                     <td><?= $transaction->getUser()->getUsername() ?></td>
                     <td>
                         <button class="btn btn-outline-secondary getDetailBnt"><i class="fa-solid fa-circle-info"></i> Chi tiết</button>
+                        <button class="btn btn-outline-secondary cancelBnt"><i class="fa-solid fa-circle-xmark"></i> Huỷ đơn hàng</button>
                     </td>
                 </tr>
             <?php endforeach;
@@ -107,10 +119,17 @@ $this->layout('base',
             alert("Không tìm thấy đơn hàng " + transId);
         }
 
-        $('.getDetailBnt').click(function () {
+        $(".getDetailBnt").click(function () {
             let transId = $(this).closest('tr').find('td').eq(0).text();
             showPopup(transId);
         });
+
+        $(".cancelBnt").click(function () {
+            let transId = $(this).closest('tr').find('td').eq(0).text();
+            if (confirm("Bạn có chắc chắn muốn huỷ đơn hàng " + transId + " không?")) {
+                window.location.href = "/transaction/transaction_delete?transactionId=" + transId;
+            }
+        })
 
         $('#closePopup').click(function () {
             document.getElementById("transDetailPopup").style.display = "none";

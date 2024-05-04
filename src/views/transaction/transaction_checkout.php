@@ -214,7 +214,7 @@
         $("#submitTransButton").on("click", function(event) {
             let paymentMethod = $("#paymentMethod").val();
             let givenMoney = $("#givenMoney").val();
-            if (paymentMethod == "cash" && (givenMoney == "" || isNaN(givenMoney))) {
+            if (paymentMethod == "cash" && (givenMoney == "" || givenMoney == "NaN")) {
                 alert("Vui lòng nhập số tiền khách đưa!");
                 event.preventDefault();
             }
