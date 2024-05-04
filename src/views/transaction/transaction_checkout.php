@@ -110,7 +110,8 @@
             idCell.innerHTML = "<input type='text' name='productId[]' style='text-align:center; border: none;' value='" + id + "' readonly/>";
             priceCell.innerHTML = price.toLocaleString();
             quantityCell.innerHTML = "<input type='text' name='productQuantity[]' style='text-align:center; border: none;' value='" + quantity + "' readonly/>";
-            totalCell.innerHTML = price.toLocaleString();
+            let total = price * quantity;
+            totalCell.innerHTML = total.toLocaleString();
         }
 
         function getTotal() {
@@ -143,8 +144,7 @@
                     type: 'GET',
                     data: 'customerPhone='+$str,
                     success: function(result){
-                        let responce = result.split("-");
-                        if (responce[0] == "") {
+                        if (result == "") {
                             alert("Khách hàng chưa có tài khoản!");
                             document.getElementById("createNewCustomerCheckbox").setAttribute("checked", "");
                             document.getElementById("createNewCustomerCheckbox").value = "yes";
@@ -159,12 +159,15 @@
                             cusAddress.setAttribute("required", "");
                             return;
                         }
+                        let responce = result.split("-");
                         document.getElementById("customerPhone").value = $str;
                         cusName.value = responce[0];
                         cusAddress.value = responce[1];
                         document.getElementById("createNewCustomerCheckbox").removeAttribute("checked");
                         document.getElementById("createNewCustomerCheckbox").value = "no";
                         document.getElementById("createNewCustomerDiv").style.display = "none";
+                        cusName.setAttribute("readonly", "");
+                        cusAddress.setAttribute("readonly", "");
                     }
                 });
             }
@@ -187,8 +190,11 @@
             if ($("#paymentMethod").val() == "cash") {
                 $("#givenMoney").closest(".form-group").removeAttr("hidden");
                 $("#change").closest(".form-group").removeAttr("hidden");
+                $("#givenMoney").val(null);
                 $("#givenMoney").attr("required", "required");
             } else {
+                let total = parseInt($("#total").val().replace(/[,\.]/g, ''));
+                $("#givenMoney").val(total);
                 $("#givenMoney").closest(".form-group").attr("hidden", "");
                 $("#change").closest(".form-group").attr("hidden", "");
                 $("#givenMoney").removeAttr("required");
@@ -209,6 +215,7 @@
             let paymentMethod = $("#paymentMethod").val();
             let givenMoney = $("#givenMoney").val();
             givenMoney = parseInt(givenMoney.replace(/[,\.]/g, ''));
+            $("#givenMoney").val(givenMoney);
         });
 
         $("#createNewCustomerCheckbox").on("change", function() {
