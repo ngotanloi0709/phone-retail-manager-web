@@ -7,9 +7,8 @@ use League\Plates\Engine;
 use app\services\TransactionService;
 use app\services\ProductService;
 use app\services\CustomerService;
-use app\services\Cus;
 use Doctrine\Common\Collections\Collection;
-
+use app\dto\EditCustomerInformationDTO;
 class CustomerController extends Controller
 {
     private CustomerService $customerService;
@@ -41,7 +40,18 @@ class CustomerController extends Controller
             header('Location: /customer');
             return;
         }
-        
-        
+    }
+    public function editCustomer(): void
+    {
+        $editCustomerInformationDTO = new EditCustomerInformationDTO();
+        $editCustomerInformationDTO->fromRequest($_POST);
+
+        if ($this->customerService->editCustomer($editCustomerInformationDTO)) {
+            $_SESSION['alerts'][] = 'Chỉnh sửa thông tin khách hàng thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Chỉnh sửa thông tin khách hàng thất bại';
+        }
+
+        header('Location: /customer');
     }
 }
