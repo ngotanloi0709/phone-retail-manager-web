@@ -2,6 +2,7 @@
 
 use app\models\Customer;
 use app\models\Product;
+use app\utils\DataHelper;
 
 if (isset($_GET["name"])) {
     /** @var array $products */
