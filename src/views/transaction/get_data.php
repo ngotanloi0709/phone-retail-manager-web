@@ -29,7 +29,7 @@ if (isset($_GET["customerPhone"])) {
     /** @var Customer $customer */
     foreach ($customers as $customer) {
         if ($customer->getPhone() == $_GET["customerPhone"]) {
-            echo $customer->getName(). "-" . DataHelper::getDisplayStringData($customer->getAddress());
+            echo DataHelper::getDisplayStringData($customer->getName()). "-" . DataHelper::getDisplayStringData($customer->getAddress());
             return;
         }
     }
