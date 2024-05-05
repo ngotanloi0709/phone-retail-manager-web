@@ -24,6 +24,7 @@ $this->layout('base',
         <b>Danh sách đơn hàng</b>
     </div>
     <div class="card-body">
+    <div style="overflow-x:auto;">
     <table class="table table-bordered">
             <thead>
                 <tr>
@@ -33,12 +34,14 @@ $this->layout('base',
                     <th>Số Tiền Khách Đã Đưa</th>
                     <th>Tiền Thối</th>
                     <th>Số Lượng Sản Phẩm</th>
+                    <th>Trạng Thái</th>
                     <th>Thao Tác</th>
                 </tr>
             </thead>
             <tbody>
             <?php foreach ($transactions as $transaction) : ?>
-                    <tr>
+                    <tr data-trans-iscanceled="<?=$transaction->getIsCanceled()?>"
+                        data-trans-id="<?=$transaction->getId()?>">
                         <td><?=$transaction->getId()?></td>
                         <td><?=$transaction->getCreated()->format('d/m/Y H:i:s')?></td>
                         
@@ -65,13 +68,25 @@ $this->layout('base',
                         ?>
                         <td ><?php echo $totalquantity?></td>
                         <td>
+                            <?php 
+                                if (DataHelper::getDisplayStringData($transaction->getIsCanceled()) === "Chưa có dữ liệu") {
+                                    echo "Đã Hoàn Tất";
+                                }
+                                else {
+                                    echo $transaction->getIsCanceled() ? "Đã Huỷ" : "Đã Hoàn Tất";
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger cancelBnt"><i class="fa-solid fa-circle-xmark"></i> Huỷ đơn hàng</button>
                             <button type="button" class="btn btn-primary getDetailBnt"><span><i class="fa-solid fa-circle-info"></i></span> Chi tiết</button>   
                             
                         </td> 
                     </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table> 
+        </table>
+        </div> 
     </div>
 </div><script>
     $(document).ready(function () {
@@ -115,7 +130,25 @@ $this->layout('base',
             document.getElementById("transDetailPopup").style.display = "none";
             document.getElementById("transDetailPopupTable").innerHTML = "";
         });
-
+        $('.cancelBnt').click(function () {
+            let currentRow = $(this).closest('tr');
+            let isCanceled = $(currentRow).data('trans-iscanceled');
+            let transId = $(currentRow).data('trans-id');
+            if (isCanceled == true) {
+                alert("Đơn hàng đã được huỷ");
+                return;
+            }
+            if (confirm("Bạn có chắc chắn muốn huỷ đơn hàng này không?")) {
+                $.post("", {transId: transId}, function (data) {
+                    if (data === "success") {
+                        alert("Huỷ đơn hàng thành công");
+                        location.reload();
+                    } else {
+                        alert("Huỷ đơn hàng thất bại");
+                    }
+                });
+            }
+        });
     });
 </script>
 <?php $this->end('main') ?>

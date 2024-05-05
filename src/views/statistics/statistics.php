@@ -74,6 +74,9 @@ $this->layout('base',
             $timestart = strtotime("first day of this month");
             $timeend = strtotime("last day of this month 23:59:59");
             foreach($transactions as $transaction){
+                if($transaction->getIsCanceled()==true){
+                    continue;
+                }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
                 if($time>=$timestart&&$time<=$timeend){
                     $numoftrans++;
@@ -167,6 +170,9 @@ $this->layout('base',
             </thead>
             <tbody>';
                     foreach($transactions as $transaction):
+                        if($transaction->getIsCanceled()==true){
+                            continue;
+                        }
                         $time = strtotime($transaction->getCreated()->format('Y-m-d'));
                         if($time>=$timestart&&$time<=$timeend){
                             echo"<tr>";
