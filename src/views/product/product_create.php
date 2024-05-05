@@ -37,7 +37,7 @@ $this->layout(
                             <div class="form-group">
                                 <label for="image">Hình Ảnh:</label>
                                 <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)" required>
-                                <img id="imagePreview" src="#" alt="" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                <img  id="imagePreview" src="#" alt="" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                 <span id="fileImageError" style="color: red;"></span>
                             </div>
                         </div>

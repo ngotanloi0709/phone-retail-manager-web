@@ -64,7 +64,7 @@ $currentProducts = array_slice($products, $start, $productsPerPage);
                 <tbody>
                     <?php foreach ($currentProducts as $product) : ?>
                         <tr data-id="<?php echo $product->getId(); ?>">
-                            <td><img class="card-img-top" src="<?php echo ImageHelper::getDisplayStringData($product->getImageUrl())?>" alt=""></td>
+                            <td><img class="card-img-top" src="<?php echo ImageHelper::getDisplayStringData($product->getImageUrl())?>" alt="" onerror="this.onerror=null; this.src='/image/product-default-image.png';"></td>
                             <td> <?php echo $product->getBarcode(); ?></td>
                             <td><?php echo $product->getName(); ?></td>
                             <td><?php echo $product->getCategoryName(); ?></td>

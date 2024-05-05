@@ -6,7 +6,8 @@
     "doctrine/dbal": "^4",
     "symfony/cache": "v6.4.4",
     "league/plates": "^3.5",
-    "phpmailer/phpmailer": "^6.9"
+    "phpmailer/phpmailer": "^6.9",
+    "ext-gd": "*"
   },
   "autoload": {
     "psr-4": {
