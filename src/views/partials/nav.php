@@ -27,11 +27,7 @@ use app\utils\DataHelper;
                         <a class="nav-link active" href="/admin"><i class="fa-solid fa-user-tie"></i> Admin</a>
                     </li>
                 <?php endif; ?>
-                    <?php if ($isAuthenticated && $sessionUser->getRole() == UserRole::ADMIN): ?>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/admin"><i class="fa-solid fa-user-tie"></i> Admin</a>
-                        </li>
-                    <?php endif; ?>
+                    
                     <?php if ($isAuthenticated): ?>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/product"><i
