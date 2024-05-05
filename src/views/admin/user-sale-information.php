@@ -32,6 +32,7 @@ $this->layout('base',
                 <th scope="col">Tên khách hàng</th>
                 <th scope="col">Số điện thoại khách hàng</th>
                 <th scope="col">Số lượng sản phẩm</th>
+                <th scope="col">Trạng thái</th>
                 <th scope="col">Tổng giá trị</th>
                 <th scope="col">Thao tác</th>
             </tr>
@@ -39,7 +40,7 @@ $this->layout('base',
             <tbody>
             <?php
             if (count($transactions) == 0) {
-                echo '<tr><td colspan="6"></td></tr>';
+                echo '<tr><td colspan="8">Không có đơn hàng nào!</td></tr>';
             } else {
                 /** @var Transaction $transaction */
                 foreach ($transactions as $transaction) {
@@ -62,6 +63,7 @@ $this->layout('base',
                     echo '<td>' . DataHelper::getDisplayStringData($transaction->getUser()->getName()) . '</td>';
                     echo '<td>' . DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) . '</td>';
                     echo '<td>' . DataHelper::getDisplayStringData($transaction->getCustomer()->getPhone()) . '</td>';
+                    echo '<td>' . ($transaction->getIsCanceled() ? "Đã Huỷ" : "Đã Hoàn Tất") . '</td>';
                     echo '<td>';
                         $totalProduct = 0;
                         /** @var TransactionDetail $item */

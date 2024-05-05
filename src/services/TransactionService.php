@@ -89,6 +89,6 @@ class TransactionService
 
     public function getTransactionsByUserId(string $userId): array
     {
-        return $this->transactionRepository->findAllWithDetails();
+        return $this->transactionRepository->findByIdWithDetails($userId);
     }
 }

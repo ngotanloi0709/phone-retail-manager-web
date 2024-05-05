@@ -7,6 +7,7 @@ use app\models\Product;
 use app\repositories\CategoryRepository;
 use app\repositories\ProductRepository;
 use app\repositories\TransactionDetailRepository;
+use DateTime;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Exception;
@@ -43,20 +44,27 @@ class ProductService
     }
 
 
-
+    /**
+     * @throws ORMException
+     */
     public function createProduct(int $barcode, string $productName, string $categoryString, int $price, int $importPrice, int $stock, string $description, string $imgUrl): bool
     {
         try {
             /** @var DateTime $createdDateTime */
             /** @var Category $category */
 
-            $createdDateTime = new \DateTime();
+            $createdDateTime = new DateTime();
             $category = $this->categoryRepository->getCategoryByName($categoryString);
 
             if ($category == null) {
                 $category = new Category();
                 $category->setName($categoryString);
                 $this->categoryRepository->save($category);
+            }
+
+            if ($this->IsBarcodeExist($barcode)) {
+                $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
+                return false;
             }
 
             $product = new Product();
@@ -71,12 +79,12 @@ class ProductService
             $product->setCategory($category);
 
             $this->productRepository->save($product);
-            
-            return true;
         } catch (\Exception $e) {
             error_log($e->getMessage());
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -94,17 +102,32 @@ class ProductService
                 $category->setName($categoryString);
                 $this->categoryRepository->save($category);
             }
+
             /** @var Product $product */
             $product = $this->productRepository->findByID($id);
 
-            $product->setBarcode($barcode);
+            if ($product == null) {
+                $_SESSION['alerts'][] = 'Sản phẩm không tồn tại';
+                return false;
+            }
+
+            $barcode_product = $this->productRepository->findAllBarcode($barcode);
+
+            if (sizeof($barcode_product) == 1) {
+                $product->setBarcode($barcode);
+            } else {
+                $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
+            }
+
             $product->setName($productName);
             $product->setCategory($category);
             $product->setPrice($price);
             $product->setImportPrice($importPrice);
             $product->setStock($stock);
             $product->setDescription($description);
-            $product->setImageUrl($imgUrl);
+            if ($imgUrl != null) {
+                $product->setImageUrl($imgUrl);
+            }
 
             $this->productRepository->save($product);
             return true;
@@ -122,6 +145,11 @@ class ProductService
             /** @var Product $product */
             $product = $this->productRepository->findByID($id);
 
+            if ($product == null) {
+                $_SESSION['alerts'][] = 'Sản phẩm không tồn tại';
+                return false;
+            }
+
             $this->productRepository->delete($product);
         } catch (Exception $e) {
             $_SESSION['alerts'][] = 'Thông tin sản phẩm đang nằm trong đơn hàng, không thể xóa';
@@ -129,5 +157,10 @@ class ProductService
         }
 
         return true;
+    }
+
+    private function IsBarcodeExist(int $barcode): bool
+    {
+        return $this->productRepository->findByBarcode($barcode) != null;
     }
 }

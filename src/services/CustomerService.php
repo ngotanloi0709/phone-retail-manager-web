@@ -9,7 +9,8 @@ use app\utils\Logger;
 use app\utils\AuthenticationValidateHelper;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-
+use app\dto\EditCustomerInformationDTO;
+use Exception;
 class CustomerService
 {
     private CustomerRepository $customerRepository;
@@ -46,5 +47,55 @@ class CustomerService
         }
 
         return $customer;
+    }
+    /**
+     * @throws ORMException
+     */
+    public function editCustomer(EditCustomerInformationDTO $editCustomerInformationDTO): bool
+    {
+        try {
+            $customer = $this->customerRepository->find($editCustomerInformationDTO->getId());
+
+            if ($customer == null) {
+                $_SESSION['alerts'][] = 'Khách hàng không tồn tại';
+                return false;
+            }
+
+            $customer->setName($editCustomerInformationDTO->getName());            
+            $customer->setAddress($editCustomerInformationDTO->getAddress());
+            $customer->setEmail($editCustomerInformationDTO->getEmail());
+            foreach ($this->getCustomers() as $cus) {
+                if($cus->getPhone() == $editCustomerInformationDTO->getPhone()){
+                    $_SESSION['alerts'][] = 'Số điện thoại đã tồn tại';
+                    return false;
+                }
+            }
+            $customer->setPhone($editCustomerInformationDTO->getPhone());
+            $this->customerRepository->save($customer);
+
+
+            
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+    public function deleteCustomer(string $id): bool
+    {
+        try {
+            $customer = $this->customerRepository->find($id);
+
+            if ($customer == null) {
+                $_SESSION['alerts'][] = 'Khách hàng không tồn tại';
+                return false;
+            }
+
+            $this->customerRepository->delete($customer);
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 }

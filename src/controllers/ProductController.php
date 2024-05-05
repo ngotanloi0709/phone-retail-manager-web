@@ -33,7 +33,6 @@ class ProductController extends Controller
 
     public function postAddProduct(): void
     {
-
         $category = $_POST['category'];
         $imgUrl = ImageHelper::uploadImage('image');
         $barcode = isset($_POST['barcode']) ? intval($_POST['barcode']) : null;
@@ -73,8 +72,8 @@ class ProductController extends Controller
         $stock = isset($_POST['stock']) ? intval($_POST['stock']) : null;
         $description = $_POST['description'];
         $category = $_POST['category'];
-        $imgUrl = ImageHelper::uploadImage('image');
-        
+        $imgUrl = $_POST['isChangeImage'] ? ImageHelper::uploadImage('image') : null;
+
         if ($this->productService->updateProduct($id, $barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl)) {
             $_SESSION['alerts'][] = 'Chỉnh sửa sản phẩm thành công';
             header('Location: /product');
@@ -104,8 +103,10 @@ class ProductController extends Controller
     {
         $id = $_GET['id'];
         $product = $this->productService->getProductById($id);
-        $this->render('product/product_detail', ['product' => $product]);
+        $this->render('product/product_detail',
+            [
+                'product' => $product,
+                'header' => 'Chi tiết sản phẩm ' . $product->getName(),
+            ]);
     }
-
-
 }

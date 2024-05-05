@@ -117,6 +117,7 @@ class AdminUserController extends Controller
     public function getUserSaleInformation(): void
     {
         $userId = $_GET['id'];
+        $_SESSION['logger'][] = $userId;
         $user = $this->userService->findUserById($userId);
         $transactions = $this->transactionService->getTransactionsByUserId($userId);
 

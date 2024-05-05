@@ -12,21 +12,12 @@ class ImageHelper
         $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
         $extension = pathinfo($source, PATHINFO_EXTENSION);
 
-        switch ($extension) {
-            case 'jpg':
-            case 'jpeg':
-                $sourceImage = imagecreatefromjpeg($source);
-                break;
-            case 'png':
-                $sourceImage = imagecreatefrompng($source);
-                break;
-            case 'gif':
-                $sourceImage = imagecreatefromgif($source);
-                break;
-            default:
-                $sourceImage = false;
-                break;
-        }
+        $sourceImage = match ($extension) {
+            'jpg', 'jpeg' => imagecreatefromjpeg($source),
+            'png' => imagecreatefrompng($source),
+            'gif' => imagecreatefromgif($source),
+            default => false,
+        };
 
         imagedestroy($newImage);
         if ($sourceImage === false) {
@@ -39,14 +30,12 @@ class ImageHelper
         imagedestroy($sourceImage);
     }
 
-    public static function uploadImage(string $file)
+    public static function uploadImage(string $file): string
     {
-        $newFileName = $_FILES[$file]['name'];
+        $newFileName = strtolower(str_replace(" ", "-", $_FILES[$file]['name']));
 
-        if ( $newFileName == null && empty($newFileName)) {
-            return "../public/product_images/product-default-image.png";
-        } else {
-            $newFileName = strtolower(str_replace(" ", "-", $newFileName));
+        if ($newFileName == null) {
+            return "/image/product-default-image.png";
         }
 
         $imgExt = explode('.', $newFileName);
@@ -55,17 +44,29 @@ class ImageHelper
         if ($_FILES[$file]['error'] === 0) {
             $imgNameNew = uniqid('', true) . '.' . $imgExt;
             $newFileName = str_replace("." . $imgExt, "", $newFileName);
-            $imgDestination = '../public/product_images/' . $newFileName . '_' . $imgNameNew;
-            move_uploaded_file($_FILES[$file]['tmp_name'], $imgDestination);
-            self::resizeImage($imgDestination, $imgDestination, 500, 500);
-            return $imgDestination;
+            $imgDestination = '/../../public/product_images/' . $newFileName . '_' . $imgNameNew;
+
+            // Get the absolute path to the destination directory
+            $absolutePath = __DIR__ . $imgDestination;
+
+            $_SESSION['logger'][] = $absolutePath;
+
+            // Check if the directory exists, if not, create it
+            if (!is_dir(dirname($absolutePath))) {
+                mkdir(dirname($absolutePath), 0755, true);
+            }
+
+            move_uploaded_file($_FILES[$file]['tmp_name'], $absolutePath);
+            self::resizeImage($absolutePath, $absolutePath, 500, 500);
+
+            return str_replace('/../../public', '', $imgDestination);
         } else {
-            return "../public/product_images/product-default-image.png";
+            return "/product_images/product-default-image.png";
         }
     }
 
     public static function getDisplayStringData(?string $input): string
     {
-        return $input != null && $input != '' ? $input : '../public/image/product-default-image.png';
+        return $input != null && $input != '' ? $input : '/image/product-default-image.png';
     }
 }
