@@ -2,6 +2,7 @@
 
 use app\models\Customer;
 use app\models\Product;
+use app\utils\DataHelper;
 
 if (isset($_GET["name"])) {
     /** @var array $products */
@@ -28,7 +29,7 @@ if (isset($_GET["customerPhone"])) {
     /** @var Customer $customer */
     foreach ($customers as $customer) {
         if ($customer->getPhone() == $_GET["customerPhone"]) {
-            echo $customer->getName(). "-" . $customer->getAddress();
+            echo DataHelper::getDisplayStringData($customer->getName()). "-" . DataHelper::getDisplayStringData($customer->getAddress());
             return;
         }
     }
