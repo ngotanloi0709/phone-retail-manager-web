@@ -17,7 +17,7 @@ class ProductRepository extends BaseRepository
         return $this->getEntityRepository()->findOneBy(['id' => $id]);
     }
 
-    public function findByBarcode(string $barcode)
+    public function findByBarcode(string $barcode): ?Product
     {
         return $this->getEntityRepository()->findOneBy(['barcode' => $barcode]);
     }
@@ -30,5 +30,10 @@ class ProductRepository extends BaseRepository
             ->setMaxResults(5)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findAllBarcode(?int $barcode): array
+    {
+        return $this->getEntityRepository()->findBy(['barcode' => $barcode]);
     }
 }

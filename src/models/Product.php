@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use app\utils\ImageHelper;
+
 
 #[Entity, Table(name: 'products')]
 class Product
@@ -16,9 +18,9 @@ class Product
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
     #[Column(nullable: true)]
-    private string $name;
+    private ?string $name;
     #[Column(nullable: true)]
-    private string $description;
+    private ?string $description;
     #[Column(nullable: true)]
     private int $price;
     #[Column(nullable: true)]
@@ -26,11 +28,14 @@ class Product
     #[Column(nullable: true)]
     private int $stock;
     #[Column(unique: true, nullable: true)]
-    private ?int $barcode = null;
+    private ?int $barcode;
     #[Column(nullable: true)]
     private DateTime $created;
+    #[Column(nullable: true)]
+    private ?string $image_url;
     #[ManyToOne(targetEntity: Category::class)]
-    private Category $category;
+    private ?Category $category;
+
 
     public function getId(): ?int
     {
@@ -43,7 +48,7 @@ class Product
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -54,7 +59,7 @@ class Product
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -112,9 +117,9 @@ class Product
         return $this;
     }
 
-    public function getCreated(): DateTime
+    public function getCreated(): string
     {
-        return $this->created;
+        return $this->created->format('Y-m-d');
     }
 
     public function setCreated(DateTime $created): Product
@@ -123,30 +128,47 @@ class Product
         return $this;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(Category $category): Product
+    public function setCategory(?Category $category): Product
     {
         $this->category = $category;
         return $this;
     }
 
-    public function toArray(): array
+    public function getImageUrl(): ?string
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
-            'import_price' => $this->import_price,
-            'stock' => $this->stock,
-            'barcode' => $this->barcode,
-            'created' => $this->created,
-            //chỗ này thêm toArray() thì có lỗi (khum bt)
-            'category' => $this->category
-        ];
+        return $this->image_url;
     }
-}
+
+    public function setImageUrl(?string $image_url): Product
+    {
+        $this->image_url = $image_url;
+        return $this;
+    }
+
+    public function getCategoryName(): ?string
+    {
+        return $this->category?->getName();
+    }
+
+    public function getCategoryID(): int
+    {
+        return $this->category->getId();
+    }
+
+    public function getPriceFormatted(): ?string
+    {
+        return number_format($this->price, 0, ',', '.') . ' đ';
+    }
+
+    public function getImageUrlFormatted(): ?string
+    {
+        return ImageHelper::getDisplayStringData($this->getImageUrl());
+    }
+
+
+}   

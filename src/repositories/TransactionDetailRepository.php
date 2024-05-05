@@ -22,4 +22,9 @@ class TransactionDetailRepository extends BaseRepository
     {
         return $this->getEntityRepository()->findOneBy(['order' => $order]);
     }
+
+    public function findByProduct(int $productId)
+    {
+        return $this->getEntityRepository()->findOneBy(['product' => $productId]);
+    }
 }

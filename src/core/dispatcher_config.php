@@ -64,4 +64,16 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/', 'StaticticsController@index');
         $r->addRoute('GET', '/getdata', 'StatisticsController@getData');
     });
+
+    $r->addGroup('/product', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'ProductController@getProducts');
+        $r->addRoute('GET', '/', 'ProductController@getProducts');
+        $r->addRoute('GET', '/add-product', 'ProductController@getAddProduct');
+        $r->addRoute('POST', '/add-product', 'ProductController@postAddProduct');
+        $r->addRoute('GET', '/edit-product', 'ProductController@getEditProduct');
+        $r->addRoute('POST', '/edit-product', 'ProductController@postEditProduct');
+        $r->addRoute('GET', '/delete-product', 'ProductController@deleteProduct');
+        $r->addRoute('GET', '/view-product', 'ProductController@getProductDetail');
+        
+    });
 });

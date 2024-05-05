@@ -68,7 +68,7 @@ class SessionUserDTO
         return $this;
     }
 
-    public function getRole(): UserRole
+    public function getRole(): ?UserRole
     {
         return $this->role;
     }
