@@ -42,7 +42,7 @@ $this->layout('base',
                         echo '<td>' . DataHelper::getDisplayStringData($customer->getName()) . '</td>';
                         echo '<td>' . DataHelper::getDisplayStringData($customer->getEmail()) . '</td>';
                         echo '<td>' . DataHelper::getDisplayStringData($customer->getPhone()) . '</td>';
-                        echo '<td>' . DataHelper::getDisplayStringData($customer->getAddress()) . '</td>';
+                        echo '<td>' . DataHelper::getDisplayStringData(substr($customer->getAddress(), 0, 20)) . '...</td>';
                         echo '<td>';
                         echo '<a class="buttonEditCustomerInformation btn btn-warning btn-sm me-1"><span><i class="fa-regular fa-pen-to-square"></i></span> Chi tiết</a>';
                         echo '<a class="buttonDeleteCustomerInformation btn btn-danger btn-sm me-1"><span><i class="fa-solid fa-trash"></i></span> Xóa</a>';
