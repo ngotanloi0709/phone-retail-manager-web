@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use app\utils\ImageHelper;
+
 
 #[Entity, Table(name: 'products')]
 class Product
@@ -155,5 +157,15 @@ class Product
         return $this->category->getId();
     }
 
+    public function getPriceFormatted(): ?string
+    {
+        return number_format($this->price, 0, ',', '.') . ' đ';
+    }
 
-}
+    public function getImageUrlFormatted(): ?string
+    {
+        return ImageHelper::getDisplayStringData($this->getImageUrl());
+    }
+
+
+}   

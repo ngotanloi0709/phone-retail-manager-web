@@ -1,5 +1,11 @@
-<?php 
+<?php
+
+/** @var SessionUserDTO $sessionUser */
+$sessionUser = $_SESSION['user'] ?? null;
+
 use app\models\UserRole;
+
+use app\utils\ImageHelper;
 
 $this->layout(
     'base',
@@ -13,55 +19,47 @@ $this->layout(
 
 <?php $this->start('main') ?>
 <link rel="stylesheet" href="../../style/product_details.css">
-<div class="container">
+<div class="card-wrapper">
     <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-6">
-                    <h4 class="card-title">Chi tiết sản phẩm</h4>
-                </div>
-                <div class="col-6 text-end">
-                    <a href="/product" class="btn btn-outline-warning"><i class="fa-solid fa-list me-2"></i> Danh sách sản phẩm</a>
+        <!-- card left -->
+        <div class="product-imgs">
+            <div class="img-display">
+                <div class="img-showcase">
+                    <img src="<?php echo ImageHelper::getDisplayStringData($product->getImageUrl())?>" alt="product image">
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-6">
-                    <img class="card-img-top" src="<?php echo str_replace('../public/image/', '../../image/', $product->getImageUrl()); ?>" alt="">
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="barcode">Mã sản phẩm</label>
-                        <input type="text" class="form-control" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>" readonly>
-                    </div>
-                    <div class="form-group ">
-                        <label for="name">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $product->getName(); ?>" readonly>
-                    </div>
-                    <div class="form-group ">
-                        <label for="category">Loại sản phẩm</label>
-                        <input type="text" class="form-control" id="category" name="category" value="<?php echo $product->getCategoryName(); ?>" readonly>
-                    </div>
-                    <div class="form-group ">
-                        <label for="price">Giá bán</label>
-                        <input type="text" class="form-control" id="price" name="price" value="<?php echo number_format($product->getPrice(), 0, ',', '.') . ' đ'; ?>" readonly>
-                    </div>
-                    <div class="form-group ">   
-                        <label for="import_price">Giá nhập</label>
-                        <input type="text" class="form-control" id="import_price" name="import_price" value="<?php echo number_format($product->getImportPrice(), 0, ',', '.') . ' đ';  ?>" readonly>
-                    </div>
-                    <div class="form-group ">
-                        <label for="stock">Số Lượng</label>
-                        <input type="number" class="form-control" id="stock" name="stock" value="<?php echo $product->getStock(); ?>" readonly>
-                    </div>
-                    <div class="form-group ">
-                        <label for="description">Mô Tả</label>
-                        <textarea class="form-control" id="description" name="description" readonly><?php echo $product->getDescription(); ?></textarea>
-                    </div>
-                </div>
+
+        <!-- card right -->
+        <div class="product-content">
+
+            <h2 class="product-title"><?php echo $product->getName(); ?></h2>
+            <div class="product-price">
+                <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
+                    <p class="import-price">Giá nhập: <span><?php echo number_format($product->getImportPrice(), 0, ',', '.') . ' đ'; ?></span></p>
+                <?php endif; ?>
+                <p class="price">Giá bán: <span><?php echo number_format($product->getPrice(), 0, ',', '.') . ' đ'; ?></span></p>
+            </div>
+
+            <div class="product-detail">
+                <h2>Mô tả:</h2>
+                <p><?php echo $product->getDescription(); ?></p>
+                <ul>
+                    <li>Mã vạch: <span><?php echo $product->getBarcode(); ?></span></li>
+                    <li>Loại: <span><?php echo $product->getCategoryName(); ?></span></li>
+                    <li>Số lượng: <span><?php echo $product->getStock(); ?></span></li>
+                </ul>
+            </div>
+
+            <div class="purchase-info">
+                <a href="/product" type="button" class="btn"><i class="fa-solid fa-circle-left icon"></i>Quay lại</a>
             </div>
         </div>
+
+
     </div>
+
+
 </div>
+
 <?php $this->end('main') ?>

@@ -7,6 +7,7 @@ use app\services\ProductService;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use League\Plates\Engine;
+use app\utils\ImageHelper;
 
 class ProductController extends Controller
 {
@@ -34,35 +35,13 @@ class ProductController extends Controller
     {
 
         $category = $_POST['category'];
-        if ($category == 'new') {
-            $category = $_POST['newCategoryName'];
-        }
-
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $targetDirectory = "../public/product_images/";
-
-            if (!file_exists($targetDirectory)) {
-                mkdir($targetDirectory, 0777, true);
-            }
-
-            $targetFile = $targetDirectory . basename($_FILES['image']['name']);
-
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
-                $imgUrl = $targetFile;
-            } else {
-                throw new \Exception('Error moving uploaded file.');
-            }
-        } else {
-            throw new \Exception('Error uploading file.');
-        }
-
+        $imgUrl = ImageHelper::uploadImage('image');
         $barcode = isset($_POST['barcode']) ? intval($_POST['barcode']) : null;
         $productName = $_POST['name'];
         $price = isset($_POST['price']) ? intval($_POST['price']) : null;
         $importPrice = isset($_POST['import_price']) ? intval($_POST['import_price']) : null;
         $stock = isset($_POST['stock']) ? intval($_POST['stock']) : null;
         $description = $_POST['description'];
-
 
         if ($this->productService->createProduct($barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl)) {
             $_SESSION['alerts'][] = 'Tạo sản phẩm thành công';
@@ -93,33 +72,9 @@ class ProductController extends Controller
         $importPrice = isset($_POST['import_price']) ? intval($_POST['import_price']) : null;
         $stock = isset($_POST['stock']) ? intval($_POST['stock']) : null;
         $description = $_POST['description'];
-
         $category = $_POST['category'];
-        if ($category == 'new') {
-            $category = $_POST['new_category'];
-        }
-
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $targetDirectory = "../public/product_images/";
-
-            if (!file_exists($targetDirectory)) {
-                mkdir($targetDirectory, 0777, true);
-            }
-
-            $targetFile = $targetDirectory . basename($_FILES['image']['name']);
-
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
-                $imgUrl = $targetFile;
-            } else {
-                throw new \Exception('Error moving uploaded file.');
-            }
-        } else {
-            $product = $this->productService->getProductById($id);
-            $imgUrl = $product->getImageUrl();
-        }
-
-
-        //var_dump($barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl);
+        $imgUrl = ImageHelper::uploadImage('image');
+        
         if ($this->productService->updateProduct($id, $barcode, $productName, $category, $price, $importPrice, $stock, $description, $imgUrl)) {
             $_SESSION['alerts'][] = 'Chỉnh sửa sản phẩm thành công';
             header('Location: /product');

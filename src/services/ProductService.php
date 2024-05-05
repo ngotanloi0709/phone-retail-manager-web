@@ -42,22 +42,23 @@ class ProductService
         return $this->categoryRepository->findByID($id);
     }
 
+
+
     public function createProduct(int $barcode, string $productName, string $categoryString, int $price, int $importPrice, int $stock, string $description, string $imgUrl): bool
     {
-        $createdDateTime = new \DateTime();
-
-        if (is_numeric($categoryString)) {
-            $category = $this->categoryRepository->find(intval($categoryString));
-        } else {
-            $category = $this->categoryRepository->getCategoryByName($categoryString);
-        }
-        if ($category == null) {
-            $category = new Category();
-            $category->setName($categoryString);
-            $this->categoryRepository->save($category);
-        }
-
         try {
+            /** @var DateTime $createdDateTime */
+            /** @var Category $category */
+
+            $createdDateTime = new \DateTime();
+            $category = $this->categoryRepository->getCategoryByName($categoryString);
+
+            if ($category == null) {
+                $category = new Category();
+                $category->setName($categoryString);
+                $this->categoryRepository->save($category);
+            }
+
             $product = new Product();
             $product->setBarcode($barcode);
             $product->setName($productName);
@@ -68,7 +69,9 @@ class ProductService
             $product->setCreated($createdDateTime);
             $product->setImageUrl($imgUrl);
             $product->setCategory($category);
+
             $this->productRepository->save($product);
+            
             return true;
         } catch (\Exception $e) {
             error_log($e->getMessage());
@@ -83,8 +86,14 @@ class ProductService
     public function updateProduct(int $id, ?int $barcode, ?string $productName, ?string $categoryString, ?int $price, ?int $importPrice, ?int $stock, ?string $description, ?string $imgUrl): bool
     {
         try {
-            $category = $this->categoryRepository->find(intval($categoryString));
+            /** @var Category $category */
+            $category = $this->categoryRepository->getCategoryByName($categoryString);
 
+            if ($category == null) {
+                $category = new Category();
+                $category->setName($categoryString);
+                $this->categoryRepository->save($category);
+            }
             /** @var Product $product */
             $product = $this->productRepository->findByID($id);
 
@@ -110,6 +119,7 @@ class ProductService
     public function deleteProduct(int $id): bool
     {
         try {
+            /** @var Product $product */
             $product = $this->productRepository->findByID($id);
 
             $this->productRepository->delete($product);
