@@ -55,6 +55,14 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '', 'CustomerController@index');
         $r->addRoute('GET', '/', 'CustomerController@index');
         $r->addRoute('GET', '/customer_transhistory', 'CustomerController@getTransactionHistory');
+        $r->addRoute('POST', '/edit-customer', 'CustomerController@editCustomer');
+        $r->addRoute('POST', '/delete-customer', 'CustomerController@deleteCustomer');
+        $r->addRoute('POST', '/customer_transhistory', 'CustomerController@cancelTransaction');
+    });
+    $r->addGroup('/statistics', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'StatisticsController@index');
+        $r->addRoute('GET', '/', 'StaticticsController@index');
+        $r->addRoute('GET', '/getdata', 'StatisticsController@getData');
     });
 
     $r->addGroup('/product', function (RouteCollector $r) {

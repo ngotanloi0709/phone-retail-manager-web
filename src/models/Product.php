@@ -91,7 +91,10 @@ class Product
         $this->import_price = $import_price;
         return $this;
     }
-
+    public function getProfit(): int
+    {
+        return $this->price - $this->import_price;
+    }
     public function getStock(): int
     {
         return $this->stock;
