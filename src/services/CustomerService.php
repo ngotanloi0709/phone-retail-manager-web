@@ -61,15 +61,37 @@ class CustomerService
                 return false;
             }
 
-            $customer->setName($editCustomerInformationDTO->getName());
-            $customer->setPhone($editCustomerInformationDTO->getPhone());
+            $customer->setName($editCustomerInformationDTO->getName());            
             $customer->setAddress($editCustomerInformationDTO->getAddress());
             $customer->setEmail($editCustomerInformationDTO->getEmail());
-
+            foreach ($this->getCustomers() as $cus) {
+                if($cus->getPhone() == $editCustomerInformationDTO->getPhone()){
+                    $_SESSION['alerts'][] = 'Số điện thoại đã tồn tại';
+                    return false;
+                }
+            }
+            $customer->setPhone($editCustomerInformationDTO->getPhone());
             $this->customerRepository->save($customer);
 
 
             
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+    public function deleteCustomer(string $id): bool
+    {
+        try {
+            $customer = $this->customerRepository->find($id);
+
+            if ($customer == null) {
+                $_SESSION['alerts'][] = 'Khách hàng không tồn tại';
+                return false;
+            }
+
+            $this->customerRepository->delete($customer);
         } catch (Exception $e) {
             return false;
         }

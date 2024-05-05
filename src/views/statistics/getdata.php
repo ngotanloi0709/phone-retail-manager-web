@@ -1,48 +1,73 @@
 <?php
 
-    function infor($totalmoney,$numoftrans,$numofproduct){
+    function infor($totalmoney,$numoftrans,$numofproduct,$totalprofit){
         echo '<div class="container">';
         echo '<div class="row">
-            <div class="col">
+            <div class="col-xl-3 col-md-6">
                 <div class="card bg-warning p-3 mb-2">
                     <div class="card-block">
-                        <div class="row align-items-end">
-                            <div >
+                        <div class="row">
+                            <div class="col-8">
                                 <h4 class="text-white">'.$totalmoney.'</h4>
                                 <h6 class="text-white ">Tổng số tiền đã nhận</h6>
                             </div>
+                            <div class="col-4 text-write">
+                                <h4 class="text-white"><i class="fa fa-money fa-2x"></i></h4>
+                            </div>  
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-xl-3 col-md-6">
                 <div class="card bg-danger p-3 mb-2">
                     <div class="card-block">
-                        <div class="row align-items-end">
-                            <div >
+                        <div class="row ">
+                            <div class="col-8">
                                 <h4 class="text-white">'.$numoftrans.'</h4>
                                 <h6 class="text-white">Số lượng đơn hàng</h6>
                             </div>
+                            <div class="col-4 text-write">
+                                <h4 class="text-white"><i class="fa fa-file-text-o fa-2x"></i></h4>
+                            </div>  
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-xl-3 col-md-6">
                 <div class="card bg-success p-3 mb-2">
                     <div class="card-block">
-                        <div class="row align-items-end">
-                            <div >
+                        <div class="row ">
+                            <div class="col-8">
                                 <h4 class="text-white">'.$numofproduct.'</h4>
                                 <h6 class="text-white">Số lượng sản phẩm đã bán</h6>
+                            </div>  
+                            <div class="col-4 text-write">
+                                <h4 class="text-white"><i class="fa fa-check-square-o fa-2x"></i></h4>
                             </div>  
                         </div>
                     </div>
                 </div>
             </div> 
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-secondary p-3 mb-2">
+                    <div class="card-block">
+                        <div class="row ">
+                            <div class="col-8">
+                                <h4 class="text-white">'.$totalprofit.'</h4>
+                                <h6 class="text-white">Tổng lợi nhuận</h6>
+                            </div>  
+                            <div class="col-4 text-write">
+                                <h4 class="text-white"><i class="fa fa-line-chart fa-2x"></i></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>';  
         echo "</div>";                                     
     }
     function tablehead(){
+        echo '<div style="overflow-x:auto;">';
         echo '<table class="table table-bordered ">
             <thead>
                 <tr>
@@ -69,7 +94,9 @@
             echo "<td>".$transaction->getGivenMoney()."</td>";
 
                 $change = $transaction->getGivenMoney() - $total;
-
+                if ($change < 0) {
+                    $change=0;
+                }
             echo "<td>".$change."</td>";
                 $totalquantity = 0;
                 foreach ($transaction->getItems() as $item) : 
@@ -77,7 +104,7 @@
                 endforeach;
             echo "<td>".$totalquantity."</td>";
             echo "<td>";
-                echo '<button type="button" class="btn btn-primary getDetailBnt">Chi tiết</button>';
+                echo '<button type="button" class="btn btn-primary getDetailBnt"><span><i class="fa-solid fa-circle-info"></i></span> Chi tiết</button>';
                 
             echo "</td>";
         echo "</tr>";
@@ -91,20 +118,23 @@
         $totalmoney=0;
         $numoftrans=0;
         $numofproduct=0;
-        
+        $totalprofit=0;
         foreach($transactions as $transaction){
             $time = strtotime($transaction->getCreated()->format('Y-m-d'));
             if($time>=$timestart&&$time<=$timeend){
                 $numoftrans++;
                 $total=0;
+                $profit=0;
                 foreach ($transaction->getItems() as $item) : 
                     $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                     $numofproduct+=$item->getQuantity();
+                    $profit += $item->getProduct()->getProfit() * $item->getQuantity();
                 endforeach;
                 $totalmoney+=$total;
+                $totalprofit+=$profit;
             }
         }
-        infor($totalmoney,$numoftrans,$numofproduct,);
+        infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
         tablehead();
                 foreach($transactions as $transaction):
                     $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -113,6 +143,8 @@
                     }
                 endforeach; 
                 echo "</tbody>";
+                echo "</table>";
+            echo "</div>";
     }
     //theo loai thoi gian
     if( isset($_GET['timerange']) && ( isset($_GET['timeend'])==false || isset($_GET['timeend'])==false ) ){
@@ -122,6 +154,7 @@
         $numofproduct=0;
         $timestart = 0;
         $timeend = 0;
+        $totalprofit=0;
         if($timerange == 'today'){
             $timestart = strtotime("today");
             $timeend = strtotime("tomorrow")-1;
@@ -130,14 +163,17 @@
                 if($time>=$timestart&&$time<=$timeend){
                     $numoftrans++;
                     $total=0;
+                    $profit=0;
                     foreach ($transaction->getItems() as $item) : 
                         $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                         $numofproduct+=$item->getQuantity();
+                        $profit += $item->getProduct()->getProfit() * $item->getQuantity();
                     endforeach;
                     $totalmoney+=$total;
+                    $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
             tablehead();
                     foreach($transactions as $transaction):
                         $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -145,7 +181,9 @@
                             tablebody($transaction);
                         }
                     endforeach; 
-            echo "</tbody>";
+                    echo "</tbody>";
+                    echo "</table>";
+                echo "</div>";
         }
         if($timerange == 'yesterday'){
             $timestart = strtotime("yesterday");
@@ -155,14 +193,17 @@
                 if($time>=$timestart&&$time<=$timeend){
                     $numoftrans++;
                     $total=0;
+                    $profit=0;
                     foreach ($transaction->getItems() as $item) : 
                         $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                         $numofproduct+=$item->getQuantity();
+                        $profit += $item->getProduct()->getProfit() * $item->getQuantity();
                     endforeach;
                     $totalmoney+=$total;
+                    $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
             tablehead();
                     foreach($transactions as $transaction):
                         $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -170,7 +211,9 @@
                             tablebody($transaction);
                         }
                     endforeach; 
-            echo "</tbody>";
+                    echo "</tbody>";
+                    echo "</table>";
+                echo "</div>";
         }
         if($timerange == '7day'){
             $timestart = strtotime("-7 day");
@@ -180,14 +223,17 @@
                 if($time>=$timestart&&$time<=$timeend){
                     $numoftrans++;
                     $total=0;
+                    $profit=0;
                     foreach ($transaction->getItems() as $item) : 
                         $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                         $numofproduct+=$item->getQuantity();
+                        $profit += $item->getProduct()->getProfit() * $item->getQuantity();
                     endforeach;
                     $totalmoney+=$total;
+                    $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
             tablehead();
                     foreach($transactions as $transaction):
                         $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -195,7 +241,9 @@
                             tablebody($transaction);
                         }
                     endforeach; 
-            echo "</tbody>";
+                    echo "</tbody>";
+                    echo "</table>";
+                echo "</div>";
         }
         if($timerange == 'month'){
             $timestart = strtotime("first day of this month");
@@ -205,14 +253,17 @@
                 if($time>=$timestart&&$time<=$timeend){
                     $numoftrans++;
                     $total=0;
+                    $profit=0;
                     foreach ($transaction->getItems() as $item) : 
                         $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                         $numofproduct+=$item->getQuantity();
+                        $profit += $item->getProduct()->getProfit() * $item->getQuantity();
                     endforeach;
                     $totalmoney+=$total;
+                    $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
             tablehead();
                     foreach($transactions as $transaction):
                         $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -220,7 +271,9 @@
                             tablebody($transaction);
                         }
                     endforeach; 
-            echo "</tbody>";
+                    echo "</tbody>";
+                    echo "</table>";
+                echo "</div>";
         }
     }
     

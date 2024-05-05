@@ -10,6 +10,7 @@ $this->layout('base',
     ])?>
 <?php $this->start('main') ?>
 <?= $this->insert('customer/edit-customer-detail-modal') ?>
+<?= $this->insert('customer/delete-customer-modal') ?>
 <div class="card">
     <div class="card-header">
         <b>Bảng thông tin khách hàng</b>
@@ -43,8 +44,9 @@ $this->layout('base',
                         echo '<td>' . DataHelper::getDisplayStringData($customer->getPhone()) . '</td>';
                         echo '<td>' . DataHelper::getDisplayStringData($customer->getAddress()) . '</td>';
                         echo '<td>';
-                        echo '<a class="buttonEditCustomerInformation btn btn-warning btn-sm me-1"><span><i class="fa-regular fa-pen-to-square"></i></span>Chi tiết</a>';
-                        echo '<a href="/customer/customer_transhistory?customerid='. $customer->getId().' " class="btn btn-primary btn-sm me-1"><span><i class="fa-solid fa-circle-info"></i></span>Xem lịch sử mua hàng</a>';
+                        echo '<a class="buttonEditCustomerInformation btn btn-warning btn-sm me-1"><span><i class="fa-regular fa-pen-to-square"></i></span> Chi tiết</a>';
+                        echo '<a class="buttonDeleteCustomerInformation btn btn-danger btn-sm me-1"><span><i class="fa-solid fa-trash"></i></span> Xóa</a>';
+                        echo '<a href="/customer/customer_transhistory?customerid='. $customer->getId().' " class="btn btn-primary btn-sm me-1"><span><i class="fa-solid fa-circle-info"></i></span> Xem lịch sử mua hàng</a>';
                         echo '</td>';
                     echo '</tr>';
                     }
@@ -91,7 +93,14 @@ $this->layout('base',
 
         $('#editCustomerInformationModal').modal('show');
     });
+    $('.buttonDeleteCustomerInformation').on('click', function () {
+        let currentRow = $(this).closest('tr');
+        let id = $(currentRow).data('customer-id');
 
+        $('#idDeleteCustomerConfirmModal').val(id);
+        $('#deleteCustomerConfirmModal').modal('show');
     });
+    });
+    
 </script>
 <?php $this->end('main') ?>

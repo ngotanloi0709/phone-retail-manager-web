@@ -54,4 +54,16 @@ class CustomerController extends Controller
 
         header('Location: /customer');
     }
+    public function deleteCustomer(): void
+    {
+        $customerId = $_POST['id'];
+
+        if ($this->customerService->deleteCustomer($customerId)) {
+            $_SESSION['alerts'][] = 'Xóa khách hàng thành công';
+        } else {
+            $_SESSION['alerts'][] = 'Khách hàng đã mua hàng, không thể xóa';
+        }
+
+        header('Location: /customer');
+    }
 }

@@ -11,11 +11,11 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-6">
-                            <label for="editCutomerInformationEmail" class="form-label">Địa chỉ Email:</label>
+                            <label for="editCustomerInformationEmail" class="form-label">Địa chỉ Email:</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1"><i
                                             class="fa-solid fa-envelope"></i></span>
-                                <input id="editCutomerInformationEmail" type="email" class="form-control"
+                                <input id="editCustomerInformationEmail" type="email" class="form-control"
                                        placeholder="Email"
                                        aria-label="Email"
                                        aria-describedby="basic-addon1" name="email" required>

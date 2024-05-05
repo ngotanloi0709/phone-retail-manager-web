@@ -19,37 +19,47 @@ $this->layout('base',
     </div>
 </div>
 <style>
+
     form {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    @media screen and (min-width: 1100px) {
+        form {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+    }
+    .card-block {
+        min-height: 80px;
     }
 </style>
 
-<div class="card">
+<div class="card mb-3">
     <div class="card-header">
         <h3>Chọn khoảng thời gian</h3>
     </div>
     <div class="card-body">
         <form method="get">
-
-            <label for="timerange">Loại thời gian:</label>
-            <select name="timerange" id="timerange" onchange="changeDropDownValue()">
+            <label for="timerange" >Loại thời gian:</label>
+            <select  name="timerange" id="timerange" onchange="changeDropDownValue()">
                 <option value="blank">(Trống)</option>
+                <option value="7day">Trong 7 ngày trước</option>                
                 <option value="today">Hôm nay</option>
                 <option value="yesterday">Hôm qua</option>
-                <option value="7day">Trong 7 ngày trước</option>
                 <option value="month">Trong tháng này</option>
             </select>
 
-            <label for="timestart">Ngày bắt đầu:</label>
-            <input type="date" id="timestart" name="timestart" onchange="changeTime()">
+            <label for="timestart" >Ngày bắt đầu:</label>
+            <input type="date" id="timestart" name="timestart" onchange="changeTime()" >
 
-            <label for="timeend">Ngày kết thúc:</label>
+            <label for="timeend" >Ngày kết thúc:</label>
             <input type="date" id="timeend" name="timeend" onchange="changeTime()">
-
+            
             <input type="submit" value="Tìm kiếm" class="p-2">
         </form>
     </div>
@@ -59,9 +69,139 @@ $this->layout('base',
         <h3>Danh sách đơn hàng</h3>
     </div>
     <div class="card-body">
-        <div id="infor"></div>
-        
-    </div>
+        <div id="infor">
+        <?php 
+            $timestart = strtotime("first day of this month");
+            $timeend = strtotime("last day of this month 23:59:59");
+            foreach($transactions as $transaction){
+                $time = strtotime($transaction->getCreated()->format('Y-m-d'));
+                if($time>=$timestart&&$time<=$timeend){
+                    $numoftrans++;
+                    $total=0;
+                    $profit=0;
+                    foreach ($transaction->getItems() as $item) : 
+                        $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
+                        $numofproduct+=$item->getQuantity();
+                        $profit += $item->getProduct()->getProfit() * $item->getQuantity();
+                    endforeach;
+                    $totalmoney+=$total;
+                    $totalprofit+=$profit;
+                }
+            }
+            echo '<div class="container">';
+            echo '<div class="row ">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$totalmoney.'</h4>
+                                    <h6 class="text-white ">Tổng số tiền đã nhận</h6>
+                                </div>
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-money fa-2x"></i></h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-danger p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$numoftrans.'</h4>
+                                    <h6 class="text-white">Số lượng đơn hàng</h6>
+                                </div>
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-file-text-o fa-2x"></i></h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-success p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$numofproduct.'</h4>
+                                    <h6 class="text-white">Số lượng sản phẩm đã bán</h6>
+                                </div>
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-check-square-o fa-2x"></i></h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-secondary p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$totalprofit.'</h4>
+                                    <h6 class="text-white">Tổng lợi nhuận</h6>
+                                </div>  
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-line-chart fa-2x"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';  
+            echo "</div>"; 
+            echo '<div style="overflow-x:auto;">';
+            echo '<table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ngày Mua</th>
+                    <th>Tổng Số Tiền</th>
+                    <th>Số Tiền Khách Đã Đưa</th>
+                    <th>Tiền Thối</th>
+                    <th>Số Lượng Sản Phẩm</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>';
+                    foreach($transactions as $transaction):
+                        $time = strtotime($transaction->getCreated()->format('Y-m-d'));
+                        if($time>=$timestart&&$time<=$timeend){
+                            echo"<tr>";
+                            echo "<td>".$transaction->getId()."</td>";
+                            echo "<td>".$transaction->getCreated()->format('d/m/Y H:i:s')."</td>";
+                            $total = 0;
+                            foreach ($transaction->getItems() as $item) : 
+                                $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
+                            endforeach;
+                            echo "<td>".$total."</td>";
+                            echo "<td>".$transaction->getGivenMoney()."</td>";
+
+                                $change = $transaction->getGivenMoney() - $total;
+                                if ($change < 0) {
+                                    $change=0;
+                                }
+                            echo "<td>".$change."</td>";
+                                $totalquantity = 0;
+                                foreach ($transaction->getItems() as $item) : 
+                                    $totalquantity += $item->getQuantity() ;
+                                endforeach;
+                            echo "<td>".$totalquantity."</td>";
+                            echo "<td>";
+                                echo '<button type="button" class="btn btn-primary getDetailBnt"><span><i class="fa-solid fa-circle-info"></i></span> Chi tiết</button>';
+                                
+                            echo "</td>";
+                        echo "</tr>";
+                        }
+                    endforeach; 
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";?>
+        </div>
+    </div>    
+</div>
 <script>
     function changeDropDownValue() {
         let timestart = document.getElementById('timestart');

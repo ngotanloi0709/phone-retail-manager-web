@@ -52,6 +52,9 @@ $this->layout('base',
                         <td><?=$transaction->getGivenMoney()?></td>
                         <?php
                             $change = $transaction->getGivenMoney() - $total;
+                            if ($change < 0) {
+                                $change=0;
+                            }
                         ?>
                         <td><?php echo $change?></td>
                         <?php
@@ -62,7 +65,7 @@ $this->layout('base',
                         ?>
                         <td ><?php echo $totalquantity?></td>
                         <td>
-                            <button type="button" class="btn btn-primary getDetailBnt"><span><i class="fa-solid fa-circle-info"></i></span>Chi tiết</button>   
+                            <button type="button" class="btn btn-primary getDetailBnt"><span><i class="fa-solid fa-circle-info"></i></span> Chi tiết</button>   
                             
                         </td> 
                     </tr>
