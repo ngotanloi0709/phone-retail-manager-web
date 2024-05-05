@@ -16,6 +16,7 @@
                     <p><b>Tên khách hàng: <span id="transactionDetailCustomerName"></span></b></p>
                     <p><b>Số điện thoại khách hàng: <span id="transactionDetailCustomerPhone"></span></b></p>
                     <p><b>Thời gian: <span id="transactionDetailDateCreated"></span></b></p>
+                    <p><b>Trạng thái: <span id="transactionDetailStatus"></span></b></p>
                 </div>
                 <table class="table table-hover table-striped table-bordered">
                     <thead>

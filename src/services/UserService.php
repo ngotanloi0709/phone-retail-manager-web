@@ -232,6 +232,7 @@ class UserService
 
             $this->userRepository->delete($user);
         } catch (Exception $e) {
+            $_SESSION['alerts'][] = 'Người dùng đã sinh dữ liệu giao dịch với khách hàng';
             return false;
         }
 

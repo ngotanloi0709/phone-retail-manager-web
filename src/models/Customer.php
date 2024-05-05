@@ -16,7 +16,7 @@ class Customer
     #[Id, Column, GeneratedValue]
     private ?int $id = null;
     #[Column(nullable: true)]
-    private string $name;
+    private ?string $name;
     #[Column(nullable: true)]
     private ?string $email;
     #[Column(nullable: true)]
@@ -61,12 +61,18 @@ class Customer
     {
         return $this->email;
     }
-
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
     public function getPhone(): ?string
     {
         return $this->phone;
     }
-
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
     public function getTransactions(): Collection
     {
         return $this->transactions;

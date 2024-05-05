@@ -55,5 +55,25 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '', 'CustomerController@index');
         $r->addRoute('GET', '/', 'CustomerController@index');
         $r->addRoute('GET', '/customer_transhistory', 'CustomerController@getTransactionHistory');
+        $r->addRoute('POST', '/edit-customer', 'CustomerController@editCustomer');
+        $r->addRoute('POST', '/delete-customer', 'CustomerController@deleteCustomer');
+        $r->addRoute('POST', '/customer_transhistory', 'CustomerController@cancelTransaction');
+    });
+    $r->addGroup('/statistics', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'StatisticsController@index');
+        $r->addRoute('GET', '/', 'StaticticsController@index');
+        $r->addRoute('GET', '/getdata', 'StatisticsController@getData');
+    });
+
+    $r->addGroup('/product', function (RouteCollector $r) {
+        $r->addRoute('GET', '', 'ProductController@getProducts');
+        $r->addRoute('GET', '/', 'ProductController@getProducts');
+        $r->addRoute('GET', '/add-product', 'ProductController@getAddProduct');
+        $r->addRoute('POST', '/add-product', 'ProductController@postAddProduct');
+        $r->addRoute('GET', '/edit-product', 'ProductController@getEditProduct');
+        $r->addRoute('POST', '/edit-product', 'ProductController@postEditProduct');
+        $r->addRoute('GET', '/delete-product', 'ProductController@deleteProduct');
+        $r->addRoute('GET', '/view-product', 'ProductController@getProductDetail');
+        
     });
 });
