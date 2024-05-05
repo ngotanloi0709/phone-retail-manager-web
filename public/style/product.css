@@ -8,19 +8,21 @@
     box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
 }
 
+tr {
+    background-color: #fff;
+}
+
 
 tr th,
 tr td {
-    border-color: #e9e9e9;
+    /* border-color: #e9e9e9; */
     padding: 8px 15px;
-    font-size: 14px;
-    font-weight: 400;
     vertical-align: middle;
     background-color: #fff;
 }
 
 tr th:first-child {
-    width: 60px;
+    width: 60px;            
 }
 
 tr th:last-child {
@@ -52,8 +54,14 @@ td a:hover {
 }
 
 
-img {
-    max-width: 100px;
+td img {
+    width: 100px;
+    height: 70px;
+}   
+
+img{
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -82,27 +90,8 @@ select {
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
-    /* Đảm bảo tính toàn vẹn của kích thước */
 }
 
-button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 50%;
-    margin-top: 20px;
-    position: relative;
-    left: 25%;
-    border-radius: 4px;
-}
-
-button[type="submit"]:hover {
-    background-color: #45a049;
-
-}
 
 .table-responsive {
     overflow-x: auto;
@@ -120,9 +109,7 @@ td {
 .deleteProduct {
     display: inline-block;
     margin-right: 2px;
-    /* Khoảng cách giữa các nút */
     cursor: pointer;
-    /* Biến con trỏ thành hình bút chì khi di chuột qua nút */
 }
 
 .editProduct i,
@@ -130,11 +117,9 @@ td {
     font-size: 20px;
 }
 
-/* Thêm hover effect */
 .editProduct:hover,
 .deleteProduct:hover {
     color: black;
-    /* Màu chữ khi di chuột qua */
 }
 
 
@@ -171,7 +156,7 @@ td {
 
 .pagination li.disabled i {
     color: #ccc;
-
+    
 }
 
 .pagination li i {
@@ -179,3 +164,23 @@ td {
     padding-top: 6px;
 }
 
+span{
+    font-size: 16px;
+}
+/* button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    position: relative;
+    border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+
+} */
