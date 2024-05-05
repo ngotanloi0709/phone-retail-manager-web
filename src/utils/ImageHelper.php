@@ -44,7 +44,7 @@ class ImageHelper
         $newFileName = $_FILES[$file]['name'];
 
         if ( $newFileName == null && empty($newFileName)) {
-            return "/image/product-default-image.png";
+            return "../public/product_images/product-default-image.png";
         } else {
             $newFileName = strtolower(str_replace(" ", "-", $newFileName));
         }
@@ -55,18 +55,17 @@ class ImageHelper
         if ($_FILES[$file]['error'] === 0) {
             $imgNameNew = uniqid('', true) . '.' . $imgExt;
             $newFileName = str_replace("." . $imgExt, "", $newFileName);
-            $imgDestination = '/product_images/' . $newFileName . '_' . $imgNameNew;
+            $imgDestination = '../public/product_images/' . $newFileName . '_' . $imgNameNew;
             move_uploaded_file($_FILES[$file]['tmp_name'], $imgDestination);
             self::resizeImage($imgDestination, $imgDestination, 500, 500);
             return $imgDestination;
         } else {
-            return "/product_images/product-default-image.png";
+            return "../public/product_images/product-default-image.png";
         }
     }
 
-
     public static function getDisplayStringData(?string $input): string
     {
-        return $input != null && $input != '' ? $input : '/image/product-default-image.png';
+        return $input != null && $input != '' ? $input : '../public/image/product-default-image.png';
     }
 }
