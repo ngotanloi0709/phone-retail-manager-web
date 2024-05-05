@@ -1,69 +1,101 @@
 <?php
 
-    function infor($totalmoney,$numoftrans,$numofproduct,$totalprofit){
+    function infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans){
         echo '<div class="container">';
-        echo '<div class="row">
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-warning p-3 mb-2">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-8">
-                                <h4 class="text-white">'.$totalmoney.'</h4>
-                                <h6 class="text-white ">Tổng số tiền đã nhận</h6>
-                            </div>
-                            <div class="col-4 text-write">
-                                <h4 class="text-white"><i class="fa fa-money fa-2x"></i></h4>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-danger p-3 mb-2">
-                    <div class="card-block">
-                        <div class="row ">
-                            <div class="col-8">
-                                <h4 class="text-white">'.$numoftrans.'</h4>
-                                <h6 class="text-white">Số lượng đơn hàng</h6>
-                            </div>
-                            <div class="col-4 text-write">
-                                <h4 class="text-white"><i class="fa fa-file-text-o fa-2x"></i></h4>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-success p-3 mb-2">
-                    <div class="card-block">
-                        <div class="row ">
-                            <div class="col-8">
-                                <h4 class="text-white">'.$numofproduct.'</h4>
-                                <h6 class="text-white">Số lượng sản phẩm đã bán</h6>
-                            </div>  
-                            <div class="col-4 text-write">
-                                <h4 class="text-white"><i class="fa fa-check-square-o fa-2x"></i></h4>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-secondary p-3 mb-2">
-                    <div class="card-block">
-                        <div class="row ">
-                            <div class="col-8">
-                                <h4 class="text-white">'.$totalprofit.'</h4>
-                                <h6 class="text-white">Tổng lợi nhuận</h6>
-                            </div>  
-                            <div class="col-4 text-write">
-                                <h4 class="text-white"><i class="fa fa-line-chart fa-2x"></i></h4>
+        echo '<div class="row ">
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-warning p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$totalmoney.'</h4>
+                                    <h6 class="text-white ">Tổng số tiền đã nhận</h6>
+                                </div>
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-money fa-2x"></i></h4>
+                                </div>  
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-danger p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$numoftrans.'</h4>
+                                    <h6 class="text-white">Số lượng đơn hàng</h6>
+                                </div>
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-file-text-o fa-2x"></i></h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-success p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$numofproduct.'</h4>
+                                    <h6 class="text-white">Số lượng sản phẩm đã bán</h6>
+                                </div>
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-check-square-o fa-2x"></i></h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
-        </div>';  
+            <div class="row ">
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-secondary p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$totalprofit.'</h4>
+                                    <h6 class="text-white">Tổng lợi nhuận</h6>
+                                </div>  
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-line-chart fa-2x"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-dark p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$numofcanceltrans.'</h4>
+                                    <h6 class="text-white">Số đơn đã hủy</h6>
+                                </div>  
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-close fa-2x"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-info p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$totalmoneyofcanceltrans.'</h4>
+                                    <h6 class="text-white">Số tiền mất do hủy đơn</h6>
+                                </div>  
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-angle-double-down fa-2x"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';  
         echo "</div>";                                     
     }
     function tablehead(){
@@ -119,8 +151,14 @@
         $numoftrans=0;
         $numofproduct=0;
         $totalprofit=0;
+        $numofcanceltrans = 0;
+        $totalmoneyofcanceltrans = 0;
         foreach($transactions as $transaction){
             if($transaction->getIsCanceled()==true){
+                $numofcanceltrans++;
+                    foreach ($transaction->getItems() as $item){ 
+                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                    }
                 continue;
             }
             $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -137,7 +175,7 @@
                 $totalprofit+=$profit;
             }
         }
-        infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
+        infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans);
         tablehead();
                 foreach($transactions as $transaction):
                     if($transaction->getIsCanceled()==true){
@@ -161,11 +199,17 @@
         $timestart = 0;
         $timeend = 0;
         $totalprofit=0;
+        $numofcanceltrans = 0;
+        $totalmoneyofcanceltrans = 0;
         if($timerange == 'today'){
             $timestart = strtotime("today");
             $timeend = strtotime("tomorrow")-1;
             foreach($transactions as $transaction){
                 if($transaction->getIsCanceled()==true){
+                    $numofcanceltrans++;
+                    foreach ($transaction->getItems() as $item){ 
+                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                    }
                     continue;
                 }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -182,7 +226,7 @@
                     $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans);
             tablehead();
                     foreach($transactions as $transaction):
                         if($transaction->getIsCanceled()==true){
@@ -202,6 +246,10 @@
             $timeend = strtotime("today")-1;
             foreach($transactions as $transaction){
                 if($transaction->getIsCanceled()==true){
+                    $numofcanceltrans++;
+                    foreach ($transaction->getItems() as $item){ 
+                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                    }
                     continue;
                 }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -218,7 +266,7 @@
                     $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans);
             tablehead();
                     foreach($transactions as $transaction):
                         if($transaction->getIsCanceled()==true){
@@ -238,6 +286,10 @@
             $timeend = strtotime("today")-1;
             foreach($transactions as $transaction){
                 if($transaction->getIsCanceled()==true){
+                    $numofcanceltrans++;
+                    foreach ($transaction->getItems() as $item){ 
+                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                    }
                     continue;
                 }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -257,7 +309,7 @@
                     $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans);
             tablehead();
                     foreach($transactions as $transaction):
                         if($transaction->getIsCanceled()==true){
@@ -277,6 +329,10 @@
             $timeend = strtotime("last day of this month 23:59:59");
             foreach($transactions as $transaction){
                 if($transaction->getIsCanceled()==true){
+                    $numofcanceltrans++;
+                    foreach ($transaction->getItems() as $item){ 
+                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                    }
                     continue;
                 }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -296,7 +352,7 @@
                     $totalprofit+=$profit;
                 }
             }
-            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit);
+            infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans);
             tablehead();
                     foreach($transactions as $transaction):
                         if($transaction->getIsCanceled()==true){

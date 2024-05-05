@@ -60,7 +60,7 @@ $this->layout('base',
             <label for="timeend" >Ngày kết thúc:</label>
             <input type="date" id="timeend" name="timeend" onchange="changeTime()">
             
-            <input type="submit" value="Tìm kiếm" class="p-2">
+            <input type="submit" id="search" value="Tìm kiếm" class="p-2">
         </form>
     </div>
 </div>
@@ -73,8 +73,18 @@ $this->layout('base',
         <?php 
             $timestart = strtotime("first day of this month");
             $timeend = strtotime("last day of this month 23:59:59");
+            $totalmoney = 0;
+            $totalprofit = 0;
+            $numoftrans = 0;
+            $numofproduct = 0;
+            $numofcanceltrans = 0;
+            $totalmoneyofcanceltrans = 0;
             foreach($transactions as $transaction){
                 if($transaction->getIsCanceled()==true){
+                    $numofcanceltrans++;
+                    foreach ($transaction->getItems() as $item){ 
+                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                    }
                     continue;
                 }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
@@ -93,7 +103,7 @@ $this->layout('base',
             }
             echo '<div class="container">';
             echo '<div class="row ">
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-warning p-3 mb-2">
                         <div class="card-block">
                             <div class="row">
@@ -108,7 +118,7 @@ $this->layout('base',
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-danger p-3 mb-2">
                         <div class="card-block">
                             <div class="row ">
@@ -123,7 +133,7 @@ $this->layout('base',
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-success p-3 mb-2">
                         <div class="card-block">
                             <div class="row ">
@@ -138,7 +148,9 @@ $this->layout('base',
                         </div>
                     </div>
                 </div> 
-                <div class="col-xl-3 col-md-6">
+            </div>
+            <div class="row ">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-secondary p-3 mb-2">
                         <div class="card-block">
                             <div class="row ">
@@ -148,6 +160,36 @@ $this->layout('base',
                                 </div>  
                                 <div class="col-4 text-write">
                                     <h4 class="text-white"><i class="fa fa-line-chart fa-2x"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-dark p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$numofcanceltrans.'</h4>
+                                    <h6 class="text-white">Số đơn đã hủy</h6>
+                                </div>  
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-close fa-2x"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card bg-info p-3 mb-2">
+                        <div class="card-block">
+                            <div class="row ">
+                                <div class="col-8">
+                                    <h4 class="text-white">'.$totalmoneyofcanceltrans.'</h4>
+                                    <h6 class="text-white">Số tiền mất do hủy đơn</h6>
+                                </div>  
+                                <div class="col-4 text-write">
+                                    <h4 class="text-white"><i class="fa fa-angle-double-down fa-2x"></i></h4>
                                 </div>
                             </div>
                         </div>
