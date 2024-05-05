@@ -15,6 +15,7 @@ use app\services\TransactionDetailService;
 use app\services\Cus;
 use Doctrine\Common\Collections\Collection;
 use app\repositories\ProductRepository;
+use app\repositories\TransactionRepository;
 
 class TransactionController extends Controller
 {
@@ -22,7 +23,9 @@ class TransactionController extends Controller
         Engine                                    $engine,
         AuthenticationService                     $authenticationService,
         private readonly TransactionService       $transactionService,
+        private readonly TransactionDetailService $transactionDetailService,
         private readonly ProductRepository        $productRepository,
+        private readonly TransactionRepository    $transactionRepository,
         private readonly ProductService           $productService,
         private readonly CustomerService          $customerService,
     )
@@ -119,6 +122,15 @@ class TransactionController extends Controller
 
     public function cancelTransaction() : void 
     {
+        $transaction = $this->transactionService->getTransactionById($_POST['transId']);
+        $transaction->setIsCanceled(true);
+        $this->transactionRepository->save($transaction);
         
+        foreach ($transaction->getItems() as $item) {
+            $product = $this->productService->getProductById($item->getProduct()->getId());
+            $product->setStock($product->getStock() + $item->getQuantity());
+            $this->productRepository->save($product);
+        }
+        echo 'success';
     }
 }

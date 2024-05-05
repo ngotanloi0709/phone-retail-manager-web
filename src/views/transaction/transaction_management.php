@@ -61,11 +61,11 @@ $this->layout('base',
                     <td><?= $transaction->getId() ?></td>
                     <td><?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></td>
                     <td><?= DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></td>
-                    <td><?= $status ?></td>
                     <td><?= $transaction->getUser()->getUsername() ?></td>
+                    <td><?= $status ?></td>
                     <td>
-                        <button class="btn btn-outline-secondary getDetailBnt"><i class="fa-solid fa-circle-info"></i> Chi tiết</button>
-                        <button class="btn btn-outline-secondary cancelBnt"><i class="fa-solid fa-circle-xmark"></i> Huỷ đơn hàng</button>
+                        <button class="btn btn-outline-info getDetailBnt"><i class="fa-solid fa-circle-info"></i> Chi tiết</button>
+                        <button class="btn btn-outline-danger cancelBnt"><i class="fa-solid fa-circle-xmark"></i> Huỷ đơn hàng</button>
                     </td>
                 </tr>
             <?php endforeach;
@@ -92,8 +92,16 @@ $this->layout('base',
             foreach ($transactions as $transaction) : ?>
 
             if (transId === '<?= $transaction->getId() ?>') {
+                <?php 
+                    if (DataHelper::getDisplayStringData($transaction->getIsCanceled()) === "Chưa có dữ liệu") {
+                        $status = "Đã Hoàn Tất";
+                    }
+                    else {
+                        $status = $transaction->getIsCanceled() ? "Đã Huỷ" : "Đã Hoàn Tất";
+                    }
+                ?>
                 document.getElementById("transInfo").innerHTML = "<h3>CHI TIẾT ĐƠN HÀNG <?= $transaction->getId() ?></h3><p>Thời Gian Tạo: <?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></p><p>Khách Hàng: <?= /** @var Transaction $transaction */
-                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p>";
+                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p><p>Trạng Thái: <?= $status ?></p>";
                 let transDetailPopupTable = document.getElementById("transDetailPopupTable");
                 transDetailPopupTable.innerHTML = "<tr><th>Tên sản phẩm</th><th>Mã sản phẩm</th><th>Đơn giá</th><th>Số Lượng</th><th>Thành tiền</th></tr>"
                 let $quantity = 0;
@@ -125,9 +133,20 @@ $this->layout('base',
         });
 
         $(".cancelBnt").click(function () {
+            if ($(this).closest('tr').find('td').eq(4).text() === "Đã Huỷ") {
+                alert("Đơn hàng đã được huỷ");
+                return;
+            }
             let transId = $(this).closest('tr').find('td').eq(0).text();
             if (confirm("Bạn có chắc chắn muốn huỷ đơn hàng " + transId + " không?")) {
-                window.location.href = "/transaction/transaction_delete?transactionId=" + transId;
+                $.post("", {transId: transId}, function (data) {
+                    if (data === "success") {
+                        alert("Huỷ đơn hàng " + transId + " thành công");
+                        location.reload();
+                    } else {
+                        alert("Huỷ đơn hàng " + transId + " thất bại");
+                    }
+                });
             }
         })
 
