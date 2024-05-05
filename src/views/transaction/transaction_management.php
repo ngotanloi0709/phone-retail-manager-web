@@ -12,7 +12,7 @@ $this->layout('base',
 <link rel="stylesheet" href="../../style/transation-style.css">
 
 <div id="transDetailPopup" class="popup">
-    <div class="popup-content">
+    <div class="popup-content" style="overflow-x:auto;">
         <button id="closePopup">&#10006;</button>
         <div id="transInfo"></div>
         <table class="table table-bordered" id="transDetailPopupTable">
@@ -25,7 +25,7 @@ $this->layout('base',
         <a href="/transaction/transaction_create" class="btn btn-outline-warning"><i class="fa-solid fa-inbox"></i> Tạo
             Đơn Hàng</a>
     </div>
-    <div class="card-body">
+    <div class="card-body" style="overflow-x:auto;">
         <div style="display: flex; align-items: center; margin-bottom: 8px">
             <label for="searchTransById" style="margin-right: 8px">Tìm Đơn Hàng:</label>
             <input type="text" id="searchTransById" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập ID Đơn Hàng">

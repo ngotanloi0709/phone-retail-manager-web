@@ -7,9 +7,11 @@ use app\utils\DataHelper;
 if (isset($_GET["name"])) {
     /** @var array $products */
     /** @var Product $product */
+    $inputName = strtolower($_GET["name"]);
     foreach ($products as $product) {
-        if (str_contains($product->getName(), $_GET["name"])) {
-            echo "<li>". $product->getName(). "</li>";
+        $productName = strtolower($product->getName());
+        if (str_contains($productName, $inputName)) {
+            echo "<li class='list-group-item list-group-item-info' style='width: 300px;'>". $product->getName(). "</li>";
         }
     }
 }
