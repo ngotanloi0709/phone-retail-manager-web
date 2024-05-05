@@ -17,7 +17,8 @@ $(document).ready(function () {
         $('#transactionDetailCustomerName').text($(this).parent().siblings().eq(2).text());
         $('#transactionDetailCustomerPhone').text($(this).parent().siblings().eq(3).text());
         $('#transactionDetailDateCreated').text(transactionCreatedDate);
-        $('#transactionDetailTotal').text($(this).parent().siblings().eq(5).text());
+        $('#transactionDetailStatus').text($(this).parent().siblings().eq(4).text());
+        $('#transactionDetailTotal').text($(this).parent().siblings().eq(6).text());
 
         // Show the modal
         $('#userTransactionDetailModal').modal('show');
