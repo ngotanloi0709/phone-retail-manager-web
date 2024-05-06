@@ -46,18 +46,15 @@ class ImageHelper
             $newFileName = str_replace("." . $imgExt, "", $newFileName);
             $imgDestination = '/../../public/product_images/' . $newFileName . '_' . $imgNameNew;
 
-            // Get the absolute path to the destination directory
             $absolutePath = __DIR__ . $imgDestination;
-
             $_SESSION['logger'][] = $absolutePath;
 
-            // Check if the directory exists, if not, create it
             if (!is_dir(dirname($absolutePath))) {
                 mkdir(dirname($absolutePath), 0755, true);
             }
 
             move_uploaded_file($_FILES[$file]['tmp_name'], $absolutePath);
-            self::resizeImage($absolutePath, $absolutePath, 500, 500);
+            self::resizeImage($absolutePath, $absolutePath, 200, 200);
 
             return str_replace('/../../public', '', $imgDestination);
         } else {

@@ -32,18 +32,15 @@ $currentProducts = array_slice($products, $start, $productsPerPage);
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <div class="row">
-                <div class="col-6">
-                    <h4 class="card-title">Danh sách sản phẩm</h4>
-                </div>
-
-                <div class="col-6 text-end">
-                    <a href="/product/add-product" class="btn btn-outline-warning"><i class="fa-solid fa-plus me-2"></i>Thêm
-                        sản phẩm</a>
-                </div>
-
-
+            <div class="row align-items-center">
+                <div class="col-6 align-items-center">
+                <h4 class="card-title">Danh sách sản phẩm</h4>
             </div>
+
+            <div class="col-6 text-end">
+                <a href="product/add-product" class="btn btn-warning" style="color: white; text-decoration: none;">Thêm sản phẩm</a>
+            </div>
+    </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">

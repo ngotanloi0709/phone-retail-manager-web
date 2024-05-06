@@ -8,94 +8,87 @@ use app\models\UserRole;
 $this->layout(
     'base',
     [
-        'title' => 'Sản Phẩm',
-        'header' => 'Sản Phẩm',
+        'title' => 'Thêm Sản Phẩm',
+        'header' => 'Thêm Sản Phẩm',
         'isShowAside' => false
     ]
 )
 ?>
 
 <?php $this->start('main') ?>
-<link rel="stylesheet" href="../../style/product.css">
 <div class="container">
     <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-6">
-                    <h4 class="card-title">Thêm sản phẩm</h4>
-                </div>
-                <div class="col-6 text-end">
-                    <a href="/product" class="btn btn-outline-warning"><i class="fa-solid fa-list me-2"></i>Danh sách sản phẩm</a>
-                </div>
-            </div>
-        </div>
         <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
             <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data" id="addProductForm" onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-6">
-                            <div class="form-group">
-                                <label for="image">Hình Ảnh:</label>
-                                <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)" required>
-                                <img  id="imagePreview" src="#" alt="" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
-                                <span id="fileImageError" style="color: red;"></span>
-                            </div>
+                            <label for="name" class="mb-0">Tên sản phẩm:</label>
+                            <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Nhập tên sản phẩm" required>
+                            <span id="nameError" style="color: red;"></span>
                         </div>
-
                         <div class="col-6">
-                            <div class="form-group">
-                                <label for="barcode">Mã vạch:</label>
-                                <input type="text" class="form-control" id="barcode" name="barcode" required>
-                                <span id="barcodeError" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                                <span id="nameError" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                                <label>Loại sản phẩm:</label>
-                                <div>
-                                    <input type="radio" id="category_phone" name="category" value="Điện thoại" required>
-                                    <label for="category_phone">Điện thoại</label>
+                            <label for="barcode" class="mb-0">Mã vạch:</label>
+                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" placeholder="Nhập mã vạch" rrequired>
+                            <span id="barcodeError" style="color: red;"></span>
+                        </div>
+                        <div class="col-12">
+                            <label for="category" class="col-12 mb-0">Loại sản phẩm:</label>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <input class="form-check-input" type="radio" id="category_phone" name="category" value="Điện thoại" required>
+                                    <label for="category_phone" class="mb-0">Điện thoại</label>
                                 </div>
-                                <div>
-                                    <input type="radio" id="category_accessory" name="category" value="Phụ kiện" required>
-                                    <label for="category_accessory">Phụ kiện</label>
+                                <div class="col-4">
+                                    <input class="form-check-input" type="radio" id="category_accessory" name="category" value="Phụ kiện" required>
+                                    <label for="category_accessory" class="mb-0">Phụ kiện</label>
                                 </div>
-                                <div>
-                                    <input type="radio" id="category_other" name="category" value="Khác" required>
-                                    <label for="category_other">Khác</label>
+                                <div class="col-4">
+                                    <input class="form-check-input" type="radio" id="category_other" name="category" value="Khác" required>
+                                    <label for="category_other" class="mb-0">Khác</label>
                                 </div>
-                                <span id="categoryError" style="color: red;"></span>
                             </div>
-                            <div class="form-group">
-                                <label for="price">Giá bán:</label>
-                                <input type="number" class="form-control" id="price" name="price" required>
-                                <span id="priceError" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="price">Giá nhập:</label>
-                                <input type="number" class="form-control" id="import_price" name="import_price" required>
-                                <span id="importPriceError" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="stock">Số Lượng:</label>
-                                <input type="number" class="form-control" id="stock" name="stock" required>
-                                <span id="stockError" style="color: red;"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Mô Tả:</label>
-                                <textarea class="form-control" id="description" name="description" required></textarea>
-                                <span id="descriptionError" style="color: red;"></span> 
-                            </div>
-                            <button type="submit" class="btn btn-primary">Tạo mới</button>
+                            <span id="categoryError" style="color: red;"></span>
+                        </div>
+                        <div class="col-6">
+                            <label for="price" class="mb-0">Giá bán:</label>
+                            <input type="number" class="form-control mb-3" id="price" name="price" placeholder="Nhập giá bán" required>
+                            <span id="priceError" style="color: red;"></span>
+                        </div>
+                        <div class="col-6">
+                            <label for="price" class="mb-0">Giá nhập:</label>
+                            <input type="number" class="form-control mb-3" id="import_price" name="import_price" placeholder="Nhập giá nhập" required>
+                            <span id="importPriceError" style="color: red;"></span>
+                        </div>
+                        <div class="col-12">
+                            <label for="stock" class="mb-0">Số Lượng:</label>
+                            <input type="number" class="form-control mb-3" id="stock" name="stock" placeholder="Nhập số lượng" required>
+                            <span id="stockError" style="color: red;"></span>
+                        </div>
+                        <div class="col-12">
+                            <label for="description" class="mb-0">Mô Tả:</label>
+                            <textarea class="form-control mb-3" id="description" name="description" rows="5"  placeholder="Nhập mô tả" required></textarea>
+                            <span id="descriptionError" style="color: red;"></span>
+                        </div>
+                        <div class="col-12">
+                            <label for="image" class="mb-0">Hình Ảnh:</label>
+                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)" required>
+                            <img class="rounded float-left mb-3" id="imagePreview" src="#" alt="" style="display: none; width: 200px; height: 200px;">
+                            <span id="fileImageError" style="color: red;"></span>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success">Tạo mới</button>
+                            <button type="button" class="btn btn-danger">
+                                <a href="/product" style="color: white; text-decoration: none;">Hủy</a>
+                            </button>
+
                         </div>
                     </div>
-                </form>
             </div>
-        <?php endif; ?>
+            </form>
     </div>
+<?php endif; ?>
+</div>
 </div>
 
 <script>
@@ -197,7 +190,6 @@ $this->layout(
 
         return isValid;
     }
-
 </script>
 
 <?php $this->end('main'); ?>
