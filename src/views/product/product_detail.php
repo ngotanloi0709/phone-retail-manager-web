@@ -3,7 +3,6 @@
 /** @var SessionUserDTO $sessionUser */
 $sessionUser = $_SESSION['user'] ?? null;
 
-use app\dto\SessionUserDTO;
 use app\models\Product;
 use app\models\UserRole;
 
