@@ -3,7 +3,6 @@
 /** @var SessionUserDTO $sessionUser */
 $sessionUser = $_SESSION['user'] ?? null;
 
-use app\dto\SessionUserDTO;
 use app\models\Product;
 use app\models\UserRole;
 
@@ -14,7 +13,7 @@ $this->layout(
     'base',
     [
         'title' => 'Chi tiết sản phẩm',
-        'header' => $header,
+        'header' => 'Chi tiết sản phẩm',
         'isShowAside' => false
     ]
 )
@@ -46,10 +45,10 @@ $this->layout(
                     <h2>Mô tả:</h2>
                     <p><?php echo $product->getDescription(); ?></p>
                     <ul>
-                        <li>Mã vạch: <span><?php echo $product->getBarcode(); ?></span></li>
-                        <li>Loại: <span><?php echo $product->getCategoryName(); ?></span></li>
-                        <li>Số lượng: <span><?php echo $product->getStock(); ?></span></li>
-                        <li>Ngày tạo: <span><?php echo $product->getCreated(); ?></span></li>
+                        <li><i class="fa-solid fa-barcode"></i>Mã vạch: <span><?php echo $product->getBarcode(); ?></span></li>
+                        <li><i class="fa-solid fa-layer-group"></i>Loại: <span><?php echo $product->getCategoryName(); ?></span></li>
+                        <li><i class="fa-solid fa-list-ol"></i>Số lượng: <span><?php echo $product->getStock(); ?></span></li>
+                        <li><i class="fa-solid fa-calendar-days"></i>Ngày tạo: <span><?php echo $product->getCreated(); ?></span></li>
                     </ul>
                 </div>
                 <div class="purchase-info">

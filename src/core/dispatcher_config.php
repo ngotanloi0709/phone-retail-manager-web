@@ -76,4 +76,6 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/view-product', 'ProductController@getProductDetail');
         
     });
+
+  
 });
