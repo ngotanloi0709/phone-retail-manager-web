@@ -1,5 +1,4 @@
 <?php
-
     function infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans){
         echo '<div class="container">';
         echo '<div class="row ">
@@ -154,18 +153,19 @@
         $numofcanceltrans = 0;
         $totalmoneyofcanceltrans = 0;
         foreach($transactions as $transaction){
-            if($transaction->getIsCanceled()==true){
-                $numofcanceltrans++;
-                    foreach ($transaction->getItems() as $item){ 
-                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
-                    }
-                continue;
-            }
             $time = strtotime($transaction->getCreated()->format('Y-m-d'));
             if($time>=$timestart&&$time<=$timeend){
+                if($transaction->getIsCanceled()==true){
+                    $numofcanceltrans++;
+                        foreach ($transaction->getItems() as $item){ 
+                            $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                        }
+                    continue;
+                }
                 $numoftrans++;
                 $total=0;
                 $profit=0;
+                
                 foreach ($transaction->getItems() as $item) : 
                     $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                     $numofproduct+=$item->getQuantity();
@@ -205,18 +205,19 @@
             $timestart = strtotime("today");
             $timeend = strtotime("tomorrow")-1;
             foreach($transactions as $transaction){
-                if($transaction->getIsCanceled()==true){
-                    $numofcanceltrans++;
-                    foreach ($transaction->getItems() as $item){ 
-                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
-                    }
-                    continue;
-                }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
                 if($time>=$timestart&&$time<=$timeend){
+                    if($transaction->getIsCanceled()==true){
+                        $numofcanceltrans++;
+                        foreach ($transaction->getItems() as $item){ 
+                            $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                        }
+                        continue;
+                    }
                     $numoftrans++;
                     $total=0;
                     $profit=0;
+                    
                     foreach ($transaction->getItems() as $item) : 
                         $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                         $numofproduct+=$item->getQuantity();
@@ -245,18 +246,19 @@
             $timestart = strtotime("yesterday");
             $timeend = strtotime("today")-1;
             foreach($transactions as $transaction){
-                if($transaction->getIsCanceled()==true){
-                    $numofcanceltrans++;
-                    foreach ($transaction->getItems() as $item){ 
-                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
-                    }
-                    continue;
-                }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
                 if($time>=$timestart&&$time<=$timeend){
+                    if($transaction->getIsCanceled()==true){
+                        $numofcanceltrans++;
+                        foreach ($transaction->getItems() as $item){ 
+                            $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                        }
+                        continue;
+                    }
                     $numoftrans++;
                     $total=0;
                     $profit=0;
+                    
                     foreach ($transaction->getItems() as $item) : 
                         $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                         $numofproduct+=$item->getQuantity();
@@ -285,18 +287,19 @@
             $timestart = strtotime("-7 day");
             $timeend = strtotime("today")-1;
             foreach($transactions as $transaction){
-                if($transaction->getIsCanceled()==true){
-                    $numofcanceltrans++;
-                    foreach ($transaction->getItems() as $item){ 
-                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
-                    }
-                    continue;
-                }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
                 if($time>=$timestart&&$time<=$timeend){
+                    if($transaction->getIsCanceled()==true){
+                        $numofcanceltrans++;
+                        foreach ($transaction->getItems() as $item){ 
+                            $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                        }
+                        continue;
+                    }
                     $numoftrans++;
                     $total=0;
                     $profit=0;
+                    
                     foreach ($transaction->getItems() as $item) : 
                         if($transaction->getIsCanceled()==true){
                             continue;
@@ -328,18 +331,19 @@
             $timestart = strtotime("first day of this month");
             $timeend = strtotime("last day of this month 23:59:59");
             foreach($transactions as $transaction){
-                if($transaction->getIsCanceled()==true){
-                    $numofcanceltrans++;
-                    foreach ($transaction->getItems() as $item){ 
-                        $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
-                    }
-                    continue;
-                }
                 $time = strtotime($transaction->getCreated()->format('Y-m-d'));
                 if($time>=$timestart&&$time<=$timeend){
+                    if($transaction->getIsCanceled()==true){
+                        $numofcanceltrans++;
+                        foreach ($transaction->getItems() as $item){ 
+                            $totalmoneyofcanceltrans += $item->getProduct()->getProfit() * $item->getQuantity() ;
+                        }
+                        continue;
+                    }
                     $numoftrans++;
                     $total=0;
                     $profit=0;
+                    
                     foreach ($transaction->getItems() as $item) : 
                         if($transaction->getIsCanceled()==true){
                             continue;
