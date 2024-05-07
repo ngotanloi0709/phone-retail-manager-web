@@ -71,9 +71,7 @@ img {
 .product-detail ul li{
     margin: 0;
     list-style: none;
-    background: url(../image/checked.png) left center no-repeat;
-    background-size: 18px;
-    padding-left: 1.7rem;
+    padding-left: 1rem;
     margin: 0.4rem 0;
     font-weight: 600;
     opacity: 0.9;
@@ -101,7 +99,7 @@ img {
 }
 
 .purchase-info .btn:last-of-type{
-    background: #4790f6;
+    background: #256eff;
 }
 .purchase-info .btn:hover{
     opacity: 0.9;
@@ -112,4 +110,9 @@ img {
 
 }
 
+.product-detail ul li i {
+    color: #b3b3b3;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
 

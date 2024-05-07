@@ -111,12 +111,11 @@ class ProductService
                 return false;
             }
 
-            $barcode_product = $this->productRepository->findAllBarcode($barcode);
-
-            if (sizeof($barcode_product) == 1) {
-                $product->setBarcode($barcode);
-            } else {
+            if ($barcode != null && $barcode != $product->getBarcode() && $this->IsBarcodeExist($barcode)) {
                 $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
+                return false;
+            } else {
+                $product->setBarcode($barcode);
             }
 
             $product->setName($productName);
