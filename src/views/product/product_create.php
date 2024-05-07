@@ -16,6 +16,7 @@ $this->layout(
 ?>
 
 <?php $this->start('main') ?>
+<link rel="stylesheet" href="../../style/product.css">
 <div class="container">
     <div class="card">
         <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
@@ -29,7 +30,7 @@ $this->layout(
                         </div>
                         <div class="col-6">
                             <label for="barcode" class="mb-0">Mã vạch:</label>
-                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" placeholder="Nhập mã vạch" rrequired>
+                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" placeholder="Nhập mã vạch">
                             <span id="barcodeError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
@@ -67,21 +68,20 @@ $this->layout(
                         </div>
                         <div class="col-12">
                             <label for="description" class="mb-0">Mô Tả:</label>
-                            <textarea class="form-control mb-3" id="description" name="description" rows="5"  placeholder="Nhập mô tả" required></textarea>
+                            <textarea class="form-control mb-3" id="description" name="description" rows="5" placeholder="Nhập mô tả"></textarea>
                             <span id="descriptionError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
                             <label for="image" class="mb-0">Hình Ảnh:</label>
-                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)" required>
-                            <img class="rounded float-left mb-3" id="imagePreview" src="#" alt="" style="display: none; width: 200px; height: 200px;">
+                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)">
                             <span id="fileImageError" style="color: red;"></span>
+                            <img class="rounded float-left mb-3" id="imagePreview" src="#" alt="" style="display: none;">
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-success">Tạo mới</button>
                             <button type="button" class="btn btn-danger">
                                 <a href="/product" style="color: white; text-decoration: none;">Hủy</a>
                             </button>
-
                         </div>
                     </div>
             </div>
@@ -108,8 +108,8 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if (barcode.length === 0 || isNaN(barcode) || barcode < 0) {
-            document.getElementById('barcodeError').innerText = 'Mã vạch không được để trống và phải là số';
+        if (isNaN(barcode) || barcode < 0 || barcode.length > 10) {
+            document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 ký tự!';
             isValid = false;
         } else {
             document.getElementById('barcodeError').innerText = '';

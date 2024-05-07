@@ -19,7 +19,7 @@ $this->layout(
 ); ?>
 
 <?php $this->start('main') ?>
-<!-- <link rel="stylesheet" href="../../style/product.css"> -->
+<link rel="stylesheet" href="../../style/product.css">
 <div class="container">
     <div class="card">
         <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
@@ -33,7 +33,7 @@ $this->layout(
                         </div>
                         <div class="col-6">
                             <label for="barcode" class="mb-0">Mã vạch:</label>
-                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>" required>
+                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>">
                             <span id="barcodeError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
@@ -71,12 +71,12 @@ $this->layout(
                         </div>
                         <div class="col-12">
                             <label for="description" class="mb-0">Mô Tả:</label>
-                            <textarea class="form-control mb-3" id="description" name="description" required><?php echo $product->getDescription(); ?></textarea>
+                            <textarea class="form-control mb-3" id="description" name="description"><?php echo $product->getDescription(); ?></textarea>
                         </div>
                         <div class="col-12">
                             <label for="image" class="mb-0">Hình Ảnh:</label>
-                            <input type="file" class="form-control mb-3" id="image" name="image">
-                            <span id="fileImageError" style="color: red;"></span>
+                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif">
+                            <span id="fileImageError" class="mb-2" style="color: red;  display: block;"></span>
                             <?php /** @var Product $product */
                             echo '<img class="rounded float-left mb-3"  id="image_preview" src="' . ImageHelper::getDisplayStringData($product->getImageUrl()) . '" onerror="this.onerror=null; this.src=\'/image/product-default-image.png\';">';
                             ?>
@@ -91,7 +91,6 @@ $this->layout(
                         </div>
                     </div>
                 </form>
-
             </div>
         <?php endif; ?>
     </div>
@@ -151,7 +150,7 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if (barcode.length === 0 || isNaN(barcode) || barcode < 0) {
+        if (barcode.length > 10 || isNaN(barcode) || barcode < 0) {
             document.getElementById('barcodeError').innerText = 'Mã vạch không được để trống và phải là số';
             isValid = false;
         } else {
@@ -172,14 +171,14 @@ $this->layout(
             document.getElementById('categoryError').innerText = '';
         }
 
-        if (price.length === 0 || isNaN(price) || price < 0) {
+        if (price.length > 10 || isNaN(price) || price < 0) {
             document.getElementById('priceError').innerText = 'Giá bán không được để trống và phải lớn hơn bằng 0';
             isValid = false;
         } else {
             document.getElementById('priceError').innerText = '';
         }
 
-        if (importPrice.length === 0 || isNaN(importPrice) || importPrice < 0) {
+        if (importPrice.length > 10 || isNaN(importPrice) || importPrice < 0) {
             document.getElementById('importPriceError').innerText = 'Giá nhập không được để trống và phải lớn hơn bằng 0';
             isValid = false;
         } else {

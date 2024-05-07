@@ -28,7 +28,7 @@ $this->layout(
                 <div class="img-display">
                     <div class="img-showcase">
                         <img src="<?php /** @var Product $product */
-                        echo ImageHelper::getDisplayStringData($product->getImageUrl())?>" alt="product image">
+                                    echo ImageHelper::getDisplayStringData($product->getImageUrl()) ?>" alt="product image">
                     </div>
                 </div>
             </div>

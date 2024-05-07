@@ -119,7 +119,7 @@ class Product
 
     public function getCreated(): string
     {
-        return $this->created->format('Y-m-d');
+        return $this->created->format('d/m/Y');
     }
 
     public function setCreated(DateTime $created): Product
