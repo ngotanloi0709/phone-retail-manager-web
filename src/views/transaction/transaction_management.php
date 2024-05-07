@@ -101,7 +101,7 @@ $this->layout('base',
                     }
                 ?>
                 document.getElementById("transInfo").innerHTML = "<h3>CHI TIẾT ĐƠN HÀNG <?= $transaction->getId() ?></h3><p>Thời Gian Tạo: <?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></p><p>Khách Hàng: <?= /** @var Transaction $transaction */
-                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p><p>Trạng Thái: <?= $status ?></p>";
+                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Số điện thoại khách hàng: <?= $transaction->getCustomer()->getPhone() ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p><p>Trạng Thái: <?= $status ?></p>";
                 let transDetailPopupTable = document.getElementById("transDetailPopupTable");
                 transDetailPopupTable.innerHTML = "<tr><th>Tên sản phẩm</th><th>Mã sản phẩm</th><th>Đơn giá</th><th>Số Lượng</th><th>Thành tiền</th></tr>"
                 let $quantity = 0;
