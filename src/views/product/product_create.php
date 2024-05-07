@@ -109,7 +109,7 @@ $this->layout(
         var image = document.getElementById('image').value;
 
         if (isNaN(barcode) || barcode < 0 || barcode.length > 10) {
-            document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 ký tự!';
+            document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('barcodeError').innerText = '';
@@ -129,22 +129,22 @@ $this->layout(
             document.getElementById('categoryError').innerText = '';
         }
 
-        if (price.length === 0 || isNaN(price) || price < 0) {
-            document.getElementById('priceError').innerText = 'Giá bán không được để trống và phải lớn hơn bằng 0';
+        if (price.length > 10 || isNaN(price) || price < 0) {
+            document.getElementById('priceError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('priceError').innerText = '';
         }
 
-        if (importPrice.length === 0 || isNaN(importPrice) || importPrice < 0) {
-            document.getElementById('importPriceError').innerText = 'Giá nhập không được để trống và phải lớn hơn bằng 0';
+        if (importPrice.length > 10 || isNaN(importPrice) || importPrice < 0) {
+            document.getElementById('importPriceError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('importPriceError').innerText = '';
         }
 
-        if (stock.length === 0 || isNaN(stock) || stock < 0) {
-            document.getElementById('stockError').innerText = 'Số lượng không được để trống và phải lớn hơn bằng 0';
+        if (stock.length > 10 || isNaN(stock) || stock < 0) {
+            document.getElementById('stockError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('stockError').innerText = '';

@@ -24,7 +24,7 @@ $this->layout(
     <div class="card">
         <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
             <div class="card-body">
-                <form action="" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <form action="" method="post" enctype="multipart/form-data" id="editForm"  onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-6">
                             <label for="name" class="mb-0">Tên sản phẩm:</label>
@@ -33,7 +33,7 @@ $this->layout(
                         </div>
                         <div class="col-6">
                             <label for="barcode" class="mb-0">Mã vạch:</label>
-                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>">
+                            <input type="number" class="form-control mb-3" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>">
                             <span id="barcodeError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
@@ -98,30 +98,6 @@ $this->layout(
 </div>
 
 <script>
-    document.getElementById('image').addEventListener('change', function() {
-        var fileInput = document.getElementById('image');
-        var currentImageInput = document.getElementById('currentImage');
-        var imagePreview = document.getElementById('image_preview');
-        var file = this.files[0];
-
-        if (file) {
-            var fileName = file.name;
-            var fileExtension = fileName.split('.').pop().toLowerCase();
-            var allowedExtensions = ['png', 'jpeg', 'jpg', 'gif'];
-
-            if (!allowedExtensions.includes(fileExtension)) {
-                document.getElementById('fileImageError').innerText = 'Tệp tải lên phải là một ảnh (PNG, JPEG, JPG, hoặc GIF).';
-                isValid = false;
-            } else {
-                document.getElementById('fileImageError').innerText = '';
-            }
-
-            currentImageInput.value = URL.createObjectURL(file);
-            imagePreview.src = currentImageInput.value;
-        }
-    });
-
-
     var fileInput = document.getElementById('image');
     fileInput.addEventListener('change', function() {
         $('#isChangeImage').val(1);
@@ -150,8 +126,8 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if (barcode.length > 10 || isNaN(barcode) || barcode < 0) {
-            document.getElementById('barcodeError').innerText = 'Mã vạch không được để trống và phải là số';
+        if (barcode.trim() === '' || barcode.length > 10 || isNaN(barcode) || barcode < 0) {
+            document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('barcodeError').innerText = '';
@@ -172,21 +148,21 @@ $this->layout(
         }
 
         if (price.length > 10 || isNaN(price) || price < 0) {
-            document.getElementById('priceError').innerText = 'Giá bán không được để trống và phải lớn hơn bằng 0';
+            document.getElementById('priceError').innerText = 'Giá bán phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('priceError').innerText = '';
         }
 
         if (importPrice.length > 10 || isNaN(importPrice) || importPrice < 0) {
-            document.getElementById('importPriceError').innerText = 'Giá nhập không được để trống và phải lớn hơn bằng 0';
+            document.getElementById('importPriceError').innerText = 'Giá nhập phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('importPriceError').innerText = '';
         }
 
-        if (stock.length === 0 || isNaN(stock) || stock < 0) {
-            document.getElementById('stockError').innerText = 'Số lượng không được để trống và phải lớn hơn bằng 0';
+        if (stock.length > 10 || isNaN(stock) || stock < 0) {
+            document.getElementById('stockError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('stockError').innerText = '';
