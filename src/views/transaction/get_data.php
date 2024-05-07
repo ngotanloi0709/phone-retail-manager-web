@@ -11,7 +11,7 @@ if (isset($_GET["name"])) {
     foreach ($products as $product) {
         $productName = strtolower($product->getName());
         if (str_contains($productName, $inputName)) {
-            echo "<li class='list-group-item list-group-item-info' style='width: 300px;'>". $product->getName(). "</li>";
+            echo "<li class='list-group-item list-group-item-action' style='width: 300px;'>". $product->getName(). "</li>";
         }
     }
 }
