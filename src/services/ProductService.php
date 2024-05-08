@@ -62,7 +62,7 @@ class ProductService
                 $this->categoryRepository->save($category);
             }
 
-            if ($this->IsBarcodeExist($barcode)) {
+            if ($barcode != 0 && $this->IsBarcodeExist($barcode)) {
                 $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
                 return false;
             }
@@ -79,6 +79,7 @@ class ProductService
             $product->setCategory($category);
 
             $this->productRepository->save($product);
+            return true;
         } catch (\Exception $e) {
             error_log($e->getMessage());
             return false;
@@ -111,7 +112,7 @@ class ProductService
                 return false;
             }
 
-            if ($barcode != null && $barcode != $product->getBarcode() && $this->IsBarcodeExist($barcode)) {
+            if ($barcode != null && $barcode != 0  && $barcode != $product->getBarcode() && $this->IsBarcodeExist($barcode)) {
                 $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
                 return false;
             } else {

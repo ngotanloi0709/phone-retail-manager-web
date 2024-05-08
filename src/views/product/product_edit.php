@@ -126,7 +126,7 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if (barcode.trim() === '' || barcode.length > 10 || isNaN(barcode) || barcode < 0) {
+        if ( barcode.length > 10 || isNaN(barcode) || barcode < 0) {
             document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
             isValid = false;
         } else {

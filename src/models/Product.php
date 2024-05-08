@@ -27,7 +27,7 @@ class Product
     private int $import_price;
     #[Column(nullable: true)]
     private int $stock;
-    #[Column(unique: true, nullable: true)]
+    #[Column(nullable: true)]
     private ?int $barcode;
     #[Column(nullable: true)]
     private DateTime $created;
