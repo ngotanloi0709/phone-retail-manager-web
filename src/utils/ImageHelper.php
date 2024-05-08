@@ -41,6 +41,15 @@ class ImageHelper
     public static function getDisplayStringData(?string $input): string
     {
         $absolutePath = $_SERVER['DOCUMENT_ROOT'] . $input;
-        return $input != null && $input != '' && file_exists($absolutePath) ? $input : '/image/product-default-image.png';
+        if ($input == null) {
+            return '/image/product-default-image.png';
+        }
+        if (!file_exists($absolutePath)) {
+            return '/image/product-default-image.png';
+        }
+        if ($input == '') {
+            return '/image/product-default-image.png';
+        }
+        return $input;
     }
 }

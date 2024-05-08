@@ -112,9 +112,17 @@ $this->layout(
                 isValid = false;
             } else {
                 document.getElementById('fileImageError').innerText = '';
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image_preview').src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
             }
         }
     });
+    
 
     function validateForm() {
         var isValid = true;
@@ -126,7 +134,7 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if ( barcode.length > 10 || isNaN(barcode) || barcode < 0) {
+        if (barcode.length > 10 || isNaN(barcode) || barcode < 0) {
             document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
             isValid = false;
         } else {
@@ -171,13 +179,11 @@ $this->layout(
 
         var descriptionInput = document.getElementById('description');
         var description = descriptionInput.value;
-        var maxWords = 200;
-        var wordCount = description.trim().split(/\s+/).length;
+        var maxChars = 255;
 
-        if (wordCount > maxWords) {
-            var words = description.trim().split(/\s+/).slice(0, maxWords);
-            descriptionInput.value = words.join(' ');
-            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxWords + ' từ';
+        if (description.length > maxChars) {
+            descriptionInput.value = description.slice(0, maxChars);
+            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxChars + ' ký tự';
             isValid = false;
         } else {
             document.getElementById('descriptionError').innerText = '';

@@ -104,6 +104,15 @@ class ProductService
                 $this->categoryRepository->save($category);
             }
 
+            if ($imgUrl != null && $imgUrl != '') {
+                $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif');
+                $extension = strtolower(pathinfo($imgUrl, PATHINFO_EXTENSION));
+                if (!in_array($extension, $allowedExtensions)) {
+                    $_SESSION['alerts'][] = 'Ảnh không hợp lệ';
+                    return false;
+                }
+            }
+
             /** @var Product $product */
             $product = $this->productRepository->findByID($id);
 
