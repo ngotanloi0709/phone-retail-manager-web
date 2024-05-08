@@ -8,12 +8,12 @@
 <?php $this->start('main') ?>
 <div class="card">
     <div class="card-header">
-        Điều hướng
+        <i class="fa-regular fa-compass"></i> Điều hướng
     </div>
     <div class="card-body">
-        <h5 class="card-title">Quản trị nhân viên bán hàng</h5>
+        <h5 class="card-title">Quản trị nhân viên</h5>
         <p class="card-text">Quản trị, can thiệp vào các hoạt động, thông tin của tài khoản nhân viên bán hàng.</p>
-        <a href="/admin/user-management" class="btn btn-primary">Truy cập</a>
+        <a href="/admin/user-management" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Truy cập</a>
     </div>
 </div>
 <?php $this->end('main') ?>

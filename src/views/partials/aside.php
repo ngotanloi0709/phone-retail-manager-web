@@ -14,10 +14,6 @@ use app\models\UserRole;
     <?php else: ?>
         <p>Welcome, <b><?= $sessionUser->getEmail() ?></b></p>
     <?php endif; ?>
-<!--    --><?php //if (!$isAuthenticated): ?>
-<!--        <a class="list-group-item list-group-item-action" href="/register"-->
-<!--           role="tab" aria-controls="list-home">Đăng ký</a>-->
-<!--    --><?php //endif; ?>
 
     <a class="list-group-item list-group-item-action" href="/home"
        role="tab" aria-controls="list-home">Trang chủ</a>
@@ -26,7 +22,7 @@ use app\models\UserRole;
            role="tab" aria-controls="list-home">Quản trị hệ thống</a>
     <?php endif; ?>
     <?php if ($isAuthenticated): ?>
-        <a class="list-group-item list-group-item-action" href="#"
+        <a class="list-group-item list-group-item-action" href="/transaction"
            role="tab" aria-controls="list-home">Bán hàng</a>
         <a class="list-group-item list-group-item-action" href="/logout"
            role="tab" aria-controls="list-home">Đăng xuất</a>
