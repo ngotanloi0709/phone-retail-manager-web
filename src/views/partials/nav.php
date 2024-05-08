@@ -24,34 +24,30 @@ use app\utils\DataHelper;
                 </li>
                 <?php if ($isAuthenticated && $sessionUser->getRole() == UserRole::ADMIN): ?>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/admin"><i class="fa-solid fa-user-tie"></i> Admin</a>
+                        <a class="nav-link active" href="/admin"><i class="fa-solid fa-user-tie"></i> Quản trị viên</a>
                     </li>
                 <?php endif; ?>
-                    
-                    <?php if ($isAuthenticated): ?>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/product"><i
-                                        class="fa-solid fa-mobile"></i> Sản Phẩm</a>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($isAuthenticated): ?>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/transaction"><i
-                                        class="fa-solid fa-box"></i> Đơn Hàng</a>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($isAuthenticated): ?>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/customer"><i class="fa-solid fa-book"></i> Quản Lí Khách Hàng</a>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($isAuthenticated): ?>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/statistics"><i class="fas fa-pen-alt"></i> Thống kê doanh thu</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            
+
+                <?php if ($isAuthenticated): ?>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/product"><i
+                                    class="fa-solid fa-mobile"></i> Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/transaction"><i
+                                    class="fa-solid fa-box"></i> Đơn Hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/customer"><i class="fa-solid fa-book"></i>
+                            Khách Hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/statistics"><i class="fas fa-pen-alt"></i>
+                            Thống kê</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <?php if (!$isAuthenticated): ?>
