@@ -47,7 +47,7 @@ $this->layout('base',
                 <ul class="pagination">
                     <li class="page-item <?php echo $currentPage == 1 ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage - 1; ?>" class="page-link">Trước</a></li>
                     <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                        <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>"><a href="?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a></li>
+                        <li class="page-item"><a href="?page=<?php echo $i; ?>" class="page-link <?php echo $i == $currentPage ? 'selected' : ''; ?>"><?php echo $i; ?></a></li>
                     <?php endfor; ?>
                     <li class="page-item <?php echo $currentPage == $totalPages ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage + 1; ?>" class="page-link">Sau</a></li>
                 </ul>
@@ -97,7 +97,7 @@ $this->layout('base',
             <ul class="pagination">
                 <li class="page-item <?php echo $currentPage == 1 ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage - 1; ?>" class="page-link">Trước</a></li>
                 <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>"><a href="?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a></li>
+                    <li class="page-item"><a href="?page=<?php echo $i; ?>" class="page-link <?php echo $i == $currentPage ? 'selected' : ''; ?>"><?php echo $i; ?></a></li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo $currentPage == $totalPages ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage + 1; ?>" class="page-link">Sau</a></li>
             </ul>
