@@ -12,7 +12,7 @@
     <div class="card-header">
         <a href="/transaction/transaction_management" class="btn btn-outline-warning"><i class="fa-solid fa-boxes"></i> Quản Lý Đơn Hàng</a>
     </div>
-    <div class="card-body" style="min-height:800px;">
+    <div class="card-body" style="min-height:800px; overflow-x:auto;">
         <div style="display: flex; align-items: center; margin-bottom: 8px">
             <label for="productBarcode" style="width:150px; margin-right: 8px">Barcode sản phẩm:</label>
             <input type="text" id="productBarcodeValue" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập hoặc quét barcode">
@@ -24,7 +24,7 @@
             <input input type="text" id="productName" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập tên sản phẩm">
             <button id="addToTransButton" class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
         </div>
-        <ul id="productSuggestList" style="margin-left: 150px"></ul>
+        <ul id="productSuggestList" style="margin-left: 125px"></ul>
         <form action="/transaction/transaction_checkout" method="get" onkeydown="return event.key != 'Enter';">
             <table id="productList" class="table table-bordered">
                 <tr>
