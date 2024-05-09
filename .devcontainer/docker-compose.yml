@@ -13,7 +13,7 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ..:/workspaces/prs:cached
-      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./prs.conf:/etc/nginx/conf.d/prs.conf:rw
       - ./xdebug.ini:/etc/php/8.1/mods-available/xdebug.ini
     command: sleep infinity
     networks:
@@ -29,7 +29,7 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: 'prs'
       MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'root'
+      MYSQL_PASSWORD: ''
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - prs-db:/var/lib/mysql

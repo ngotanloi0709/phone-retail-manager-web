@@ -27,7 +27,7 @@ RUN apt -y install nginx
 RUN apt -y install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt -y install php8.1 php8.1-{fpm,xdebug,bcmath,curl,mbstring,mysql,tokenizer,xml,zip,fileinfo,ctype}
+RUN apt -y install php8.1 php8.1-{fpm,xdebug,bcmath,curl,mbstring,mysql,tokenizer,xml,zip,fileinfo,ctype,gd}
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
