@@ -148,6 +148,11 @@ class ProductService
                 return false;
             }
 
+            if (strlen($description) > 255){
+                $_SESSION['alerts'][] = 'Mô tả không được quá 255 ký tự';
+                return false;
+            }
+            
             $product->setName($productName);
             $product->setCategory($category);
             $product->setPrice($price);
