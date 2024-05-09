@@ -124,6 +124,7 @@ class TransactionController extends Controller
     {
         $transaction = $this->transactionService->getTransactionById($_POST['transId']);
         $transaction->setIsCanceled(true);
+        $transaction->setGivenMoney(0);
         $this->transactionRepository->save($transaction);
         
         foreach ($transaction->getItems() as $item) {

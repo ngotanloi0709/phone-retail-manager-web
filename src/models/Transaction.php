@@ -52,6 +52,11 @@ class Transaction
         return $this->givenMoney;
     }
 
+    public function setGivenMoney(int $givenMoney): void
+    {
+        $this->givenMoney = $givenMoney;
+    }
+
     public function getCreated(): DateTime
     {
         return $this->created;

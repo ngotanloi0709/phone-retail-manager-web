@@ -23,6 +23,8 @@ tr td {
 tr th:first-child {
     width: 60px;        
     background-color: #fff;
+    width: 60px;        
+    background-color: #fff;
 }
 
 tr th:last-child {
@@ -39,6 +41,7 @@ td:last-child {
     opacity: 0.9;
     font-size: 22px;
     margin: 0px 5px;
+    background-color: #fff;
     background-color: #fff;
 }
 

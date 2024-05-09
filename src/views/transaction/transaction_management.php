@@ -11,11 +11,24 @@ $this->layout('base',
 <?php $this->start('main') ?>
 <link rel="stylesheet" href="../../style/transation-style.css">
 
+<?php
+    /** @var array $transactions */
+    $transactions = array_reverse($transactions);
+
+    $transactionsPerPage = 10;
+    /** @var array $transaction */
+    $totalPages = ceil(count($transactions) / $transactionsPerPage);
+    $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+    $currentPage = max(1, min($currentPage, $totalPages));
+    $start = ($currentPage - 1) * $transactionsPerPage;
+    $currentTransactions = array_slice($transactions, $start, $transactionsPerPage);
+?>
+
 <div id="transDetailPopup" class="popup">
-    <div class="popup-content">
+    <div class="popup-content" style="overflow-x:auto;">
         <button id="closePopup">&#10006;</button>
         <div id="transInfo"></div>
-        <table class="table table-bordered" id="transDetailPopupTable">
+        <table class="table table-bordered table-hover" id="transDetailPopupTable">
 
         </table>
     </div>
@@ -25,13 +38,22 @@ $this->layout('base',
         <a href="/transaction/transaction_create" class="btn btn-outline-warning"><i class="fa-solid fa-inbox"></i> Tạo
             Đơn Hàng</a>
     </div>
-    <div class="card-body">
+    <div class="card-body" style="overflow-x:auto;">
         <div style="display: flex; align-items: center; margin-bottom: 8px">
             <label for="searchTransById" style="margin-right: 8px">Tìm Đơn Hàng:</label>
             <input type="text" id="searchTransById" class="form-control" style="width: 300px; margin-right: 8px" placeholder="Nhập ID Đơn Hàng">
             <button class="btn btn-outline-secondary" id="searchTransByIdBtn"><i class="fas fa-search"></i></button>
+            <div class="clearfix" style="display: flex; margin-left: 450px; margin-top: 13px;">
+                <ul class="pagination">
+                    <li class="page-item <?php echo $currentPage == 1 ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage - 1; ?>" class="page-link">Trước</a></li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                        <li class="page-item"><a href="?page=<?php echo $i; ?>" class="page-link <?php echo $i == $currentPage ? 'selected' : ''; ?>"><?php echo $i; ?></a></li>
+                    <?php endfor; ?>
+                    <li class="page-item <?php echo $currentPage == $totalPages ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage + 1; ?>" class="page-link">Sau</a></li>
+                </ul>
+            </div>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover table-striped">
             <thead>
             <tr>
                 <th>ID</th>
@@ -44,10 +66,8 @@ $this->layout('base',
             </thead>
             <tbody>
             <?php
-            /** @var array $transactions */
-            $transactions = array_reverse($transactions);
             /** @var Transaction $transaction */
-            foreach ($transactions as $transaction) : ?>
+            foreach ($currentTransactions as $transaction) : ?>
                 <?php 
                     if (DataHelper::getDisplayStringData($transaction->getIsCanceled()) === "Chưa có dữ liệu") {
                         $status = "Đã Hoàn Tất";
@@ -72,6 +92,16 @@ $this->layout('base',
             ?>
             </tbody>
         </table>
+
+        <div class="clearfix">
+            <ul class="pagination">
+                <li class="page-item <?php echo $currentPage == 1 ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage - 1; ?>" class="page-link">Trước</a></li>
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <li class="page-item"><a href="?page=<?php echo $i; ?>" class="page-link <?php echo $i == $currentPage ? 'selected' : ''; ?>"><?php echo $i; ?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo $currentPage == $totalPages ? 'disabled' : ''; ?>"><a href="?page=<?php echo $currentPage + 1; ?>" class="page-link">Sau</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 <script>
@@ -101,7 +131,7 @@ $this->layout('base',
                     }
                 ?>
                 document.getElementById("transInfo").innerHTML = "<h3>CHI TIẾT ĐƠN HÀNG <?= $transaction->getId() ?></h3><p>Thời Gian Tạo: <?= $transaction->getCreated()->format('d/m/Y H:i:s') ?></p><p>Khách Hàng: <?= /** @var Transaction $transaction */
-                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p><p>Trạng Thái: <?= $status ?></p>";
+                    DataHelper::getDisplayStringData($transaction->getCustomer()->getName()) ?></p><p>Số điện thoại khách hàng: <?= $transaction->getCustomer()->getPhone() ?></p><p>Người Tạo: <?= $transaction->getUser()->getUsername() ?></p><p>Trạng Thái: <?= $status ?></p>";
                 let transDetailPopupTable = document.getElementById("transDetailPopupTable");
                 transDetailPopupTable.innerHTML = "<tr><th>Tên sản phẩm</th><th>Mã sản phẩm</th><th>Đơn giá</th><th>Số Lượng</th><th>Thành tiền</th></tr>"
                 let $quantity = 0;
@@ -165,6 +195,14 @@ $this->layout('base',
                 let transId = $('#searchTransById').val();
                 showPopup(transId);
             }
+        });
+
+        const tableRows = document.querySelectorAll("tbody tr");
+        tableRows.forEach(row => {
+            row.addEventListener("dblclick", function() {
+                const transactionId = row.dataset.id;
+                window.location.href = "/transaction_management/view-transaction?id=${transactionId}";
+            });
         });
     });
 </script>

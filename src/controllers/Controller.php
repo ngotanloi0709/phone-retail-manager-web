@@ -20,7 +20,9 @@ class Controller
         $this->logSessionRemainTime();
         $this->logUserInformation();
 
-        $_SESSION['LAST_ACTIVITY'] = time();
+        if (isset($_SESSION['user'])) {
+            $_SESSION['LAST_ACTIVITY'] = time();
+        }
 
         echo $this->engine->render($template, $data);
     }
@@ -31,7 +33,7 @@ class Controller
         $_SESSION['LAST_ACTIVITY'] = time();
         $session_lifetime = ini_get('session.gc_maxlifetime');
         $remaining_time = $session_lifetime - (time() - $_SESSION['LAST_ACTIVITY']);
-        $_SESSION['logger'][] = "Thời gian còn lại của phiên: " . $remaining_time / 10 . " giây.";
+        $_SESSION['logger'][] = "Thời gian còn lại của phiên: " . $remaining_time / 10 . " giây. (Có thể hiển thị khác trên MacOS - mặc định là 1 giờ.)";
     }
 
     private function logUserInformation(): void

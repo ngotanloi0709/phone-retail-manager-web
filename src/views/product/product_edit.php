@@ -46,6 +46,9 @@ $this->layout(
                                 <div class="col-4">
                                     <input class="form-check-input" type="radio" id="category_accessory" name="category" value="Phụ kiện" <?php echo ($product->getCategoryName() == 'Phụ kiện') ? 'checked' : ''; ?> required>
                                     <label for="category_accessory" class="mb-0">Phụ kiện</label>
+                                <div class="col-4">
+                                    <input class="form-check-input" type="radio" id="category_accessory" name="category" value="Phụ kiện" <?php echo ($product->getCategoryName() == 'Phụ kiện') ? 'checked' : ''; ?> required>
+                                    <label for="category_accessory" class="mb-0">Phụ kiện</label>
                                 </div>
                                 <div class="col-4">
                                     <input class="form-check-input" type="radio" id="category_other" name="category" value="Khác" <?php echo ($product->getCategoryName() == 'Khác') ? 'checked' : ''; ?> required>
@@ -96,6 +99,7 @@ $this->layout(
     </div>
 
 </div>
+</div>
 
 <script>
     var fileInput = document.getElementById('image');
@@ -133,6 +137,15 @@ $this->layout(
         var importPrice = document.getElementById('import_price').value;
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
+    function validateForm() {
+        var isValid = true;
+        var barcode = document.getElementById('barcode').value;
+        var name = document.getElementById('name').value;
+        var category = document.querySelector('input[name="category"]:checked');
+        var price = document.getElementById('price').value;
+        var importPrice = document.getElementById('import_price').value;
+        var stock = document.getElementById('stock').value;
+        var image = document.getElementById('image').value;
 
         if (barcode.length > 10 || isNaN(barcode) || barcode < 0) {
             document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
@@ -147,7 +160,19 @@ $this->layout(
         } else {
             document.getElementById('nameError').innerText = '';
         }
+        if (name.length === 0 || name === null) {
+            document.getElementById('nameError').innerText = 'Tên sản phẩm không được để trống';
+            isValid = false;
+        } else {
+            document.getElementById('nameError').innerText = '';
+        }
 
+        if (category === null) {
+            document.getElementById('categoryError').innerText = 'Loại sản phẩm không được để trống';
+            isValid = false;
+        } else {
+            document.getElementById('categoryError').innerText = '';
+        }
         if (category === null) {
             document.getElementById('categoryError').innerText = 'Loại sản phẩm không được để trống';
             isValid = false;
@@ -191,13 +216,26 @@ $this->layout(
 
         var fileInput = document.getElementById('image');
         var file = fileInput.files[0];
+        var fileInput = document.getElementById('image');
+        var file = fileInput.files[0];
 
         if (file) {
             var fileName = file.name;
             var fileExtension = fileName.split('.').pop().toLowerCase();
             var allowedExtensions = ['png', 'jpeg', 'jpg', 'gif'];
             var fileSize = file.size / 1024 / 1024;
+        if (file) {
+            var fileName = file.name;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var allowedExtensions = ['png', 'jpeg', 'jpg', 'gif'];
+            var fileSize = file.size / 1024 / 1024;
 
+            if (fileSize > 2) {
+                document.getElementById('fileImageError').innerText = 'Kích thước file không được lớn hơn 2MB';
+                isValid = false;
+            } else {
+                document.getElementById('fileImageError').innerText = '';
+            }
             if (fileSize > 2) {
                 document.getElementById('fileImageError').innerText = 'Kích thước file không được lớn hơn 2MB';
                 isValid = false;
@@ -212,7 +250,17 @@ $this->layout(
                 document.getElementById('fileImageError').innerText = '';
             }
         }
+            if (!allowedExtensions.includes(fileExtension)) {
+                document.getElementById('fileImageError').innerText = 'Định dạng file không hợp lệ. Chỉ chấp nhận các định dạng: PNG, JPEG, JPG, GIF';
+                isValid = false;
+            } else {
+                document.getElementById('fileImageError').innerText = '';
+            }
+        }
 
+        return isValid;
+    }
+</script>
         return isValid;
     }
 </script>
