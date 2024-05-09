@@ -152,17 +152,17 @@ $this->layout(
 
         var descriptionInput = document.getElementById('description');
         var description = descriptionInput.value;
-        var maxWords = 200;
-        var wordCount = description.trim().split(/\s+/).length;
-
-        if (wordCount > maxWords) {
-            var words = description.trim().split(/\s+/).slice(0, maxWords);
-            descriptionInput.value = words.join(' ');
-            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxWords + ' từ';
+        var maxLength = 255;
+        var isValid = true;
+        
+        if (description.length > maxLength) {
+            descriptionInput.value = description.substring(0, maxLength); // Cắt chuỗi lại để chỉ chứa 255 ký tự đầu tiên
+            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxLength + ' ký tự';
             isValid = false;
         } else {
             document.getElementById('descriptionError').innerText = '';
         }
+
 
 
         var fileInput = document.getElementById('image');
