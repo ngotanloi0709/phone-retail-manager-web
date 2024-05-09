@@ -9,8 +9,6 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('GET', '/home', 'HomeController@index');
         $r->addRoute('GET', '/login', 'HomeController@getLogin');
         $r->addRoute('POST', '/login', 'HomeController@postLogin');
-//        $r->addRoute('GET', '/register', 'HomeController@getRegister');
-//        $r->addRoute('POST', '/register', 'HomeController@postRegister');
         $r->addRoute('GET', '/logout', 'HomeController@postLogout');
         $r->addRoute('GET', '/error-not-found', 'HomeController@errorNotFound');
         $r->addRoute('GET', '/login-by-email', 'HomeController@loginByEmail');
@@ -59,6 +57,7 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/delete-customer', 'CustomerController@deleteCustomer');
         $r->addRoute('POST', '/customer_transhistory', 'CustomerController@cancelTransaction');
     });
+
     $r->addGroup('/statistics', function (RouteCollector $r) {
         $r->addRoute('GET', '', 'StatisticsController@index');
         $r->addRoute('GET', '/', 'StaticticsController@index');
@@ -74,8 +73,5 @@ return simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/edit-product', 'ProductController@postEditProduct');
         $r->addRoute('GET', '/delete-product', 'ProductController@deleteProduct');
         $r->addRoute('GET', '/view-product', 'ProductController@getProductDetail');
-        
     });
-
-  
 });

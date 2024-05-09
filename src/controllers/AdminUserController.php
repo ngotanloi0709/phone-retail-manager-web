@@ -95,6 +95,9 @@ class AdminUserController extends Controller
         header('Location: /admin/user-management');
     }
 
+    /**
+     * @throws ORMException
+     */
     public function changeUserPassword(): void
     {
         $userId = $_POST['id'];

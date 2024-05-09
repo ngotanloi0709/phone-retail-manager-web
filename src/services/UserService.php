@@ -7,7 +7,6 @@ use app\dto\EditUserInformationDTO;
 use app\dto\SessionUserDTO;
 use app\models\User;
 use app\models\UserRole;
-use app\repositories\LoginEmailRepository;
 use app\repositories\UserRepository;
 use app\utils\AuthenticationValidateHelper;
 use DateTime;
@@ -23,43 +22,7 @@ class UserService
         private readonly AuthenticationService $authenticationService
     )
     {
-    }
-
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public function register(string $email, string $password, string $repeatPassword, UserRole $role): bool
-    {
-        try {
-            if ($password !== $repeatPassword) {
-                $_SESSION['alerts'][] = 'Mật khẩu không khớp';
-                return false;
-            }
-
-            if ($this->userRepository->findByEmail($email)) {
-                $_SESSION['alerts'][] = 'Email đã tồn tại';
-                return false;
-            }
-
-            $errors = AuthenticationValidateHelper::validateRegister($password);
-
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    $_SESSION['alerts'][] = $error;
-                }
-
-                return false;
-            }
-
-            $user = new User($email, password_hash($password, PASSWORD_DEFAULT), explode('@', $email)[0], '', $role);
-
-            $this->userRepository->save($user);
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return true;
+        //
     }
 
     /**
@@ -76,35 +39,83 @@ class UserService
                 return false;
             }
 
-            $username = $currentUser->getUsername();
-            if ($newPassword === $username) {
-                $_SESSION['alerts'][] = 'Mật khẩu mới không được trùng với tên đăng nhập';
-                return false;
-            }
-
-            if ($newPassword !== $repeatPassword) {
-                $_SESSION['alerts'][] = 'Mật khẩu mới không khớp';
-                return false;
-            }
-
-            $errors = AuthenticationValidateHelper::validateRegister($newPassword);
-
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    $_SESSION['alerts'][] = $error;
-                }
-
-                return false;
-            }
-
-            $currentUser->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
-
-            $this->userRepository->save($currentUser);
-
-            $_SESSION['user'] = SessionUserDTO::fromUserEntity($currentUser);
-            $_SESSION['isNeededChangePassword'] = false;
+            return $this->changePassword($currentUser, $newPassword, $repeatPassword);
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function changeUserPassword(string $userId, string $newPassword, string $repeatPassword): bool
+    {
+        try {
+            if ($userId == $_SESSION['user']->getId()) {
+                $_SESSION['alerts'][] = 'Không thể đổi mật khẩu của chính mình';
+                return false;
+            }
+
+            $user = $this->userRepository->find($userId);
+
+            return $this->changePassword($user, $newPassword, $repeatPassword);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function changePasswordFirstTime(string $newPassword, string $repeatPassword): bool
+    {
+        try {
+            $currentUser = $this->findUserById($_SESSION['user']->getId());
+
+            return $this->changePassword($currentUser, $newPassword, $repeatPassword);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     * @throws Exception
+     */
+    private function changePassword(?User $user, ?string $newPassword, ?string $repeatPassword): bool
+    {
+        if ($user == null) {
+            $_SESSION['alerts'][] = 'Người dùng không tồn tại';
+            return false;
+        }
+
+        if ($newPassword === $user->getUsername()) {
+            $_SESSION['alerts'][] = 'Mật khẩu mới không được trùng với tên đăng nhập của người dùng';
+            return false;
+        }
+
+        if ($newPassword !== $repeatPassword) {
+            $_SESSION['alerts'][] = 'Mật khẩu mới không khớp';
+            return false;
+        }
+
+        $errors = AuthenticationValidateHelper::validatePassword($newPassword);
+
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                $_SESSION['alerts'][] = $error;
+            }
+
+            return false;
+        }
+
+        $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+        $this->userRepository->save($user);
+
+        if ($_SESSION['user']->getId() == $user->getId()) {
+            $_SESSION['user'] = SessionUserDTO::fromUserEntity($user);
+            $_SESSION['isNeededChangePassword'] = false;
         }
 
         return true;
@@ -275,96 +286,6 @@ class UserService
             if ($currentUser->getId() == $user->getId()) {
                 $_SESSION['user'] = SessionUserDTO::fromUserEntity($user);
             }
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @throws ORMException
-     */
-    public function changeUserPassword(string $userId, string $newPassword, string $repeatPassword): bool
-    {
-        try {
-            if ($userId == $_SESSION['user']->getId()) {
-                $_SESSION['alerts'][] = 'Không thể đổi mật khẩu của chính mình';
-                return false;
-            }
-
-            $user = $this->userRepository->find($userId);
-
-            if ($user == null) {
-                $_SESSION['alerts'][] = 'Người dùng không tồn tại';
-                return false;
-            }
-
-            $username = $user->getUsername();
-
-            if ($newPassword === $username) {
-                $_SESSION['alerts'][] = 'Mật khẩu mới không được trùng với tên đăng nhập của người dùng';
-                return false;
-            }
-
-            if ($newPassword !== $repeatPassword) {
-                $_SESSION['alerts'][] = 'Mật khẩu mới không khớp';
-                return false;
-            }
-
-            $errors = AuthenticationValidateHelper::validateRegister($newPassword);
-
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    $_SESSION['alerts'][] = $error;
-                }
-
-                return false;
-            }
-
-            $this->userRepository->save($user);
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @throws ORMException
-     */
-    public function changePasswordFirstTime(string $newPassword, string $repeatPassword): bool
-    {
-        try {
-            $currentUser = $this->findUserById($_SESSION['user']->getId());
-
-            $username = $currentUser->getUsername();
-            if ($newPassword === $username) {
-                $_SESSION['alerts'][] = 'Mật khẩu mới không được trùng với tên đăng nhập';
-                return false;
-            }
-
-            if ($newPassword !== $repeatPassword) {
-                $_SESSION['alerts'][] = 'Mật khẩu mới không khớp';
-                return false;
-            }
-
-            $errors = AuthenticationValidateHelper::validateRegister($newPassword);
-
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    $_SESSION['alerts'][] = $error;
-                }
-
-                return false;
-            }
-
-            $currentUser->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
-
-            $this->userRepository->save($currentUser);
-
-            $_SESSION['user'] = SessionUserDTO::fromUserEntity($currentUser);
-            $_SESSION['isNeededChangePassword'] = false;
         } catch (Exception $e) {
             return false;
         }
