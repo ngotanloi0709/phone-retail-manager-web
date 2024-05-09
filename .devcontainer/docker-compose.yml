@@ -1,0 +1,43 @@
+version: "3.3"
+
+services:
+  workspace:
+    container_name: prs-workspace
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3250:3250"
+    tty: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ..:/workspaces/prs:cached
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./xdebug.ini:/etc/php/8.1/mods-available/xdebug.ini
+    command: sleep infinity
+    networks:
+      - prs
+    depends_on:
+      - mariadb
+  mariadb:
+    image: mariadb:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'prs'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - prs-db:/var/lib/mysql
+    networks:
+      - prs
+volumes:
+  prs-db:
+    driver: local
+networks:
+  prs:
+    driver: bridge

@@ -1,0 +1,27 @@
+{
+  "name": "Phone Retail Store (PRS) dev container",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspaces/prs",
+  "forwardPorts": [
+    3250,
+    3306
+  ],
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "bash -i .devcontainer/scripts/post-create.sh",
+  "postStartCommand": "bash -i .devcontainer/scripts/post-start.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "zobo.php-intellisense",
+        "xdebug.php-pack",
+        "xdebug.php-debug",
+        "pgl.laravel-jump-controller",
+        "EditorConfig.EditorConfig",
+        "mikestead.dotenv",
+        "cweijan.vscode-mysql-client2",
+        "bmewburn.vscode-intelephense-client"
+      ]
+    }
+  }
+}
