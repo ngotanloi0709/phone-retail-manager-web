@@ -143,6 +143,11 @@ class ProductService
                 return false;
             }
 
+             if (is_nan($stock) || $stock < 0 || strlen($stock) > 10 ) {
+                $_SESSION['alerts'][] = 'Số lượng không hợp lệ';
+                return false;
+            }
+
             $product->setName($productName);
             $product->setCategory($category);
             $product->setPrice($price);
