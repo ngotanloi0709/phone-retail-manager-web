@@ -10,15 +10,17 @@ $this->layout(
     [
         'title' => 'Thêm Sản Phẩm',
         'header' => 'Thêm Sản Phẩm',
+        'title' => 'Thêm Sản Phẩm',
+        'header' => 'Thêm Sản Phẩm',
         'isShowAside' => false
     ]
 )
 ?>
 
 <?php $this->start('main') ?>
+<link rel="stylesheet" href="../../style/product.css">
 <div class="container">
     <div class="card">
-        <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
             <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data" id="addProductForm" onsubmit="return validateForm()">
                     <div class="row">
@@ -29,7 +31,7 @@ $this->layout(
                         </div>
                         <div class="col-6">
                             <label for="barcode" class="mb-0">Mã vạch:</label>
-                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" placeholder="Nhập mã vạch" rrequired>
+                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" placeholder="Nhập mã vạch">
                             <span id="barcodeError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
@@ -67,27 +69,25 @@ $this->layout(
                         </div>
                         <div class="col-12">
                             <label for="description" class="mb-0">Mô Tả:</label>
-                            <textarea class="form-control mb-3" id="description" name="description" rows="5"  placeholder="Nhập mô tả" required></textarea>
+                            <textarea class="form-control mb-3" id="description" name="description" rows="5" placeholder="Nhập mô tả"></textarea>
                             <span id="descriptionError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
                             <label for="image" class="mb-0">Hình Ảnh:</label>
-                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)" required>
-                            <img class="rounded float-left mb-3" id="imagePreview" src="#" alt="" style="display: none; width: 200px; height: 200px;">
+                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(event)">
                             <span id="fileImageError" style="color: red;"></span>
+                            <img class="rounded float-left mb-3" id="imagePreview" src="#" alt="" style="display: none;">
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-success">Tạo mới</button>
                             <button type="button" class="btn btn-danger">
                                 <a href="/product" style="color: white; text-decoration: none;">Hủy</a>
                             </button>
-
                         </div>
                     </div>
             </div>
             </form>
     </div>
-<?php endif; ?>
 </div>
 </div>
 
@@ -108,8 +108,8 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if (barcode.length === 0 || isNaN(barcode) || barcode < 0) {
-            document.getElementById('barcodeError').innerText = 'Mã vạch không được để trống và phải là số';
+        if (isNaN(barcode) || barcode < 0 || barcode.length > 10) {
+            document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('barcodeError').innerText = '';
@@ -129,22 +129,22 @@ $this->layout(
             document.getElementById('categoryError').innerText = '';
         }
 
-        if (price.length === 0 || isNaN(price) || price < 0) {
-            document.getElementById('priceError').innerText = 'Giá bán không được để trống và phải lớn hơn bằng 0';
+        if (price.length > 10 || isNaN(price) || price < 0) {
+            document.getElementById('priceError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('priceError').innerText = '';
         }
 
-        if (importPrice.length === 0 || isNaN(importPrice) || importPrice < 0) {
-            document.getElementById('importPriceError').innerText = 'Giá nhập không được để trống và phải lớn hơn bằng 0';
+        if (importPrice.length > 10 || isNaN(importPrice) || importPrice < 0) {
+            document.getElementById('importPriceError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('importPriceError').innerText = '';
         }
 
-        if (stock.length === 0 || isNaN(stock) || stock < 0) {
-            document.getElementById('stockError').innerText = 'Số lượng không được để trống và phải lớn hơn bằng 0';
+        if (stock.length > 10 || isNaN(stock) || stock < 0) {
+            document.getElementById('stockError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('stockError').innerText = '';
@@ -152,17 +152,17 @@ $this->layout(
 
         var descriptionInput = document.getElementById('description');
         var description = descriptionInput.value;
-        var maxWords = 200;
-        var wordCount = description.trim().split(/\s+/).length;
-
-        if (wordCount > maxWords) {
-            var words = description.trim().split(/\s+/).slice(0, maxWords);
-            descriptionInput.value = words.join(' ');
-            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxWords + ' từ';
+        var maxLength = 255;
+        var isValid = true;
+        
+        if (description.length > maxLength) {
+            descriptionInput.value = description.substring(0, maxLength); // Cắt chuỗi lại để chỉ chứa 255 ký tự đầu tiên
+            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxLength + ' ký tự';
             isValid = false;
         } else {
             document.getElementById('descriptionError').innerText = '';
         }
+
 
 
         var fileInput = document.getElementById('image');

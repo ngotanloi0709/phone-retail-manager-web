@@ -6,29 +6,6 @@ class ImageHelper
 {
 
 
-    public static function resizeImage($source, $destination, $targetWidth, $targetHeight)
-    {
-        list($originalWidth, $originalHeight) = getimagesize($source);
-        $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
-        $extension = pathinfo($source, PATHINFO_EXTENSION);
-
-        $sourceImage = match ($extension) {
-            'jpg', 'jpeg' => imagecreatefromjpeg($source),
-            'png' => imagecreatefrompng($source),
-            'gif' => imagecreatefromgif($source),
-            default => false,
-        };
-
-        imagedestroy($newImage);
-        if ($sourceImage === false) {
-            return false;
-        }
-
-        imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $targetWidth, $targetHeight, $originalWidth, $originalHeight);
-        imagejpeg($newImage, $destination);
-        imagedestroy($newImage);
-        imagedestroy($sourceImage);
-    }
 
     public static function uploadImage(string $file): string
     {
@@ -54,7 +31,6 @@ class ImageHelper
             }
 
             move_uploaded_file($_FILES[$file]['tmp_name'], $absolutePath);
-            self::resizeImage($absolutePath, $absolutePath, 200, 200);
 
             return str_replace('/../../public', '', $imgDestination);
         } else {
@@ -65,6 +41,15 @@ class ImageHelper
     public static function getDisplayStringData(?string $input): string
     {
         $absolutePath = $_SERVER['DOCUMENT_ROOT'] . $input;
-        return $input != null && $input != '' && file_exists($absolutePath) ? $input : '/image/product-default-image.png';
+        if ($input == null) {
+            return '/image/product-default-image.png';
+        }
+        if (!file_exists($absolutePath)) {
+            return '/image/product-default-image.png';
+        }
+        if ($input == '') {
+            return '/image/product-default-image.png';
+        }
+        return $input;
     }
 }
