@@ -132,12 +132,13 @@ class AuthenticationService
             }
 
             $user->setIsFirstTimeLogin(false);
-            $this->userRepository->save($user);
 
             if ($user->isLocked()) {
-                $_SESSION['alerts'][] = 'Tài khoản của bạn đã bị khóa!';
-                return false;
+                $user->setIsLocked(false);
+                $_SESSION['alerts'][] = 'Tài khoản của bạn đã được mở khoá!';
             }
+
+            $this->userRepository->save($user);
 
             $_SESSION['user'] = SessionUserDTO::fromUserEntity($user);
 
