@@ -133,17 +133,17 @@ class ProductService
                 $product->setBarcode($barcode);
             }
 
-            if (is_nan($price) || $price < 0 || strlen($price) > 10 ) {
+            if (is_nan($price) || $price <= 0 || strlen($price) > 10 ) {
                 $_SESSION['alerts'][] = 'Giá bán không hợp lệ';
                 return false;
             }
 
-            if (is_nan($importPrice) || $importPrice < 0 || strlen($importPrice) > 10 ) {
+            if (is_nan($importPrice) || $importPrice <= 0 || strlen($importPrice) > 10 ) {
                 $_SESSION['alerts'][] = 'Giá nhập không hợp lệ';
                 return false;
             }
 
-             if (is_nan($stock) || $stock < 0 || strlen($stock) > 10 ) {
+             if (is_nan($stock) || $stock <= 0 || strlen($stock) > 10 ) {
                 $_SESSION['alerts'][] = 'Số lượng không hợp lệ';
                 return false;
             }
