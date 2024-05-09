@@ -36,9 +36,11 @@ $currentProducts = array_slice($products, $start, $productsPerPage);
                 <div class="col-6">
                     <h4 class="card-title">Danh sách sản phẩm</h4>
                 </div>
-                <div class="col-6 text-end">
-                    <a href="product/add-product" class="btn btn-warning" style="color: white; text-decoration: none;">Thêm sản phẩm</a>
-                </div>
+                <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
+                    <div class="col-6 text-end">
+                        <a href="product/add-product" class="btn btn-warning" style="color: white; text-decoration: none;">Thêm sản phẩm</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="card-body">
@@ -66,16 +68,16 @@ $currentProducts = array_slice($products, $start, $productsPerPage);
                                 <td class="col-md-2"><?php echo $product->getCategoryName(); ?></td>
                                 <td class="col-md-2"><?php echo $product->getPriceFormatted() ?></td>
                                 <td class="col-md-2"><?php echo $product->getStock(); ?></td>
-                                <td class="col-md-1">
-                                    <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
+                                <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
+                                    <td class="col-md-1">
                                         <a class="editProduct" data-id="<?php echo $product->getId(); ?>" data-toggle="modal">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                         <a class="deleteProduct" data-id="<?php echo $product->getId(); ?>" data-toggle="modal">
                                             <i class="fa-solid fa-trash"></i>
                                         </a>
-                                    <?php endif; ?>
-                                </td>
+                                    </td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
