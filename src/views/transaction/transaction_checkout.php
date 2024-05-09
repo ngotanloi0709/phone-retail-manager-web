@@ -15,7 +15,7 @@
     <div class="card-body" style="min-height:800px;">
         <form action="" method="post" onkeydown="return event.key != 'Enter';">
             <div class="row">
-                <div class="col-sm-9 col-md-6 col-lg-8">
+                <div class="col-sm-9 col-md-6 col-lg-8" style="overflow-x:auto;">
                     <table id="productList" class="table table-bordered">
                         <tr>
                             <th>Tên sản phẩm</th>

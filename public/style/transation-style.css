@@ -90,3 +90,14 @@ input[type="file"] {
 td {
     vertical-align: middle;
 }
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #000000;
+}
+
+.pagination > li > a.selected {
+    background-color: #ffc800;
+    color: white;
+}

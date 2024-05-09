@@ -12,7 +12,7 @@ $this->layout('base',
 <link rel="stylesheet" href="../../style/transation-style.css">
 <div id="transDetailPopup" class="popup" style="display: block;">
     <button id="printBnt" class="btn btn-warning" style="padding-top: 90px; float: right">In hoá đơn</button>
-    <div class="popup-content" id="invoiceContent">
+    <div class="popup-content" id="invoiceContent" style="overflow-x:auto;">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <h5>PHP POINT OF SALE</h5>
