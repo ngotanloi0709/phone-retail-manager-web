@@ -67,6 +67,11 @@ class ProductService
                 return false;
             }
 
+            if (strlen($barcode) > 10) {
+                $_SESSION['alerts'][] = 'Mã vạch không được quá 10 chữ số';
+                return false;
+            }
+
             $product = new Product();
             $product->setBarcode($barcode);
             $product->setName($productName);
@@ -126,6 +131,16 @@ class ProductService
                 return false;
             } else {
                 $product->setBarcode($barcode);
+            }
+
+            if (is_nan($price) || $price < 0 || strlen($price) > 10 ) {
+                $_SESSION['alerts'][] = 'Giá bán không hợp lệ';
+                return false;
+            }
+
+            if (is_nan($importPrice) || $importPrice < 0 || strlen($importPrice) > 10 ) {
+                $_SESSION['alerts'][] = 'Giá nhập không hợp lệ';
+                return false;
             }
 
             $product->setName($productName);
