@@ -18,16 +18,13 @@ $this->layout(
 ?>
 
 <?php $this->start('main') ?>
+<link rel="stylesheet" href="../../style/product.css">
 <div class="container">
     <div class="card">
-        <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
             <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data" id="addProductForm" onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-6">
-                            <label for="name" class="mb-0">Tên sản phẩm:</label>
-                            <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Nhập tên sản phẩm" required>
-                            <span id="nameError" style="color: red;"></span>
                             <label for="name" class="mb-0">Tên sản phẩm:</label>
                             <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Nhập tên sản phẩm" required>
                             <span id="nameError" style="color: red;"></span>
@@ -47,13 +44,7 @@ $this->layout(
                                 <div class="col-4">
                                     <input class="form-check-input" type="radio" id="category_accessory" name="category" value="Phụ kiện" required>
                                     <label for="category_accessory" class="mb-0">Phụ kiện</label>
-                                <div class="col-4">
-                                    <input class="form-check-input" type="radio" id="category_accessory" name="category" value="Phụ kiện" required>
-                                    <label for="category_accessory" class="mb-0">Phụ kiện</label>
                                 </div>
-                                <div class="col-4">
-                                    <input class="form-check-input" type="radio" id="category_other" name="category" value="Khác" required>
-                                    <label for="category_other" class="mb-0">Khác</label>
                                 <div class="col-4">
                                     <input class="form-check-input" type="radio" id="category_other" name="category" value="Khác" required>
                                     <label for="category_other" class="mb-0">Khác</label>
@@ -97,11 +88,6 @@ $this->layout(
             </div>
             </form>
     </div>
-<?php endif; ?>
-</div>
-            </form>
-    </div>
-<?php endif; ?>
 </div>
 </div>
 
