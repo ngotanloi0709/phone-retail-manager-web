@@ -15,7 +15,7 @@ return [
         'host' => 'mariadb',
         'dbname' => 'prs',
         'user' => 'root',
-        'password' => '',
+        'password' => 'root',
         'port' => 3306,
         'unix_socket' => '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock'
     ]

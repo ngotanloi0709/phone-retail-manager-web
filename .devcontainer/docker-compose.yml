@@ -29,7 +29,7 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: 'prs'
       MYSQL_USER: 'root'
-      MYSQL_PASSWORD: ''
+      MYSQL_PASSWORD: 'root'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - prs-db:/var/lib/mysql
