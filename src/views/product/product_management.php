@@ -3,6 +3,7 @@
 /** @var SessionUserDTO $sessionUser */
 $sessionUser = $_SESSION['user'] ?? null;
 
+use app\dto\SessionUserDTO;
 use app\models\UserRole;
 use app\utils\ImageHelper;
 
@@ -37,7 +38,9 @@ $currentProducts = array_slice($products, $start, $productsPerPage);
                     <h4 class="card-title">Danh sách sản phẩm</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <a href="product/add-product" class="btn btn-warning" style="color: white; text-decoration: none;">Thêm sản phẩm</a>
+                    <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
+                        <a href="product/add-product" class="btn btn-warning" style="color: white; text-decoration: none;">Thêm sản phẩm</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

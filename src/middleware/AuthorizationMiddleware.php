@@ -11,7 +11,6 @@ class AuthorizationMiddleware
         '/home',
         '/login',
         '/error-not-found',
-//        '/register',
         '/logout',
         '/login-by-email'
     ];
@@ -25,6 +24,9 @@ class AuthorizationMiddleware
         '/admin/delete-user',
         '/admin/edit-user',
         '/admin/change-user-password',
+        '/product/add-product',
+        '/product/edit-product',
+        '/product/delete-product'
     ];
 
     public function __construct(

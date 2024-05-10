@@ -95,6 +95,9 @@ class AdminUserController extends Controller
         header('Location: /admin/user-management');
     }
 
+    /**
+     * @throws ORMException
+     */
     public function changeUserPassword(): void
     {
         $userId = $_POST['id'];
@@ -122,7 +125,7 @@ class AdminUserController extends Controller
         $transactions = $this->transactionService->getTransactionsByUserId($userId);
 
         $this->render('admin/user-sale-information', [
-            'header' => "Lịch sử bán hàng của " . $user->getName(),
+            'header' => "Lịch sử bán hàng của " . $user->getUsername(),
             'saleUser' => $user,
             'transactions' => $transactions,
         ]);

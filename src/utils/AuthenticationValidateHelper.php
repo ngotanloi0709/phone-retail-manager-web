@@ -4,12 +4,12 @@ namespace app\utils;
 
 class AuthenticationValidateHelper
 {
-    public static function validateRegister(string $password): array
+    public static function validatePassword(string $password): array
     {
         $errors = [];
 
         if (empty($password)) {
-            $errors['password'] = 'Thiếu Password';
+            $errors['password'] = 'Password không được để trống';
         }
 
         if (strlen($password) < 6) {
