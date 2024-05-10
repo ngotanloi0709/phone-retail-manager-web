@@ -125,7 +125,7 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <label for="editUserInformationRole">Vai trò</label>
+                            <label for="editUserInformationRole" class="form-label">Vai trò</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1"><i
                                             class="fa-solid fa-dice-d6"></i></span>

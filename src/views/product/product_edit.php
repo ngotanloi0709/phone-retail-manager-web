@@ -19,12 +19,12 @@ $this->layout(
 ); ?>
 
 <?php $this->start('main') ?>
-<!-- <link rel="stylesheet" href="../../style/product.css"> -->
+<link rel="stylesheet" href="../../style/product.css">
 <div class="container">
     <div class="card">
         <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
             <div class="card-body">
-                <form action="" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <form action="/product/edit-product" method="POST" enctype="multipart/form-data" id="editForm"  onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-6">
                             <label for="name" class="mb-0">Tên sản phẩm:</label>
@@ -33,7 +33,7 @@ $this->layout(
                         </div>
                         <div class="col-6">
                             <label for="barcode" class="mb-0">Mã vạch:</label>
-                            <input type="text" class="form-control mb-3" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>" required>
+                            <input type="number" class="form-control mb-3" id="barcode" name="barcode" value="<?php echo $product->getBarcode(); ?>">
                             <span id="barcodeError" style="color: red;"></span>
                         </div>
                         <div class="col-12">
@@ -71,12 +71,12 @@ $this->layout(
                         </div>
                         <div class="col-12">
                             <label for="description" class="mb-0">Mô Tả:</label>
-                            <textarea class="form-control mb-3" id="description" name="description" required><?php echo $product->getDescription(); ?></textarea>
+                            <textarea class="form-control mb-3" id="description" name="description"><?php echo $product->getDescription(); ?></textarea>
                         </div>
                         <div class="col-12">
                             <label for="image" class="mb-0">Hình Ảnh:</label>
-                            <input type="file" class="form-control mb-3" id="image" name="image">
-                            <span id="fileImageError" style="color: red;"></span>
+                            <input type="file" class="form-control mb-3" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif">
+                            <span id="fileImageError" class="mb-2" style="color: red;  display: block;"></span>
                             <?php /** @var Product $product */
                             echo '<img class="rounded float-left mb-3"  id="image_preview" src="' . ImageHelper::getDisplayStringData($product->getImageUrl()) . '" onerror="this.onerror=null; this.src=\'/image/product-default-image.png\';">';
                             ?>
@@ -91,7 +91,6 @@ $this->layout(
                         </div>
                     </div>
                 </form>
-
             </div>
         <?php endif; ?>
     </div>
@@ -99,30 +98,6 @@ $this->layout(
 </div>
 
 <script>
-    document.getElementById('image').addEventListener('change', function() {
-        var fileInput = document.getElementById('image');
-        var currentImageInput = document.getElementById('currentImage');
-        var imagePreview = document.getElementById('image_preview');
-        var file = this.files[0];
-
-        if (file) {
-            var fileName = file.name;
-            var fileExtension = fileName.split('.').pop().toLowerCase();
-            var allowedExtensions = ['png', 'jpeg', 'jpg', 'gif'];
-
-            if (!allowedExtensions.includes(fileExtension)) {
-                document.getElementById('fileImageError').innerText = 'Tệp tải lên phải là một ảnh (PNG, JPEG, JPG, hoặc GIF).';
-                isValid = false;
-            } else {
-                document.getElementById('fileImageError').innerText = '';
-            }
-
-            currentImageInput.value = URL.createObjectURL(file);
-            imagePreview.src = currentImageInput.value;
-        }
-    });
-
-
     var fileInput = document.getElementById('image');
     fileInput.addEventListener('change', function() {
         $('#isChangeImage').val(1);
@@ -137,9 +112,17 @@ $this->layout(
                 isValid = false;
             } else {
                 document.getElementById('fileImageError').innerText = '';
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image_preview').src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
             }
         }
     });
+    
 
     function validateForm() {
         var isValid = true;
@@ -151,8 +134,8 @@ $this->layout(
         var stock = document.getElementById('stock').value;
         var image = document.getElementById('image').value;
 
-        if (barcode.length === 0 || isNaN(barcode) || barcode < 0) {
-            document.getElementById('barcodeError').innerText = 'Mã vạch không được để trống và phải là số';
+        if (barcode.length > 10 || isNaN(barcode) || barcode < 0) {
+            document.getElementById('barcodeError').innerText = 'Mã vạch phải là số và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('barcodeError').innerText = '';
@@ -172,22 +155,22 @@ $this->layout(
             document.getElementById('categoryError').innerText = '';
         }
 
-        if (price.length === 0 || isNaN(price) || price < 0) {
-            document.getElementById('priceError').innerText = 'Giá bán không được để trống và phải lớn hơn bằng 0';
+        if (price.length > 10 || isNaN(price) || price < 0) {
+            document.getElementById('priceError').innerText = 'Giá bán phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('priceError').innerText = '';
         }
 
-        if (importPrice.length === 0 || isNaN(importPrice) || importPrice < 0) {
-            document.getElementById('importPriceError').innerText = 'Giá nhập không được để trống và phải lớn hơn bằng 0';
+        if (importPrice.length > 10 || isNaN(importPrice) || importPrice < 0) {
+            document.getElementById('importPriceError').innerText = 'Giá nhập phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('importPriceError').innerText = '';
         }
 
-        if (stock.length === 0 || isNaN(stock) || stock < 0) {
-            document.getElementById('stockError').innerText = 'Số lượng không được để trống và phải lớn hơn bằng 0';
+        if (stock.length > 10 || isNaN(stock) || stock < 0) {
+            document.getElementById('stockError').innerText = 'Số lượng phải lớn hơn bằng 0 và không quá 10 chữ số';
             isValid = false;
         } else {
             document.getElementById('stockError').innerText = '';
@@ -196,13 +179,11 @@ $this->layout(
 
         var descriptionInput = document.getElementById('description');
         var description = descriptionInput.value;
-        var maxWords = 200;
-        var wordCount = description.trim().split(/\s+/).length;
+        var maxChars = 255;
 
-        if (wordCount > maxWords) {
-            var words = description.trim().split(/\s+/).slice(0, maxWords);
-            descriptionInput.value = words.join(' ');
-            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxWords + ' từ';
+        if (description.length > maxChars) {
+            descriptionInput.value = description.slice(0, maxChars);
+            document.getElementById('descriptionError').innerText = 'Mô tả không được dài hơn ' + maxChars + ' ký tự';
             isValid = false;
         } else {
             document.getElementById('descriptionError').innerText = '';

@@ -38,11 +38,11 @@ use app\utils\DataHelper;
                                     class="fa-solid fa-box"></i> Đơn Hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/customer"><i class="fa-solid fa-book"></i>
+                        <a class="nav-link active" aria-current="page" href="/customer"><i class="fa-regular fa-id-card"></i>
                             Khách Hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/statistics"><i class="fas fa-pen-alt"></i>
+                        <a class="nav-link active" aria-current="page" href="/statistics"><i class="fa-solid fa-chart-line"></i>
                             Thống kê</a>
                     </li>
                 <?php endif; ?>
@@ -53,9 +53,6 @@ use app\utils\DataHelper;
                 <?php if (!$isAuthenticated): ?>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/login">Đăng nhập</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/register">Đăng ký</a>
                     </li>
                 <?php else: ?>
                     <li class="d-flex align-items-center">
