@@ -1,22 +1,21 @@
-.card-wrapper{
+.card-wrapper {
     max-width: 1100px;
     margin: 0 auto;
 }
 
-img {
+.img-showcase img {
+    max-width: 100%;
     width: 100%;
+    height: auto;
+    object-fit: cover;
     display: block;
 }
-.img-display{
-    overflow: hidden;
-}
-.img-showcase img{
-    min-width: 100%;
-}
-.product-content{
+
+.product-content {
     padding: 2rem 1rem;
 }
-.product-title{
+
+.product-title {
     font-size: 3rem;
     text-transform: capitalize;
     font-weight: 700;
@@ -25,7 +24,7 @@ img {
     margin: 1rem 0;
 }
 
-.product-link{
+.product-link {
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 400;
@@ -38,37 +37,44 @@ img {
     transition: all 0.5s ease;
 }
 
-.product-price{
+.product-price {
     margin: 1rem 0;
     font-size: 1rem;
     font-weight: 700;
 }
-.product-price span{
+
+.product-price span {
     font-weight: 400;
 }
-.import-price span{
+
+.import-price span {
     color: #f64749;
 }
-.price span{
+
+.price span {
     color: #256eff;
 }
-.product-detail h2{
+
+.product-detail h2 {
     text-transform: capitalize;
     padding-bottom: 0.6rem;
     color: #12263a;
-    font-size: 1.5rem;  
+    font-size: 1.5rem;
     font-weight: 700;
 }
-.product-detail p{
+
+.product-detail p {
     font-size: 0.9rem;
     padding: 0.3rem;
     opacity: 0.8;
 }
-.product-detail ul{
+
+.product-detail ul {
     margin: 1rem 0;
     font-size: 0.9rem;
 }
-.product-detail ul li{
+
+.product-detail ul li {
     margin: 0;
     list-style: none;
     padding-left: 1rem;
@@ -76,15 +82,17 @@ img {
     font-weight: 600;
     opacity: 0.9;
 }
-.product-detail ul li span{
+
+.product-detail ul li span {
     font-weight: 400;
 }
 
-.purchase-info{
+.purchase-info {
     margin-top: 2rem;
     margin-left: 0.5rem;
 }
-.purchase-info .btn{
+
+.purchase-info .btn {
     border: 1.5px solid #ddd;
     border-radius: 25px;
     text-align: center;
@@ -93,18 +101,21 @@ img {
     margin-right: 0.2rem;
     margin-bottom: 1rem;
 }
-.purchase-info .btn{
+
+.purchase-info .btn {
     cursor: pointer;
     color: #fff;
 }
 
-.purchase-info .btn:last-of-type{
+.purchase-info .btn:last-of-type {
     background: #256eff;
 }
-.purchase-info .btn:hover{
+
+.purchase-info .btn:hover {
     opacity: 0.9;
 }
-.icon{
+
+.icon {
     font-size: 1.2rem;
     margin-right: 0.5rem;
 
@@ -115,4 +126,3 @@ img {
     margin-right: 0.5rem;
     font-size: 1rem;
 }
-

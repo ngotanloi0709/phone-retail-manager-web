@@ -62,8 +62,13 @@ class ProductService
                 $this->categoryRepository->save($category);
             }
 
-            if ($this->IsBarcodeExist($barcode)) {
+            if ($barcode != 0 && $this->IsBarcodeExist($barcode)) {
                 $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
+                return false;
+            }
+
+            if (strlen($barcode) > 10) {
+                $_SESSION['alerts'][] = 'Mã vạch không được quá 10 chữ số';
                 return false;
             }
 
@@ -79,6 +84,7 @@ class ProductService
             $product->setCategory($category);
 
             $this->productRepository->save($product);
+            return true;
         } catch (\Exception $e) {
             error_log($e->getMessage());
             return false;
@@ -103,6 +109,15 @@ class ProductService
                 $this->categoryRepository->save($category);
             }
 
+            if ($imgUrl != null && $imgUrl != '') {
+                $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif');
+                $extension = strtolower(pathinfo($imgUrl, PATHINFO_EXTENSION));
+                if (!in_array($extension, $allowedExtensions)) {
+                    $_SESSION['alerts'][] = 'Ảnh không hợp lệ';
+                    return false;
+                }
+            }
+
             /** @var Product $product */
             $product = $this->productRepository->findByID($id);
 
@@ -111,13 +126,33 @@ class ProductService
                 return false;
             }
 
-            if ($barcode != null && $barcode != $product->getBarcode() && $this->IsBarcodeExist($barcode)) {
+            if ($barcode != null && $barcode != 0  && $barcode != $product->getBarcode() && $this->IsBarcodeExist($barcode)) {
                 $_SESSION['alerts'][] = 'Mã vạch đã tồn tại';
                 return false;
             } else {
                 $product->setBarcode($barcode);
             }
 
+            if (is_nan($price) || $price <= 0 || strlen($price) > 10 ) {
+                $_SESSION['alerts'][] = 'Giá bán không hợp lệ';
+                return false;
+            }
+
+            if (is_nan($importPrice) || $importPrice <= 0 || strlen($importPrice) > 10 ) {
+                $_SESSION['alerts'][] = 'Giá nhập không hợp lệ';
+                return false;
+            }
+
+             if (is_nan($stock) || $stock <= 0 || strlen($stock) > 10 ) {
+                $_SESSION['alerts'][] = 'Số lượng không hợp lệ';
+                return false;
+            }
+
+            if (strlen($description) > 255){
+                $_SESSION['alerts'][] = 'Mô tả không được quá 255 ký tự';
+                return false;
+            }
+            
             $product->setName($productName);
             $product->setCategory($category);
             $product->setPrice($price);
