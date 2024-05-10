@@ -21,7 +21,7 @@ $this->layout('base',
 <?= $this->insert('modal/change-user-password-modal') ?>
 <div class="d-flex">
     <button class="btn btn-success mb-3 ms-auto" data-bs-toggle="modal"
-            data-bs-target="#createNewUserModal">Thêm người dùng mới vào hệ thống
+            data-bs-target="#createNewUserModal"><i class="fa-solid fa-user-plus"></i> Thêm người dùng mới vào hệ thống
     </button>
 </div>
 
