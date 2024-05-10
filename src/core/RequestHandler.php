@@ -2,7 +2,7 @@
 
 namespace app\core;
 
-use app\middleware\authorizationMiddleware;
+use app\middleware\AuthorizationMiddleware;
 use app\utils\ErrorHandler;
 use app\utils\RequestHelper;
 use DI\Container;
