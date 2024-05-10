@@ -65,6 +65,7 @@ class CustomerService
             $customer->setAddress($editCustomerInformationDTO->getAddress());
             $customer->setEmail($editCustomerInformationDTO->getEmail());
             foreach ($this->getCustomers() as $cus) {
+                if($customer->getPhone()==$editCustomerInformationDTO->getPhone()) continue;
                 if($cus->getPhone() == $editCustomerInformationDTO->getPhone()){
                     $_SESSION['alerts'][] = 'Số điện thoại đã tồn tại';
                     return false;
