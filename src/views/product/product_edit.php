@@ -24,7 +24,7 @@ $this->layout(
     <div class="card">
         <?php if ($sessionUser->getRole() == UserRole::ADMIN) : ?>
             <div class="card-body">
-                <form action="" method="post" enctype="multipart/form-data" id="editForm"  onsubmit="return validateForm()">
+                <form action="/product/edit-product" method="POST" enctype="multipart/form-data" id="editForm"  onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-6">
                             <label for="name" class="mb-0">Tên sản phẩm:</label>

@@ -22,7 +22,7 @@ $this->layout(
 <div class="container">
     <div class="card">
             <div class="card-body">
-                <form action="" method="post" enctype="multipart/form-data" id="addProductForm" onsubmit="return validateForm()">
+                <form action="/product/add-product" method="POST" enctype="multipart/form-data" id="addProductForm" onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col-6">
                             <label for="name" class="mb-0">Tên sản phẩm:</label>
