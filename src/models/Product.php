@@ -27,7 +27,7 @@ class Product
     private int $import_price;
     #[Column(nullable: true)]
     private int $stock;
-    #[Column(unique: true, nullable: true)]
+    #[Column(nullable: true)]
     private ?int $barcode;
     #[Column(nullable: true)]
     private DateTime $created;
@@ -119,7 +119,7 @@ class Product
 
     public function getCreated(): string
     {
-        return $this->created->format('Y-m-d');
+        return $this->created->format('d/m/Y');
     }
 
     public function setCreated(DateTime $created): Product
