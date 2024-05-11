@@ -13,8 +13,8 @@ use app\models\UserRole;
 <?php $this->layout('base',
     [
         'title' => 'Trang chủ',
-        'header' => 'Trang chủ',
-        'isShowAside' => true
+        'header' => $isAuthenticated ? 'Trang chủ' : '',
+        'isShowAside' => $isAuthenticated
     ]) ?>
 <?php $this->start('main') ?>
 <?php if ($isAuthenticated): ?>
@@ -27,7 +27,8 @@ use app\models\UserRole;
                 <h5 class="card-title">Quản trị nhân viên</h5>
                 <p class="card-text">Quản trị, can thiệp vào các hoạt động, thông tin của tài khoản nhân viên bán
                     hàng.</p>
-                <a href="/admin/user-management" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Truy cập</a>
+                <a href="/admin/user-management" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i>
+                    Truy cập</a>
             </div>
         </div>
     <?php endif; ?>
@@ -73,8 +74,21 @@ use app\models\UserRole;
         </div>
     </div>
 <?php else: ?>
-    <h3><b>Xin hãy đăng nhập để sử dụng hệ thống.</b></h3>
-    <h5><i>Liên hệ với quản trị viên nếu bạn muốn tạo tài khoản mới hoặc gặp vấn đề với tài khoản!</i></h5>
+    <div class="row position-absolute top-50 start-50 translate-middle bg-light p-5 rounded shadow-lg">
+        <div class="col-12 mx-auto d-flex flex-column align-items-center gap-4">
+            <a class="btn btn-dark mb-2 rounded px-5 py-2 fw-bold" href="/login" role="tab"
+               aria-controls="list-home"
+            >
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                &nbsp;
+                Đăng nhập
+            </a>
+            <div class="text-center">
+                <h2><b>Xin hãy đăng nhập để sử dụng hệ thống.</b></h2>
+                <h5><i>Liên hệ với quản trị viên nếu bạn muốn tạo tài khoản mới hoặc gặp vấn đề với tài khoản!</i></h5>
+            </div>
+        </div>
+    </div>
 <?php endif; ?>
 <?php $this->end('main') ?>
 
