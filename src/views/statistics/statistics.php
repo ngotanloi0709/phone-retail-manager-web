@@ -110,7 +110,7 @@ $this->layout('base',
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.$totalmoney.'</h4>
+                                    <h4 class="text-white">'.number_format($totalmoney,0,',','.').' VND</h4>
                                     <h6 class="text-white ">Tổng số tiền đã nhận</h6>
                                 </div>
                                 <div class="col-4 text-write">
@@ -157,7 +157,7 @@ $this->layout('base',
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.$totalprofit.'</h4>
+                                    <h4 class="text-white">'.number_format($totalprofit,0,',','.').' VND</h4>
                                     <h6 class="text-white">Tổng lợi nhuận</h6>
                                 </div>  
                                 <div class="col-4 text-write">
@@ -187,7 +187,7 @@ $this->layout('base',
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.$totalmoneyofcanceltrans.'</h4>
+                                    <h4 class="text-white">'.number_format($totalmoneyofcanceltrans,0,',','.').' VND</h4>
                                     <h6 class="text-white">Số tiền mất do hủy đơn</h6>
                                 </div>  
                                 <div class="col-4 text-write">
@@ -200,7 +200,7 @@ $this->layout('base',
             </div>';  
             echo "</div>"; 
             echo '<div style="overflow-x:auto;">';
-            echo '<table class="table table-bordered ">
+            echo '<table class="table table-bordered mt-3">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -226,14 +226,14 @@ $this->layout('base',
                             foreach ($transaction->getItems() as $item) : 
                                 $total += $item->getProduct()->getPrice() * $item->getQuantity() ;
                             endforeach;
-                            echo "<td>".$total."</td>";
-                            echo "<td>".$transaction->getGivenMoney()."</td>";
+                            echo "<td>".number_format($total,0,',','.')."</td>";
+                            echo "<td>".number_format($transaction->getGivenMoney(),0,',','.')."</td>";
 
                                 $change = $transaction->getGivenMoney() - $total;
                                 if ($change < 0) {
                                     $change=0;
                                 }
-                            echo "<td>".$change."</td>";
+                            echo "<td>".number_format($change,0,',','.')."</td>";
                                 $totalquantity = 0;
                                 foreach ($transaction->getItems() as $item) : 
                                     $totalquantity += $item->getQuantity() ;
