@@ -8,7 +8,7 @@ use app\models\UserRole;
 use app\utils\DataHelper;
 
 ?>
-<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top shadow">
     <div class="container">
         <a class="navbar-brand" href="/home"><i class="fa-solid fa-phone"></i></i> Phone Retail Store</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -84,8 +84,8 @@ use app\utils\DataHelper;
                                 ?>
                                 <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout"><i
-                                        class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+                        <li><a class="dropdown-item text-danger fw-bold" href="/logout"><i
+                                        class="fa-solid fa-right-from-bracket "></i> Đăng xuất</a></li>
                     </ul>
                     <div class="d-lg-none d-flex justify-content-between">
                         <ul>
