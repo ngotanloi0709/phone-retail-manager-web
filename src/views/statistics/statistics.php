@@ -1,5 +1,9 @@
 <?php 
+/** @var SessionUserDTO $sessionUser */
+$sessionUser = $_SESSION['user'] ?? null;
 use app\utils\DataHelper;
+use app\dto\SessionUserDTO;
+use app\models\UserRole;
 $this->layout('base',
     [
         'title' => 'Thống kê doanh thu',
@@ -102,15 +106,15 @@ $this->layout('base',
                     $totalmoney+=$total;
                     $totalprofit+=$profit;
                 }
-            }
-            echo '<div class="container">';
-            echo '<div class="row ">
+            }?>
+            <div class="container">
+            <div class="row ">
                 <div class="col-xl-4 col-md-6">
                     <div class="card bg-warning p-3 mb-2">
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.number_format($totalmoney,0,',','.').' VND</h4>
+                                    <h4 class="text-white"><?=number_format($totalmoney,0,',','.')?>VND</h4>
                                     <h6 class="text-white ">Tổng số tiền đã nhận</h6>
                                 </div>
                                 <div class="col-4 text-write">
@@ -125,7 +129,7 @@ $this->layout('base',
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.$numoftrans.'</h4>
+                                    <h4 class="text-white"><?=$numoftrans?></h4>
                                     <h6 class="text-white">Số lượng đơn hàng</h6>
                                 </div>
                                 <div class="col-4 text-write">
@@ -140,7 +144,7 @@ $this->layout('base',
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.$numofproduct.'</h4>
+                                    <h4 class="text-white"><?=$numofproduct?></h4>
                                     <h6 class="text-white">Số lượng sản phẩm đã bán</h6>
                                 </div>
                                 <div class="col-4 text-write">
@@ -152,12 +156,13 @@ $this->layout('base',
                 </div> 
             </div>
             <div class="row ">
+            <?php if ($sessionUser->getRole() == UserRole::ADMIN){?>
                 <div class="col-xl-4 col-md-6">
                     <div class="card bg-secondary p-3 mb-2">
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.number_format($totalprofit,0,',','.').' VND</h4>
+                                    <h4 class="text-white"><?=number_format($totalprofit,0,',','.')?>VND</h4>
                                     <h6 class="text-white">Tổng lợi nhuận</h6>
                                 </div>  
                                 <div class="col-4 text-write">
@@ -167,12 +172,13 @@ $this->layout('base',
                         </div>
                     </div>
                 </div>
+                <?php }?>
                 <div class="col-xl-4 col-md-6">
                     <div class="card bg-dark p-3 mb-2">
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.$numofcanceltrans.'</h4>
+                                    <h4 class="text-white"><?=$numofcanceltrans?></h4>
                                     <h6 class="text-white">Số đơn đã hủy</h6>
                                 </div>  
                                 <div class="col-4 text-write">
@@ -187,7 +193,7 @@ $this->layout('base',
                         <div class="card-block">
                             <div class="row ">
                                 <div class="col-8">
-                                    <h4 class="text-white">'.number_format($totalmoneyofcanceltrans,0,',','.').' VND</h4>
+                                    <h4 class="text-white"><?=number_format($totalmoneyofcanceltrans,0,',','.')?> VND</h4>
                                     <h6 class="text-white">Số tiền mất do hủy đơn</h6>
                                 </div>  
                                 <div class="col-4 text-write">
@@ -197,10 +203,10 @@ $this->layout('base',
                         </div>
                     </div>
                 </div>
-            </div>';  
-            echo "</div>"; 
-            echo '<div style="overflow-x:auto;">';
-            echo '<table class="table table-bordered mt-3">
+            </div> 
+            </div>
+            <div style="overflow-x:auto;">
+            <table class="table table-bordered mt-3">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -212,7 +218,8 @@ $this->layout('base',
                     <th>Thao Tác</th>
                 </tr>
             </thead>
-            <tbody>';
+            <tbody>
+                <?php
                     foreach($transactions as $transaction):
                         if($transaction->getIsCanceled()==true){
                             continue;

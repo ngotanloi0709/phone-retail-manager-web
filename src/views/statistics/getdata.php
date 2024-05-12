@@ -1,5 +1,8 @@
 <?php
+
+use app\models\UserRole;
     function infor($totalmoney,$numoftrans,$numofproduct,$totalprofit,$numofcanceltrans,$totalmoneyofcanceltrans){
+        $sessionUser = $_SESSION['user'] ?? null;
         echo '<div class="container">';
         echo '<div class="row ">
                 <div class="col-xl-4 col-md-6">
@@ -48,7 +51,9 @@
                     </div>
                 </div> 
             </div>
-            <div class="row ">
+            <div class="row ">';
+                if ($sessionUser->getRole() == UserRole::ADMIN){
+                    echo '
                 <div class="col-xl-4 col-md-6">
                     <div class="card bg-secondary p-3 mb-2">
                         <div class="card-block">
@@ -63,7 +68,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>';}
+                echo'
                 <div class="col-xl-4 col-md-6">
                     <div class="card bg-dark p-3 mb-2">
                         <div class="card-block">
