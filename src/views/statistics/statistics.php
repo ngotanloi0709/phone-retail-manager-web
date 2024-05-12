@@ -47,10 +47,10 @@ $this->layout('base',
         <form method="get">
             <label for="timerange" >Loại thời gian:</label>
             <select  name="timerange" id="timerange" onchange="changeDropDownValue()">
-                <option value="blank">(Trống)</option>
-                <option value="7day">Trong 7 ngày trước</option>                
+                <option value="blank">(Trống)</option>              
                 <option value="today">Hôm nay</option>
                 <option value="yesterday">Hôm qua</option>
+                <option value="7day">Trong 7 ngày trước</option> 
                 <option value="month">Trong tháng này</option>
             </select>
 
