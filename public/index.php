@@ -1,10 +1,17 @@
 <?php
 
+require_once __DIR__ . "/../src/configs/config.php";
+
+$GLOBALS['shouldEnableDebug'] = $config['APP']['env'] === ENV_DEV;
+
+ini_set('display_errors', $shouldEnableDebug ? '1' : '0');
+ini_set('display_startup_errors', $shouldEnableDebug ? '1' : '0');
+error_reporting($shouldEnableDebug ? E_ALL : 0);
+
 use app\core\RequestHandler;
 use app\utils\ErrorHandler;
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-error_reporting(0);
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
